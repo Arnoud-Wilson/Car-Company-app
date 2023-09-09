@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "customerd")
-public class Customer implements Person {
+public class Customer extends Person {
 
     //TODO: set inheritance? annotation?
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
     @Column(name = "bankAccount")
     private String bankAccount;
