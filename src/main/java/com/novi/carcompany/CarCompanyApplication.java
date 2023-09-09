@@ -10,4 +10,6 @@ public class CarCompanyApplication {
         SpringApplication.run(CarCompanyApplication.class, args);
     }
 
+    //TODO: make application.properties SQL, not drop table
+
 }
