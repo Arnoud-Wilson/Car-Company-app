@@ -7,8 +7,6 @@ import jakarta.persistence.*;
 @Table(name = "empoyes")
 public class Employee extends Person {
 
-    //TODO: add inheritance? annotation?
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
@@ -19,7 +17,8 @@ public class Employee extends Person {
     public Employee() {
     }
 
-    public Employee(String function) {
+    public Employee(String surName, String lastName, String address, int phoneNumber, String function) {
+        super(surName, lastName, address, phoneNumber);
         this.function = function;
     }
 
