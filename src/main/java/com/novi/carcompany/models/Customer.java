@@ -3,7 +3,7 @@ package com.novi.carcompany.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "customerd")
+@Table(name = "customers")
 public class Customer extends Person {
 
     //TODO: set inheritance? annotation?
@@ -22,7 +22,11 @@ public class Customer extends Person {
     public Customer() {
     }
 
-    public Customer(String bankAccount, Boolean corporate) {
+    public Customer(String surName, String lastName, String address, int phoneNumber, String bankAccount, Boolean corporate) {
+        super(surName);
+        super(lastName);
+        super(address);
+        super(phoneNumber);
         this.bankAccount = bankAccount;
         this.corporate = corporate;
     }

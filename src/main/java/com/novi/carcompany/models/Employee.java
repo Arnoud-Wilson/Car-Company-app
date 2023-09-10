@@ -19,7 +19,11 @@ public class Employee extends Person {
     public Employee() {
     }
 
-    public Employee(String function) {
+    public Employee(String surName, String lastName, String address, int phoneNumber, String function) {
+        super(surName);
+        super(lastName);
+        super(address);
+        super(phoneNumber);
         this.function = function;
     }
 
