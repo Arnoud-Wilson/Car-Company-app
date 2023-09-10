@@ -4,9 +4,7 @@ package com.novi.carcompany.models;
 import jakarta.persistence.*;
 
 @MappedSuperclass
-public class Person {
-
-    //TODO: inheritence...? how?
+public abstract class Person {
 
     @Column(name = "surName", nullable = false, updatable = false)
     private String surName;
