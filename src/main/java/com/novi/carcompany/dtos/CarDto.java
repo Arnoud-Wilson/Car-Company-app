@@ -17,7 +17,7 @@ public class CarDto {
     private Boolean winterTyres;
 
 
-    public static CarDto carDto(Car car) {
+    public static CarDto fillCarDto(Car car) {
 
         CarDto dto = new CarDto();
 
