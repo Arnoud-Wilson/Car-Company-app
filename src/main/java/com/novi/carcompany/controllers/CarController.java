@@ -2,11 +2,17 @@ package com.novi.carcompany.controllers;
 
 
 import com.novi.carcompany.dtos.CarDto;
+import com.novi.carcompany.dtos.CarInputDto;
 import com.novi.carcompany.repositories.CarRepository;
 import com.novi.carcompany.services.CarService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,10 +31,30 @@ public class CarController {
         return ResponseEntity.ok(carService.getCars());
     }
 
-    @GetMapping(value = "/{licensePlate}")
+    @GetMapping("/{licensePlate}")
     public ResponseEntity<CarDto> getCar(@PathVariable String licensePlate) {
         return ResponseEntity.ok(carService.getCar(licensePlate));
     }
+
+    @PostMapping
+    public ResponseEntity<Object> createCar(@Valid @RequestBody CarInputDto car, BindingResult bindingResult) {
+
+        if (bindingResult.hasFieldErrors()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                stringBuilder.append(fieldError.getField());
+                stringBuilder.append(": ");
+                stringBuilder.append(fieldError.getDefaultMessage());
+                stringBuilder.append("\n");
+            }
+            return ResponseEntity.badRequest().body(stringBuilder);
+        } else {
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + car.licensePlate.toUpperCase()).toUriString());
+
+            return ResponseEntity.created(uri).body(carService.createCar(car));
+        }
+    }
+
 
 
 

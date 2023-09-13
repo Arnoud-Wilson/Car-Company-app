@@ -1,5 +1,6 @@
 package com.novi.carcompany.controllers;
 
+import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,8 @@ public class ExceptionController {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = IndexOutOfBoundsException.class)
-    public ResponseEntity<String> exception(IndexOutOfBoundsException exception) {
-        return new ResponseEntity<>("Dit ID is niet aanwezig in de database", HttpStatus.NOT_FOUND);
+    @ExceptionHandler(value = AlreadyExistsException.class)
+    public ResponseEntity<String> exception(AlreadyExistsException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

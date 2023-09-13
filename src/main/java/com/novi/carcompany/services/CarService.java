@@ -2,11 +2,13 @@ package com.novi.carcompany.services;
 
 
 import com.novi.carcompany.dtos.CarDto;
-import com.novi.carcompany.dtos.CarDtoConverter;
+import com.novi.carcompany.dtos.CarInputDto;
+import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.repositories.CarRepository;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,19 +47,49 @@ public class CarService {
     ///// For fetching one car by licence plate from database /////
     public CarDto getCar(String licensePlate) {
 
-        if (carRepository.findByLicensePlate(licensePlate).isPresent()) {
+        if (carRepository.findByLicensePlateIgnoreCase(licensePlate).isPresent()) {
             CarDto dto = new CarDto();
-            Car fetchedCar = carRepository.findByLicensePlate(licensePlate).get();
+            Car fetchedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate).get();
 
             carDtoConverter(fetchedCar, dto);
 
             return dto;
         } else {
-            throw new RecordNotFoundException("We hebben geen auto met kenteken: " + licensePlate + " in onze database");
+            throw new RecordNotFoundException("We hebben geen auto met kenteken: " + licensePlate + " in onze database.");
         }
-
     }
 
+
+    ///// For adding a car to the database /////
+    public CarDto createCar(CarInputDto car) {
+        Car newCar = new Car();
+        CarDto returnCar = new CarDto();
+
+        carInputDtoConverter(newCar, car);
+
+        if (carRepository.findByLicensePlateIgnoreCase(newCar.getLicensePlate()).isPresent()) {
+            throw new AlreadyExistsException("We hebben al een auto met kenteken: " + newCar.getLicensePlate() + " in onze database.");
+        } else {
+            carRepository.save(newCar);
+
+            Car fetchedCar = carRepository.findByLicensePlateIgnoreCase(newCar.getLicensePlate()).get();
+            carDtoConverter(fetchedCar, returnCar);
+
+            return returnCar;
+        }
+    }
+
+
+
+    private void carInputDtoConverter(Car car, CarInputDto dto) {
+        car.setLicensePlate(dto.licensePlate.toUpperCase());
+        car.setBrand(dto.brand);
+        car.setModel(dto.model);
+        car.setVinNumber(dto.vinNumber.toUpperCase());
+        car.setColor(dto.color);
+        car.setEngine(dto.engine);
+        car.setWinterTyres(dto.winterTyres);
+    }
 
 
     private void carDtoConverter(Car car, CarDto dto) {
