@@ -2,11 +2,10 @@ package com.novi.carcompany.controllers;
 
 
 import com.novi.carcompany.dtos.CarDto;
+import com.novi.carcompany.repositories.CarRepository;
 import com.novi.carcompany.services.CarService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +24,12 @@ public class CarController {
     public ResponseEntity<List<CarDto>> getCars() {
         return ResponseEntity.ok(carService.getCars());
     }
+
+    @GetMapping(value = "/{licensePlate}")
+    public ResponseEntity<CarDto> getCar(@PathVariable String licensePlate) {
+        return ResponseEntity.ok(carService.getCar(licensePlate));
+    }
+
 
 
 }

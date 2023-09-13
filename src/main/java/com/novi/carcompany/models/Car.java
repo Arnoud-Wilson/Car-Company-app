@@ -9,7 +9,7 @@ public class Car {
 
     @Id
     @Column(name = "licensePlate", nullable = false)
-    private String licencePlate;
+    private String licensePlate;
     @Column(name = "brand", nullable = false)
     private String brand;
     @Column(name = "model", nullable = false)
@@ -28,8 +28,8 @@ public class Car {
     public Car() {
     }
 
-    public Car(String licencePlate, String brand, String model, String vinNumber, String color, String engine) {
-        this.licencePlate = licencePlate;
+    public Car(String licensePlate, String brand, String model, String vinNumber, String color, String engine) {
+        this.licensePlate = licensePlate;
         this.brand = brand;
         this.model = model;
         this.vinNumber = vinNumber;
@@ -37,8 +37,8 @@ public class Car {
         this.engine = engine;
     }
 
-    public Car(String licencePlate, String brand, String model, String vinNumber, String color, String engine, Boolean winterTyres) {
-        this.licencePlate = licencePlate;
+    public Car(String licensePlate, String brand, String model, String vinNumber, String color, String engine, Boolean winterTyres) {
+        this.licensePlate = licensePlate;
         this.brand = brand;
         this.model = model;
         this.vinNumber = vinNumber;
@@ -48,12 +48,12 @@ public class Car {
     }
 
 
-    public String getLicencePlate() {
-        return this.licencePlate;
+    public String getLicensePlate() {
+        return this.licensePlate;
     }
 
-    public void setLicencePlate(String licencePlate) {
-        this.licencePlate = licencePlate;
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 
     public String getBrand() {
