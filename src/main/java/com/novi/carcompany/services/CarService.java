@@ -4,6 +4,7 @@ package com.novi.carcompany.services;
 import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.CarInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
+import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.repositories.CarRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -76,6 +78,49 @@ public class CarService {
             carDtoConverter(fetchedCar, returnCar);
 
             return returnCar;
+        }
+    }
+
+
+    ///// For changing a car in the database /////
+    public CarDto changeCar(String licensePlate, CarDto car) {
+        Optional<Car> fetchedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate);
+        CarDto returnCar = new CarDto();
+
+        if (fetchedCar.isPresent()) {
+            Car car1 = fetchedCar.get();
+            if (licensePlate.equalsIgnoreCase(car.licensePlate) || car.licensePlate == null) {
+                if (car.brand != null) {
+                    car1.setBrand(car.brand);
+                }
+                if (car.model != null) {
+                    car1.setModel(car.model);
+                }
+                if (car.vinNumber != null) {
+                    car1.setVinNumber(car.vinNumber.toUpperCase());
+                }
+                if (car.color != null) {
+                    car1.setColor(car.color);
+                }
+                if (car.engine != null) {
+                    car1.setEngine(car.engine);
+                }
+                if (car.winterTyres != null) {
+                    car1.setWinterTyres(car.winterTyres);
+                }
+
+                carRepository.save(car1);
+
+                Car changedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate).get();
+                carDtoConverter(changedCar, returnCar);
+
+                return returnCar;
+
+            } else {
+                throw new IllegalChangeException("Het is niet mogelijk om het kenteken aan te passen.");
+            }
+        } else {
+            throw new RecordNotFoundException("We hebben geen auto met kenteken: " + licensePlate.toUpperCase() + " in onze database.");
         }
     }
 

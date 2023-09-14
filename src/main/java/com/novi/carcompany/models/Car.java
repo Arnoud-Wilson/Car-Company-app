@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class Car {
 
     @Id
-    @Column(name = "licensePlate", nullable = false)
+    @Column(name = "licensePlate", nullable = false, updatable = false)
     private String licensePlate;
     @Column(name = "brand", nullable = false)
     private String brand;

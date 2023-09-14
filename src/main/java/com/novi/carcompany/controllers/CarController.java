@@ -3,7 +3,6 @@ package com.novi.carcompany.controllers;
 
 import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.CarInputDto;
-import com.novi.carcompany.repositories.CarRepository;
 import com.novi.carcompany.services.CarService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +35,8 @@ public class CarController {
         return ResponseEntity.ok(carService.getCar(licensePlate));
     }
 
+    //TODO: make search by brand or model?
+
     @PostMapping
     public ResponseEntity<Object> createCar(@Valid @RequestBody CarInputDto car, BindingResult bindingResult) {
 
@@ -53,6 +54,15 @@ public class CarController {
 
             return ResponseEntity.created(uri).body(carService.createCar(car));
         }
+    }
+
+
+    @PutMapping("/{licensePlate}")
+    public ResponseEntity<CarDto> changeCar(@PathVariable String licensePlate, @RequestBody CarDto car) {
+
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+
+        return ResponseEntity.created(uri).body(carService.changeCar(licensePlate, car));
     }
 
 
