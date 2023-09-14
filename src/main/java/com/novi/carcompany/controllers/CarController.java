@@ -3,9 +3,11 @@ package com.novi.carcompany.controllers;
 
 import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.CarInputDto;
+import com.novi.carcompany.models.Car;
 import com.novi.carcompany.services.CarService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +37,15 @@ public class CarController {
         return ResponseEntity.ok(carService.getCar(licensePlate));
     }
 
-    //TODO: make search by brand or model?
+    @GetMapping("/findVin")
+    public ResponseEntity<List<CarDto>> findCarByVinNumber(@RequestParam String vinNumber) {
+        return ResponseEntity.ok().body(carService.findCarByVinNumber(vinNumber));
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<List<CarDto>> searchCar(@RequestParam(required = false) String brand, @RequestParam(required = false) String model) {
+        return ResponseEntity.ok().body(carService.findCar(brand, model));
+    }
 
     @PostMapping
     public ResponseEntity<Object> createCar(@Valid @RequestBody CarInputDto car, BindingResult bindingResult) {
@@ -71,10 +81,6 @@ public class CarController {
 
         return ResponseEntity.ok(carService.deleteCar(licensePlate));
     }
-
-
-
-
 }
 
 

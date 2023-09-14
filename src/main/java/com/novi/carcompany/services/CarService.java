@@ -8,7 +8,6 @@ import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.repositories.CarRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 
@@ -59,6 +58,45 @@ public class CarService {
             return dto;
         } else {
             throw new RecordNotFoundException("We hebben geen auto met kenteken: " + licensePlate + " in onze database.");
+        }
+    }
+
+
+    ///// For fetching car by vin number from database /////
+    public List<CarDto> findCarByVinNumber(String vinNumber) {
+        if (carRepository.existsCarsByVinNumberEqualsIgnoreCase(vinNumber)) {
+            List<Car> vinNumberList = carRepository.findCarsByVinNumberIgnoreCase(vinNumber).get();
+            List<CarDto> vinDtoList = new ArrayList<>();
+
+            for (Car car : vinNumberList) {
+                CarDto carDto = new CarDto();
+
+                carDtoConverter(car, carDto);
+                vinDtoList.add(carDto);
+            }
+            return vinDtoList;
+        } else {
+            throw new RecordNotFoundException("We hebben geen auto met dit chassis nummer: " + vinNumber + " in onze database.");
+        }
+    }
+
+
+    /// For fetching cars by brand or brand and model from database /////
+    public List<CarDto> findCar(String brand, String model) {
+        List<CarDto> carDtoList = new ArrayList<>();
+        List<Car> fetchedList = carRepository.findCarsByBrandContainingIgnoreCaseAndModelContainingIgnoreCase(brand, model).get();
+
+        if (!fetchedList.isEmpty()) {
+
+            for (Car car : fetchedList) {
+                CarDto carDto = new CarDto();
+
+                carDtoConverter(car, carDto);
+                carDtoList.add(carDto);
+            }
+            return carDtoList;
+        } else {
+            throw new RecordNotFoundException("We hebben geen auto's gevonden in onze database.");
         }
     }
 
@@ -139,8 +177,8 @@ public class CarService {
     }
 
 
-
-
+//TODO: put converters in separate class?
+///// Dto converter methods /////
     private void carInputDtoConverter(Car car, CarInputDto dto) {
         car.setLicensePlate(dto.licensePlate.toUpperCase());
         car.setBrand(dto.brand);
@@ -150,7 +188,6 @@ public class CarService {
         car.setEngine(dto.engine);
         car.setWinterTyres(dto.winterTyres);
     }
-
 
     private void carDtoConverter(Car car, CarDto dto) {
         dto.licensePlate = car.getLicensePlate();
