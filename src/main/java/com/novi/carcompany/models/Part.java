@@ -19,7 +19,7 @@ public class Part {
     private String location;
     @Column(name = "stock", nullable = false)
     private int stock;
-    @Column(name = "purchasePrice", nullable = false)
+    @Column(name = "purchasePrice", nullable = false, updatable = false)
     private Double purchasePrice;
     @Column(name = "sellingPrice")
     private Double sellingPrice;
