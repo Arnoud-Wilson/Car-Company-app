@@ -6,6 +6,7 @@ import com.novi.carcompany.dtos.CarInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
+import com.novi.carcompany.helpers.CarDtoConverters;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.repositories.CarRepository;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class CarService {
         for (Car car : fetchedCars) {
             CarDto dto = new CarDto();
 
-            carDtoConverter(car, dto);
+            CarDtoConverters.carDtoConverter(car, dto);
 
             carDto.add(dto);
         }
@@ -53,7 +54,7 @@ public class CarService {
             CarDto dto = new CarDto();
             Car fetchedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate).get();
 
-            carDtoConverter(fetchedCar, dto);
+            CarDtoConverters.carDtoConverter(fetchedCar, dto);
 
             return dto;
         } else {
@@ -71,7 +72,7 @@ public class CarService {
             for (Car car : vinNumberList) {
                 CarDto carDto = new CarDto();
 
-                carDtoConverter(car, carDto);
+                CarDtoConverters.carDtoConverter(car, carDto);
                 vinDtoList.add(carDto);
             }
             return vinDtoList;
@@ -91,7 +92,7 @@ public class CarService {
             for (Car car : fetchedList) {
                 CarDto carDto = new CarDto();
 
-                carDtoConverter(car, carDto);
+                CarDtoConverters.carDtoConverter(car, carDto);
                 carDtoList.add(carDto);
             }
             return carDtoList;
@@ -106,7 +107,7 @@ public class CarService {
         Car newCar = new Car();
         CarDto returnCar = new CarDto();
 
-        carInputDtoConverter(newCar, car);
+        CarDtoConverters.carInputDtoConverter(newCar, car);
 
         if (carRepository.existsByLicensePlateIgnoreCase(newCar.getLicensePlate())) {
             throw new AlreadyExistsException("We hebben al een auto met kenteken: " + newCar.getLicensePlate() + " in onze database.");
@@ -114,7 +115,7 @@ public class CarService {
             carRepository.save(newCar);
 
             Car fetchedCar = carRepository.findByLicensePlateIgnoreCase(newCar.getLicensePlate()).get();
-            carDtoConverter(fetchedCar, returnCar);
+            CarDtoConverters.carDtoConverter(fetchedCar, returnCar);
 
             return returnCar;
         }
@@ -151,7 +152,7 @@ public class CarService {
                 carRepository.save(car1);
 
                 Car changedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate).get();
-                carDtoConverter(changedCar, returnCar);
+                CarDtoConverters.carDtoConverter(changedCar, returnCar);
 
                 return returnCar;
 
@@ -174,28 +175,5 @@ public class CarService {
         } else {
             throw new RecordNotFoundException("We hebben geen auto met kenteken: " + licensePlate.toUpperCase() + " in onze database.");
         }
-    }
-
-
-//TODO: put converters in separate class?
-///// Dto converter methods /////
-    private void carInputDtoConverter(Car car, CarInputDto dto) {
-        car.setLicensePlate(dto.licensePlate.toUpperCase());
-        car.setBrand(dto.brand);
-        car.setModel(dto.model);
-        car.setVinNumber(dto.vinNumber.toUpperCase());
-        car.setColor(dto.color);
-        car.setEngine(dto.engine);
-        car.setWinterTyres(dto.winterTyres);
-    }
-
-    private void carDtoConverter(Car car, CarDto dto) {
-        dto.licensePlate = car.getLicensePlate();
-        dto.brand = car.getBrand();
-        dto.model = car.getModel();
-        dto.vinNumber = car.getVinNumber();
-        dto.color = car.getColor();
-        dto.engine = car.getEngine();
-        dto.winterTyres = car.getWinterTyres();
     }
 }

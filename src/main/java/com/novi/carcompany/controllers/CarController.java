@@ -3,11 +3,9 @@ package com.novi.carcompany.controllers;
 
 import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.CarInputDto;
-import com.novi.carcompany.models.Car;
 import com.novi.carcompany.services.CarService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
