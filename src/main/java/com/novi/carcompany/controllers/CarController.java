@@ -66,6 +66,13 @@ public class CarController {
     }
 
 
+    @DeleteMapping("/{licensePlate}")
+    public ResponseEntity<String> deleteCar(@PathVariable String licensePlate) {
+
+        return ResponseEntity.ok(carService.deleteCar(licensePlate));
+    }
+
+
 
 
 }

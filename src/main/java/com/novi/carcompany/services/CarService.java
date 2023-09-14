@@ -8,6 +8,7 @@ import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.repositories.CarRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 
@@ -49,7 +50,7 @@ public class CarService {
     ///// For fetching one car by licence plate from database /////
     public CarDto getCar(String licensePlate) {
 
-        if (carRepository.findByLicensePlateIgnoreCase(licensePlate).isPresent()) {
+        if (carRepository.existsByLicensePlateIgnoreCase(licensePlate)) {
             CarDto dto = new CarDto();
             Car fetchedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate).get();
 
@@ -69,7 +70,7 @@ public class CarService {
 
         carInputDtoConverter(newCar, car);
 
-        if (carRepository.findByLicensePlateIgnoreCase(newCar.getLicensePlate()).isPresent()) {
+        if (carRepository.existsByLicensePlateIgnoreCase(newCar.getLicensePlate())) {
             throw new AlreadyExistsException("We hebben al een auto met kenteken: " + newCar.getLicensePlate() + " in onze database.");
         } else {
             carRepository.save(newCar);
@@ -123,6 +124,20 @@ public class CarService {
             throw new RecordNotFoundException("We hebben geen auto met kenteken: " + licensePlate.toUpperCase() + " in onze database.");
         }
     }
+
+
+    ///// For deleting a car from the database /////
+    public String deleteCar(String licensePlate) {
+        if (carRepository.existsByLicensePlateIgnoreCase(licensePlate)) {
+
+            carRepository.deleteCarByLicensePlateIgnoreCase(licensePlate);
+
+            return "We hebben de auto met kenteken: " + licensePlate.toUpperCase() + " succesvol verwijderd.";
+        } else {
+            throw new RecordNotFoundException("We hebben geen auto met kenteken: " + licensePlate.toUpperCase() + " in onze database.");
+        }
+    }
+
 
 
 
