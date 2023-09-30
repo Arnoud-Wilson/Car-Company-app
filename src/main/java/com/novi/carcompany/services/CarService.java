@@ -83,13 +83,14 @@ public class CarService {
 
 
     /// For fetching cars by brand or brand and model from database /////
-    public List<CarDto> findCar(String brand, String model) {
+    public List<CarDto> findCar(String brand, Optional<String> model) {
         List<CarDto> carDtoList = new ArrayList<>();
-        List<Car> fetchedList = carRepository.findCarsByBrandContainingIgnoreCaseAndModelContainingIgnoreCase(brand, model).get();
+        Optional<List<Car>> fetchedList = carRepository.findCarsByBrandContainingIgnoreCaseAndModelContainingIgnoreCase(brand, model);
 
         if (!fetchedList.isEmpty()) {
+            List<Car> carList = fetchedList.get();
 
-            for (Car car : fetchedList) {
+            for (Car car : carList) {
                 CarDto carDto = new CarDto();
 
                 DtoConverters.carDtoConverter(car, carDto);
