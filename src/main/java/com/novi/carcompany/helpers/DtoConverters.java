@@ -4,7 +4,7 @@ import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.CarInputDto;
 import com.novi.carcompany.models.Car;
 
-public class CarDtoConverters {
+public class DtoConverters {
 
     public static void carInputDtoConverter(Car car, CarInputDto dto) {
         car.setLicensePlate(dto.licensePlate.toUpperCase());
