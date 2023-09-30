@@ -28,6 +28,7 @@ public class PartService {
         List<Part> fetchedParts = new ArrayList<>(partRepository.findAll());
         List<PartDto> partDto = new ArrayList<>();
 
+        //TODO: make isEmpty first? also for cars?
         for (Part part : fetchedParts) {
             PartDto dto = new PartDto();
 
@@ -39,6 +40,21 @@ public class PartService {
             throw new RecordNotFoundException("We hebben helaas geen onderdelen in onze database gevonden.");
         } else {
             return partDto;
+        }
+    }
+
+    ///// For fetching part by part number from database. /////
+    public PartDto getPart(String partNumber) {
+
+        if (partRepository.existsByPartNumberIgnoreCase(partNumber)) {
+            PartDto dto = new PartDto();
+            Part fetchedPart = partRepository.findByPartNumberIgnoreCase(partNumber).get();
+
+            DtoConverters.partDtoConverter(fetchedPart, dto);
+
+            return dto;
+        } else {
+            throw new RecordNotFoundException("We hebben geen onderdeel met nummer: " + partNumber + " in onze database.");
         }
     }
 
