@@ -42,6 +42,10 @@ public class Part {
         return this.partNumber;
     }
 
+    public void setPartNumber(String partNumber) {
+        this.partNumber = partNumber;
+    }
+
     public String getName() {
         return this.name;
     }
