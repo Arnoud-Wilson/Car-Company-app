@@ -25,21 +25,22 @@ public class PartService {
 
     ///// For fetching all parts in the database. /////
     public List<PartDto> getParts(){
-        List<Part> fetchedParts = new ArrayList<>(partRepository.findAll());
+        Optional<List<Part>> fetchedParts = Optional.of(partRepository.findAll());
         List<PartDto> partDto = new ArrayList<>();
 
-        //TODO: make isEmpty first? also for cars?
-        for (Part part : fetchedParts) {
-            PartDto dto = new PartDto();
+        if (!fetchedParts.get().isEmpty()) {
+            List<Part> partList = fetchedParts.get();
 
-            DtoConverters.partDtoConverter(part, dto);
+            for (Part part : partList) {
+                PartDto dto = new PartDto();
 
-            partDto.add(dto);
-        }
-        if (partDto.isEmpty()) {
-            throw new RecordNotFoundException("We hebben helaas geen onderdelen in onze database gevonden.");
+                DtoConverters.partDtoConverter(part, dto);
+
+                partDto.add(dto);
+            }
+                return partDto;
         } else {
-            return partDto;
+            throw new RecordNotFoundException("We hebben helaas geen onderdelen in onze database gevonden.");
         }
     }
 

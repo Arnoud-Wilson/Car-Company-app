@@ -29,20 +29,22 @@ public class CarService {
 
     ///// For fetching all cars currently in the database /////
     public List<CarDto> getCars() {
-        List<Car> fetchedCars = new ArrayList<>(carRepository.findAll());
+        Optional<List<Car>> fetchedCars = Optional.of(carRepository.findAll());
         List<CarDto> carDto = new ArrayList<>();
 
-        for (Car car : fetchedCars) {
-            CarDto dto = new CarDto();
+        if (!fetchedCars.get().isEmpty()) {
+            List<Car> carList = fetchedCars.get();
 
-            DtoConverters.carDtoConverter(car, dto);
+            for (Car car : carList) {
+                CarDto dto = new CarDto();
 
-            carDto.add(dto);
-        }
-        if (carDto.isEmpty()) {
-            throw new RecordNotFoundException("We hebben helaas geen auto's in onze database gevonden.");
-        } else {
+                DtoConverters.carDtoConverter(car, dto);
+
+                carDto.add(dto);
+            }
             return carDto;
+        } else {
+            throw new RecordNotFoundException("We hebben helaas geen auto's in onze database gevonden.");
         }
     }
 
