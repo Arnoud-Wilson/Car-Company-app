@@ -29,13 +29,12 @@ public class CarService {
 
     ///// For fetching all cars currently in the database /////
     public List<CarDto> getCars() {
-        Optional<List<Car>> fetchedCars = Optional.of(carRepository.findAll());
+        List<Car> fetchedCars = carRepository.findAll();
         List<CarDto> carDto = new ArrayList<>();
 
-        if (!fetchedCars.get().isEmpty()) {
-            List<Car> carList = fetchedCars.get();
+        if (!fetchedCars.isEmpty()) {
 
-            for (Car car : carList) {
+            for (Car car : fetchedCars) {
                 CarDto dto = new CarDto();
 
                 DtoConverters.carDtoConverter(car, dto);
@@ -68,7 +67,7 @@ public class CarService {
     ///// For fetching car by vin number from database /////
     public List<CarDto> findCarByVinNumber(String vinNumber) {
         if (carRepository.existsCarsByVinNumberEqualsIgnoreCase(vinNumber)) {
-            List<Car> vinNumberList = carRepository.findCarsByVinNumberIgnoreCase(vinNumber).get();
+            List<Car> vinNumberList = carRepository.findCarsByVinNumberIgnoreCase(vinNumber);
             List<CarDto> vinDtoList = new ArrayList<>();
 
             for (Car car : vinNumberList) {
@@ -87,12 +86,11 @@ public class CarService {
     /// For fetching cars by brand or brand and model from database /////
     public List<CarDto> findCar(String brand, Optional<String> model) {
         List<CarDto> carDtoList = new ArrayList<>();
-        Optional<List<Car>> fetchedList = carRepository.findCarsByBrandContainingIgnoreCaseAndModelContainingIgnoreCase(brand, model);
+        List<Car> fetchedList = carRepository.findCarsByBrandContainingIgnoreCaseAndModelContainingIgnoreCase(brand, model);
 
         if (!fetchedList.isEmpty()) {
-            List<Car> carList = fetchedList.get();
 
-            for (Car car : carList) {
+            for (Car car : fetchedList) {
                 CarDto carDto = new CarDto();
 
                 DtoConverters.carDtoConverter(car, carDto);

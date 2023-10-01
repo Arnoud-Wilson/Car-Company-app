@@ -25,13 +25,12 @@ public class PartService {
 
     ///// For fetching all parts in the database. /////
     public List<PartDto> getParts(){
-        Optional<List<Part>> fetchedParts = Optional.of(partRepository.findAll());
+        List<Part> fetchedParts = partRepository.findAll();
         List<PartDto> partDto = new ArrayList<>();
 
-        if (!fetchedParts.get().isEmpty()) {
-            List<Part> partList = fetchedParts.get();
+        if (!fetchedParts.isEmpty()) {
 
-            for (Part part : partList) {
+            for (Part part : fetchedParts) {
                 PartDto dto = new PartDto();
 
                 DtoConverters.partDtoConverter(part, dto);
@@ -58,6 +57,31 @@ public class PartService {
             throw new RecordNotFoundException("We hebben geen onderdeel met nummer: " + partNumber + " in onze database.");
         }
     }
+
+    /// For fetching parts by name from the database. /////
+    public List<PartDto> getPartsByName(String name) {
+        List<Part> fetchedParts = partRepository.findByNameContainsIgnoreCase(name);
+        List<PartDto> dtoList = new ArrayList<>();
+
+        if (!fetchedParts.isEmpty()) {
+
+            for (Part part : fetchedParts) {
+                PartDto dto = new PartDto();
+
+                DtoConverters.partDtoConverter(part, dto);
+
+                dtoList.add(dto);
+            }
+            return dtoList;
+        } else {
+            throw new RecordNotFoundException("We hebben geen onderdeel met naam: " + name + " gevonden in onze database.");
+        }
+    }
+
+
+
+
+    ///// For fetching all parts currently in stock from the database. /////
 
 
 

@@ -3,10 +3,7 @@ package com.novi.carcompany.controllers;
 import com.novi.carcompany.dtos.PartDto;
 import com.novi.carcompany.services.PartService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +27,11 @@ public class PartController {
     @GetMapping("/{partNumber}")
     public ResponseEntity<PartDto> getPart(@PathVariable String partNumber) {
         return ResponseEntity.ok(partService.getPart(partNumber));
+    }
+
+    @GetMapping("/findName")
+    public ResponseEntity<List<PartDto>> getPartsByName(@RequestParam String name) {
+        return ResponseEntity.ok(partService.getPartsByName(name));
     }
 
 
