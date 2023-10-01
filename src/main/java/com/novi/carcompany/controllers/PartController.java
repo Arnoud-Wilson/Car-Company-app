@@ -1,10 +1,17 @@
 package com.novi.carcompany.controllers;
 
+import com.novi.carcompany.dtos.PartChangeInputDto;
 import com.novi.carcompany.dtos.PartDto;
+import com.novi.carcompany.dtos.PartInputDto;
 import com.novi.carcompany.services.PartService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -39,6 +46,36 @@ public class PartController {
         return ResponseEntity.ok(partService.getPartsOnStock());
     }
 
+    @PostMapping
+    public ResponseEntity<Object> createPart(@Valid @RequestBody PartInputDto part, BindingResult bindingResult) {
 
+        if (bindingResult.hasFieldErrors()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                stringBuilder.append(fieldError.getField());
+                stringBuilder.append(": ");
+                stringBuilder.append(fieldError.getDefaultMessage());
+                stringBuilder.append("\n");
+            }
+            return ResponseEntity.badRequest().body(stringBuilder);
+        } else {
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + part.partNumber.toUpperCase()).toUriString());
 
+            return ResponseEntity.created(uri).body(partService.createPart(part));
+        }
+    }
+
+    @PutMapping("/{partNumber}")
+    public ResponseEntity<PartDto> changePart(@PathVariable String partNumber, @RequestBody PartChangeInputDto part) {
+
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+
+        return ResponseEntity.created(uri).body(partService.changePart(partNumber, part));
+    }
+
+    @DeleteMapping("/{partNumber}")
+    public ResponseEntity<String> deletePart(@PathVariable String partNumber) {
+
+        return ResponseEntity.ok(partService.deletePart(partNumber));
+    }
 }

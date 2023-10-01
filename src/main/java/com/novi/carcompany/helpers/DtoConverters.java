@@ -1,9 +1,6 @@
 package com.novi.carcompany.helpers;
 
-import com.novi.carcompany.dtos.CarDto;
-import com.novi.carcompany.dtos.CarInputDto;
-import com.novi.carcompany.dtos.PartDto;
-import com.novi.carcompany.dtos.PartInputDto;
+import com.novi.carcompany.dtos.*;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.models.Part;
 
@@ -34,6 +31,7 @@ public class DtoConverters {
         part.setName(dto.name);
         part.setDescription(dto.description);
         part.setLocation(dto.location);
+        part.setStock(dto.stock);
         part.setPurchasePrice(dto.purchasePrice);
         part.setSellingPrice(dto.sellingPrice);
     }
@@ -46,5 +44,14 @@ public class DtoConverters {
         dto.stock = part.getStock();
         dto.purchasePrice = part.getPurchasePrice();
         dto.sellingPrice = part.getSellingPrice();
+    }
+
+    public static void partChangeInputDtoConverter(Part part, PartChangeInputDto dto) {
+        part.setPartNumber(dto.partNumber.toUpperCase());
+        part.setName(dto.name);
+        part.setDescription(dto.description);
+        part.setLocation(dto.location);
+        part.setPurchasePrice(dto.purchasePrice);
+        part.setSellingPrice(dto.sellingPrice);
     }
 }
