@@ -34,6 +34,11 @@ public class PartController {
         return ResponseEntity.ok(partService.getPartsByName(name));
     }
 
+    @GetMapping("/onStock")
+    public ResponseEntity<List<PartDto>> getPartsOnStock() {
+        return ResponseEntity.ok(partService.getPartsOnStock());
+    }
+
 
 
 }

@@ -1,17 +1,15 @@
 package com.novi.carcompany.services;
 
-import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.PartDto;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
-import com.novi.carcompany.models.Car;
 import com.novi.carcompany.models.Part;
 import com.novi.carcompany.repositories.PartRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class PartService {
@@ -78,10 +76,29 @@ public class PartService {
         }
     }
 
-
-
-
     ///// For fetching all parts currently in stock from the database. /////
+    public List<PartDto> getPartsOnStock() {
+        List<Part> fetchedParts = partRepository.findAll();
+        List<PartDto> dtoList = new ArrayList<>();
+
+        if (!fetchedParts.isEmpty()) {
+            for (Part part : fetchedParts) {
+                if (part.getStock() >= 1) {
+                    PartDto dto = new PartDto();
+
+                    DtoConverters.partDtoConverter(part, dto);
+
+                    dtoList.add(dto);
+                }
+            } if (dtoList.isEmpty()) {
+                throw new RecordNotFoundException("We hebben geen onderdelen op voorraad.");
+            } else {
+                return dtoList;
+            }
+        } else {
+            throw new RecordNotFoundException("We hebben geen onderdelen in onze database.");
+        }
+    }
 
 
 
