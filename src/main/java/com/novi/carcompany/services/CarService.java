@@ -6,7 +6,7 @@ import com.novi.carcompany.dtos.CarInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
-import com.novi.carcompany.helpers.CarDtoConverters;
+import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.repositories.CarRepository;
 import org.springframework.stereotype.Service;
@@ -27,34 +27,35 @@ public class CarService {
     }
 
 
-    ///// For fetching all cars currently in the database /////
+    ///// For fetching all cars currently in the database. /////
     public List<CarDto> getCars() {
-        List<Car> fetchedCars = new ArrayList<>(carRepository.findAll());
+        List<Car> fetchedCars = carRepository.findAll();
         List<CarDto> carDto = new ArrayList<>();
 
-        for (Car car : fetchedCars) {
-            CarDto dto = new CarDto();
+        if (!fetchedCars.isEmpty()) {
 
-            CarDtoConverters.carDtoConverter(car, dto);
+            for (Car car : fetchedCars) {
+                CarDto dto = new CarDto();
 
-            carDto.add(dto);
-        }
-        if (carDto.isEmpty()) {
-            throw new RecordNotFoundException("We hebben helaas geen auto's in onze database gevonden.");
-        } else {
+                DtoConverters.carDtoConverter(car, dto);
+
+                carDto.add(dto);
+            }
             return carDto;
+        } else {
+            throw new RecordNotFoundException("We hebben helaas geen auto's in onze database gevonden.");
         }
     }
 
 
-    ///// For fetching one car by licence plate from database /////
+    ///// For fetching one car by licence plate from database. /////
     public CarDto getCar(String licensePlate) {
 
         if (carRepository.existsByLicensePlateIgnoreCase(licensePlate)) {
             CarDto dto = new CarDto();
             Car fetchedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate).get();
 
-            CarDtoConverters.carDtoConverter(fetchedCar, dto);
+            DtoConverters.carDtoConverter(fetchedCar, dto);
 
             return dto;
         } else {
@@ -63,16 +64,16 @@ public class CarService {
     }
 
 
-    ///// For fetching car by vin number from database /////
+    ///// For fetching car by vin number from database. /////
     public List<CarDto> findCarByVinNumber(String vinNumber) {
         if (carRepository.existsCarsByVinNumberEqualsIgnoreCase(vinNumber)) {
-            List<Car> vinNumberList = carRepository.findCarsByVinNumberIgnoreCase(vinNumber).get();
+            List<Car> vinNumberList = carRepository.findCarsByVinNumberIgnoreCase(vinNumber);
             List<CarDto> vinDtoList = new ArrayList<>();
 
             for (Car car : vinNumberList) {
                 CarDto carDto = new CarDto();
 
-                CarDtoConverters.carDtoConverter(car, carDto);
+                DtoConverters.carDtoConverter(car, carDto);
                 vinDtoList.add(carDto);
             }
             return vinDtoList;
@@ -82,17 +83,17 @@ public class CarService {
     }
 
 
-    /// For fetching cars by brand or brand and model from database /////
-    public List<CarDto> findCar(String brand, String model) {
+    /// For fetching cars by brand or brand and model from database. /////
+    public List<CarDto> findCar(String brand, Optional<String> model) {
         List<CarDto> carDtoList = new ArrayList<>();
-        List<Car> fetchedList = carRepository.findCarsByBrandContainingIgnoreCaseAndModelContainingIgnoreCase(brand, model).get();
+        List<Car> fetchedList = carRepository.findCarsByBrandContainingIgnoreCaseAndModelContainingIgnoreCase(brand, model);
 
         if (!fetchedList.isEmpty()) {
 
             for (Car car : fetchedList) {
                 CarDto carDto = new CarDto();
 
-                CarDtoConverters.carDtoConverter(car, carDto);
+                DtoConverters.carDtoConverter(car, carDto);
                 carDtoList.add(carDto);
             }
             return carDtoList;
@@ -102,12 +103,12 @@ public class CarService {
     }
 
 
-    ///// For adding a car to the database /////
+    ///// For adding a car to the database. /////
     public CarDto createCar(CarInputDto car) {
         Car newCar = new Car();
         CarDto returnCar = new CarDto();
 
-        CarDtoConverters.carInputDtoConverter(newCar, car);
+        DtoConverters.carInputDtoConverter(newCar, car);
 
         if (carRepository.existsByLicensePlateIgnoreCase(newCar.getLicensePlate())) {
             throw new AlreadyExistsException("We hebben al een auto met kenteken: " + newCar.getLicensePlate() + " in onze database.");
@@ -115,14 +116,14 @@ public class CarService {
             carRepository.save(newCar);
 
             Car fetchedCar = carRepository.findByLicensePlateIgnoreCase(newCar.getLicensePlate()).get();
-            CarDtoConverters.carDtoConverter(fetchedCar, returnCar);
+            DtoConverters.carDtoConverter(fetchedCar, returnCar);
 
             return returnCar;
         }
     }
 
 
-    ///// For changing a car in the database /////
+    ///// For changing a car in the database. /////
     public CarDto changeCar(String licensePlate, CarDto car) {
         Optional<Car> fetchedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate);
         CarDto returnCar = new CarDto();
@@ -152,7 +153,7 @@ public class CarService {
                 carRepository.save(car1);
 
                 Car changedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate).get();
-                CarDtoConverters.carDtoConverter(changedCar, returnCar);
+                DtoConverters.carDtoConverter(changedCar, returnCar);
 
                 return returnCar;
 
@@ -165,7 +166,7 @@ public class CarService {
     }
 
 
-    ///// For deleting a car from the database /////
+    ///// For deleting a car from the database. /////
     public String deleteCar(String licensePlate) {
         if (carRepository.existsByLicensePlateIgnoreCase(licensePlate)) {
 

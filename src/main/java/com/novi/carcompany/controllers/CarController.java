@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cars")
@@ -41,8 +42,9 @@ public class CarController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<List<CarDto>> searchCar(@RequestParam(required = false) String brand, @RequestParam(required = false) String model) {
+    public ResponseEntity<List<CarDto>> searchCar(@RequestParam(required = false) String brand, @RequestParam(required = false) Optional<String> model) {
         return ResponseEntity.ok().body(carService.findCar(brand, model));
+        //TODO: only working with both params..
     }
 
     @PostMapping

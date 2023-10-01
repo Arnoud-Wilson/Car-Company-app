@@ -8,9 +8,8 @@ import jakarta.persistence.*;
 public class Part {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
-    private Long id;
+    @Column(name = "partNumber", nullable = false, updatable = false)
+    private String partNumber;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "description")
@@ -19,7 +18,7 @@ public class Part {
     private String location;
     @Column(name = "stock", nullable = false)
     private int stock;
-    @Column(name = "purchasePrice", nullable = false)
+    @Column(name = "purchasePrice", nullable = false, updatable = false)
     private Double purchasePrice;
     @Column(name = "sellingPrice")
     private Double sellingPrice;
@@ -28,7 +27,8 @@ public class Part {
     public Part() {
     }
 
-    public Part(String name, String description, String location, int stock, Double purchasePrice, Double sellingPrice) {
+    public Part(String partNumber, String name, String description, String location, int stock, Double purchasePrice, Double sellingPrice) {
+        this.partNumber = partNumber;
         this.name = name;
         this.description = description;
         this.location = location;
@@ -38,8 +38,12 @@ public class Part {
     }
 
 
-    public Long getId() {
-        return this.id;
+    public String getPartNumber() {
+        return this.partNumber;
+    }
+
+    public void setPartNumber(String partNumber) {
+        this.partNumber = partNumber;
     }
 
     public String getName() {
