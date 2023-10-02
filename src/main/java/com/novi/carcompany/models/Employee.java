@@ -4,7 +4,7 @@ package com.novi.carcompany.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "empoyes")
+@Table(name = "empoyees")
 public class Employee extends Person {
 
     @Id
@@ -17,7 +17,7 @@ public class Employee extends Person {
     public Employee() {
     }
 
-    public Employee(String surName, String lastName, String address, int phoneNumber, String function) {
+    public Employee(String surName, String lastName, String address, String phoneNumber, String function) {
         super(surName, lastName, address, phoneNumber);
         this.function = function;
     }

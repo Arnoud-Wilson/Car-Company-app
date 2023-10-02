@@ -22,7 +22,7 @@ public class Customer extends Person {
     public Customer() {
     }
 
-    public Customer(String surName, String lastName, String address, int phoneNumber, String bankAccount, Boolean corporate) {
+    public Customer(String surName, String lastName, String address, String phoneNumber, String bankAccount, Boolean corporate) {
         super(surName, lastName, address, phoneNumber);
         this.bankAccount = bankAccount;
         this.corporate = corporate;

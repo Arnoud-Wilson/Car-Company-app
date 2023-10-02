@@ -13,13 +13,13 @@ public abstract class Person {
     @Column(name = "address")
     private String address;
     @Column(name = "phoneNumber")
-    private int phoneNumber;
+    private String phoneNumber;
 
 
     public Person() {
     }
 
-    public Person(String surName, String lastName, String address, int phoneNumber) {
+    public Person(String surName, String lastName, String address, String phoneNumber) {
         this.surName = surName;
         this.lastName = lastName;
         this.address = address;
@@ -51,11 +51,11 @@ public abstract class Person {
         this.address = address;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 }
