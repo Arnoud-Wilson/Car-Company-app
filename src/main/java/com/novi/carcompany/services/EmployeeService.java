@@ -90,6 +90,28 @@ public class EmployeeService {
     }
 
     ///// For fetching employee by function from the database. /////
+    public List<EmployeeDto> getEmployeeByFunction(String function) {
+        List<Employee> fetchedEmployeeList = employeeRepository.findEmployeesByFunctionContainingIgnoreCase(function);
+        List<EmployeeDto> employeeDtoList = new ArrayList<>();
+
+        if (!fetchedEmployeeList.isEmpty()) {
+
+            for (Employee employee : fetchedEmployeeList) {
+                EmployeeDto dto = new EmployeeDto();
+
+                DtoConverters.employeeDtoConverter(employee, dto);
+                employeeDtoList.add(dto);
+            }
+            return employeeDtoList;
+        } else {
+            throw new RecordNotFoundException("We hebben geen werknemers met functie: " + function + " gevonden.");
+        }
+    }
+
+
+
+
+
 
     ///// For changing an employee in the database. /////
 

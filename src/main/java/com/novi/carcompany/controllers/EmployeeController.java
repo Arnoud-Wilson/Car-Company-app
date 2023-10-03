@@ -35,9 +35,14 @@ public class EmployeeController {
             return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
-    @GetMapping("/find")
+    @GetMapping("/name")
     public ResponseEntity<List<EmployeeDto>> getEmployeeByName(@RequestParam(required = false) String surname, String lastname) {
         return ResponseEntity.ok(employeeService.getEmployeeByName(surname, lastname));
+    }
+
+    @GetMapping("/function")
+    public List<EmployeeDto> getEmployeeByFunction(@RequestParam(required = false) String function) {
+        return employeeService.getEmployeeByFunction(function);
     }
 
 
