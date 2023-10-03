@@ -29,6 +29,12 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getEmployees());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Long id) {
+
+            return ResponseEntity.ok(employeeService.getEmployeeById(id));
+    }
+
     @PostMapping
     public ResponseEntity<Object> createEmployee(@Valid @RequestBody EmployeeInputDto employee, BindingResult bindingResult) {
 
@@ -48,8 +54,6 @@ public class EmployeeController {
             return ResponseEntity.created(uri).body(dto);
         }
     }
-
-
 
 
 

@@ -2,14 +2,13 @@ package com.novi.carcompany.services;
 
 import com.novi.carcompany.dtos.EmployeeDto;
 import com.novi.carcompany.dtos.EmployeeInputDto;
-import com.novi.carcompany.dtos.PartDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.Employee;
-import com.novi.carcompany.models.Part;
 import com.novi.carcompany.repositories.EmployeeRepository;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +44,21 @@ public class EmployeeService {
         }
     }
 
+    ///// For fetching employee by id from the database. /////
+    public EmployeeDto getEmployeeById(Long id) {
+        Optional<Employee> employee = employeeRepository.findById(id);
+
+
+        if (employee.isPresent()) {
+            EmployeeDto dto = new EmployeeDto();
+
+            DtoConverters.employeeDtoConverter(employee.get(), dto);
+
+            return dto;
+        } else {
+            throw new RecordNotFoundException("We hebben geen werknemer met id: " + id + " in onze database.");
+        }
+    }
 
     ///// For adding an employee in the database. /////
     public EmployeeDto createEmployee(EmployeeInputDto employee) {
