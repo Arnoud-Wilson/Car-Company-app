@@ -45,13 +45,6 @@ public class EmployeeController {
         return employeeService.getEmployeeByFunction(function);
     }
 
-
-
-
-
-
-
-
     @PostMapping
     public ResponseEntity<Object> createEmployee(@Valid @RequestBody EmployeeInputDto employee, BindingResult bindingResult) {
 
@@ -70,6 +63,12 @@ public class EmployeeController {
 
             return ResponseEntity.created(uri).body(dto);
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeDto> changeEmployee(@PathVariable Long id, @RequestBody EmployeeDto employee) {
+        // make uri path //
+        return ResponseEntity.created(null).body(employeeService.changeEmployee(id, employee));
     }
 
 

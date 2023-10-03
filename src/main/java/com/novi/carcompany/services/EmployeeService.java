@@ -108,15 +108,6 @@ public class EmployeeService {
         }
     }
 
-
-
-
-
-
-    ///// For changing an employee in the database. /////
-
-    ///// For deleting an employee from the database. /////
-
     ///// For adding an employee in the database. /////
     public EmployeeDto createEmployee(EmployeeInputDto employee) {
         Optional<Employee> existingEmployee = employeeRepository.findEmployeesBySurNameIgnoreCaseAndLastNameIgnoreCase(employee.surName, employee.lastName);
@@ -138,4 +129,53 @@ public class EmployeeService {
             return dto;
         }
     }
+
+    ///// For changing an employee in the database. /////
+    public EmployeeDto changeEmployee (Long id, EmployeeDto employee) {
+        Optional<Employee> fetchedEmployee = employeeRepository.findById(id);
+        EmployeeDto returnEmployee = new EmployeeDto();
+
+        if (fetchedEmployee.isPresent()) {
+            Employee employee1 = fetchedEmployee.get();
+
+            if (employee.surName != null) {
+                employee1.setSurName(employee.surName);
+            }
+            if (employee.lastName != null) {
+                employee1.setLastName(employee.lastName);
+            }
+            if (employee.address != null) {
+                employee1.setAddress(employee.address);
+            }
+            if (employee.phoneNumber != null) {
+                employee1.setPhoneNumber(employee.phoneNumber);
+            }
+            if (employee.function != null) {
+                employee1.setFunction(employee.function);
+            }
+            employeeRepository.save(employee1);
+             DtoConverters.employeeDtoConverter(employee1, returnEmployee);
+
+            return returnEmployee;
+
+        } else {
+            throw new RecordNotFoundException("We hebben geen werknemer met id: " + id + " gevonden.");
+        }
+    }
+
+
+
+
+
+
+
+
+
+    ///// For deleting an employee from the database. /////
+
+
+
+
+
+
 }
