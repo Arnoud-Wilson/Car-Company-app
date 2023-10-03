@@ -67,11 +67,16 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDto> changeEmployee(@PathVariable Long id, @RequestBody EmployeeDto employee) {
-        // make uri path //
-        return ResponseEntity.created(null).body(employeeService.changeEmployee(id, employee));
+
+        EmployeeDto dto = employeeService.changeEmployee(id, employee);
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+
+        return ResponseEntity.created(uri).body(dto);
     }
 
-
-
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
+        EmployeeDto dto = employeeService.deleteEmployee(id);
+        return ResponseEntity.accepted().body("We hebben werknemer " + dto.surName + " " + dto.lastName + " met id: " + dto.id + " uit de database verwijderd.");
+    }
 }

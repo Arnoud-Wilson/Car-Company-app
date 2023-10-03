@@ -163,16 +163,23 @@ public class EmployeeService {
         }
     }
 
-
-
-
-
-
-
-
-
     ///// For deleting an employee from the database. /////
+    public EmployeeDto deleteEmployee(Long id) {
+        Optional<Employee> employee = employeeRepository.findById(id);
 
+        if (employee.isPresent()) {
+             Employee employee1 = employee.get();
+             EmployeeDto dto = new EmployeeDto();
+
+             DtoConverters.employeeDtoConverter(employee1, dto);
+
+             employeeRepository.deleteById(id);
+
+             return dto;
+        } else {
+            throw new RecordNotFoundException("We hebben geen werknemer met id: " + id + " in onze database.");
+        }
+    }
 
 
 
