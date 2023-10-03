@@ -35,6 +35,18 @@ public class EmployeeController {
             return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
+    @GetMapping("/find")
+    public ResponseEntity<List<EmployeeDto>> getEmployeeByName(@RequestParam(required = false) String surname, String lastname) {
+        return ResponseEntity.ok(employeeService.getEmployeeByName(surname, lastname));
+    }
+
+
+
+
+
+
+
+
     @PostMapping
     public ResponseEntity<Object> createEmployee(@Valid @RequestBody EmployeeInputDto employee, BindingResult bindingResult) {
 

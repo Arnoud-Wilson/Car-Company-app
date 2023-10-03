@@ -60,6 +60,41 @@ public class EmployeeService {
         }
     }
 
+    ///// For fetching employee by surname and/or lastname from the database. /////
+    public List<EmployeeDto> getEmployeeByName(String surName, String lastName) {
+        List<Employee> fetchedEmployeeList = employeeRepository.findEmployeesBySurNameIgnoreCaseOrLastNameIgnoreCase(surName, lastName);
+        List<EmployeeDto> employeeList = new ArrayList<>();
+
+        if (!fetchedEmployeeList.isEmpty()) {
+            for (Employee employee : fetchedEmployeeList) {
+                EmployeeDto dto = new EmployeeDto();
+
+                DtoConverters.employeeDtoConverter(employee, dto);
+                employeeList.add(dto);
+            }
+            return employeeList;
+        } else {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            if (surName != null) {
+                stringBuilder.append(surName);
+            }
+            if (surName != null && lastName != null) {
+                stringBuilder.append(" ");
+            }
+            if (lastName != null) {
+                stringBuilder.append(lastName);
+            }
+            throw new RecordNotFoundException("We hebben geen werknemers met naam: " + stringBuilder + " gevonden.");
+        }
+    }
+
+    ///// For fetching employee by function from the database. /////
+
+    ///// For changing an employee in the database. /////
+
+    ///// For deleting an employee from the database. /////
+
     ///// For adding an employee in the database. /////
     public EmployeeDto createEmployee(EmployeeInputDto employee) {
         Optional<Employee> existingEmployee = employeeRepository.findEmployeesBySurNameIgnoreCaseAndLastNameIgnoreCase(employee.surName, employee.lastName);
