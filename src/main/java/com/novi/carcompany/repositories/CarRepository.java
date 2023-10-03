@@ -17,6 +17,7 @@ public interface CarRepository extends JpaRepository<Car, String> {
     @Transactional
     void deleteCarByLicensePlateIgnoreCase(String licensePlate);
 
+//TODO: nolist??? optional
     Optional<List<Car>> findCarsByBrandContainingIgnoreCase(String brand);
 
     Boolean existsCarsByBrandContainingIgnoreCase(String brand);
