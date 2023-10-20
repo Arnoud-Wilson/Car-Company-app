@@ -42,7 +42,7 @@ public class CarController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<List<CarDto>> searchCar(@RequestParam(required = false) String brand, @RequestParam(required = false) Optional<String> model) {
+    public ResponseEntity<List<CarDto>> searchCar(@RequestParam(required = false) String brand, @RequestParam(required = false) String model) {
         return ResponseEntity.ok().body(carService.findCar(brand, model));
         //TODO: only working with both params..
     }

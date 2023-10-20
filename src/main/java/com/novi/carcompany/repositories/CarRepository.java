@@ -26,5 +26,5 @@ public interface CarRepository extends JpaRepository<Car, String> {
 
     Boolean existsCarsByVinNumberEqualsIgnoreCase(String vinNumber);
 
-    List<Car> findCarsByBrandContainingIgnoreCaseAndModelContainingIgnoreCase(String brand, Optional<String> model);
+    List<Car> findCarsByBrandContainingIgnoreCaseAndModelContainingIgnoreCase(String brand, String model);
 }

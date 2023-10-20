@@ -1,0 +1,212 @@
+package com.novi.carcompany.controllers;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.novi.carcompany.dtos.CarDto;
+import com.novi.carcompany.dtos.CarInputDto;
+import com.novi.carcompany.models.Car;
+import com.novi.carcompany.services.CarService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.BDDMockito.given;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.web.servlet.function.RequestPredicates.contentType;
+
+
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(CarController.class)
+class CarControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private CarService carService;
+
+
+    Car carOne;
+    Car carTwo;
+    CarDto carDtoOne = new CarDto();
+    CarDto carDtoTwo = new CarDto();
+    CarInputDto carInputDtoOne = new CarInputDto();
+    CarInputDto carInputDtoTwo = new CarInputDto();
+
+
+    @BeforeEach
+    void setUp() {
+        carOne = new Car("NL-01-NL", "Test", "Test1", "VNV22212345678910", "blue", "2.5", false);
+        carTwo = new Car("NL-02-NL", "Test", "Test2", "VNV22212345678912", "red", "2.0", true);
+
+        carDtoOne.licensePlate = "NL-01-NL";
+        carDtoOne.brand = "Test";
+        carDtoOne.model = "Test1";
+        carDtoOne.vinNumber = "1111111111";
+        carDtoOne.color = "blue";
+        carDtoOne.engine = "2.5";
+        carDtoOne.winterTyres = false;
+        /////
+        carDtoTwo.licensePlate = "NL-02-NL";
+        carDtoTwo.brand = "Test";
+        carDtoTwo.model = "Test2";
+        carDtoTwo.vinNumber = "2222222222";
+        carDtoTwo.color = "red";
+        carDtoTwo.engine = "2.0";
+        carDtoTwo.winterTyres = true;
+
+        carInputDtoOne.licensePlate = "NL-01-NL";
+        carInputDtoOne.brand = "Test";
+        carInputDtoOne.model = "Test1";
+        carInputDtoOne.vinNumber = "1111111111";
+        carInputDtoOne.color = "blue";
+        carInputDtoOne.engine = "2.5";
+        carInputDtoOne.winterTyres = false;
+        /////
+        carInputDtoTwo.licensePlate = "NL-02-NL";
+        carInputDtoTwo.brand = "Test";
+        carInputDtoTwo.model = "Test2";
+        carInputDtoTwo.vinNumber = "2222222222";
+        carInputDtoTwo.color = "red";
+        carInputDtoTwo.engine = "2.0";
+        carInputDtoTwo.winterTyres = true;
+    }
+
+
+    @Test
+    void getCars() throws Exception {
+        given(carService.getCars()).willReturn(List.of(carDtoOne, carDtoTwo));
+
+        mockMvc.perform(get("/cars"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].licensePlate").value("NL-01-NL"))
+                .andExpect(jsonPath("$[0].brand").value("Test"))
+                .andExpect(jsonPath("$[0].model").value("Test1"))
+                .andExpect(jsonPath("$[0].vinNumber").value("1111111111"))
+                .andExpect(jsonPath("$[0].color").value("blue"))
+                .andExpect(jsonPath("$[0].engine").value("2.5"))
+                .andExpect(jsonPath("$[0].winterTyres").value(false))
+                //
+                .andExpect(jsonPath("$[1].licensePlate").value("NL-02-NL"))
+                .andExpect(jsonPath("$[1].brand").value("Test"))
+                .andExpect(jsonPath("$[1].model").value("Test2"))
+                .andExpect(jsonPath("$[1].vinNumber").value("2222222222"))
+                .andExpect(jsonPath("$[1].color").value("red"))
+                .andExpect(jsonPath("$[1].engine").value("2.0"))
+                .andExpect(jsonPath("$[1].winterTyres").value(true));
+    }
+
+    @Test
+    void getCar() throws Exception {
+        given(carService.getCar("NL-01-NL")).willReturn(carDtoOne);
+
+        mockMvc.perform(get("/cars/NL-01-NL"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("licensePlate").value("NL-01-NL"))
+                .andExpect(jsonPath("brand").value("Test"))
+                .andExpect(jsonPath("model").value("Test1"))
+                .andExpect(jsonPath("vinNumber").value("1111111111"))
+                .andExpect(jsonPath("color").value("blue"))
+                .andExpect(jsonPath("engine").value("2.5"))
+                .andExpect(jsonPath("winterTyres").value(false));
+    }
+
+    @Test
+    void findCarByVinNumber() throws Exception {
+        given(carService.findCarByVinNumber("1111111111")).willReturn(Collections.singletonList((carDtoOne)));
+
+        mockMvc.perform(get("/cars/findVin?vinNumber=1111111111"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].licensePlate").value("NL-01-NL"))
+                .andExpect(jsonPath("$[0].brand").value("Test"))
+                .andExpect(jsonPath("$[0].model").value("Test1"))
+                .andExpect(jsonPath("$[0].vinNumber").value("1111111111"))
+                .andExpect(jsonPath("$[0].color").value("blue"))
+                .andExpect(jsonPath("$[0].engine").value("2.5"))
+                .andExpect(jsonPath("$[0].winterTyres").value(false));
+    }
+
+    @Test
+    void searchCar() throws Exception {
+        given(carService.findCar("Test", "Test1")).willReturn(Collections.singletonList(carDtoOne));
+
+        mockMvc.perform(get("/cars/find?brand=Test&model=Test1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].licensePlate").value("NL-01-NL"))
+                .andExpect(jsonPath("$[0].brand").value("Test"))
+                .andExpect(jsonPath("$[0].model").value("Test1"))
+                .andExpect(jsonPath("$[0].vinNumber").value("1111111111"))
+                .andExpect(jsonPath("$[0].color").value("blue"))
+                .andExpect(jsonPath("$[0].engine").value("2.5"))
+                .andExpect(jsonPath("$[0].winterTyres").value(false));
+    }
+
+//    @Test
+//    void createCar() throws Exception {
+//        given(carService.createCar(carInputDtoOne)).willReturn(carDtoOne);
+//
+//        mockMvc.perform(post("/cars")
+//                        .contentType(APPLICATION_JSON)
+//                        .content(asJsonString(carInputDtoOne)))
+//                .andExpect(status().isCreated())
+//                .andExpect(jsonPath("licensePlate").value("NL-01-NL"))
+//                .andExpect(jsonPath("brand").value("Test"))
+//                .andExpect(jsonPath("model").value("Test1"))
+//                .andExpect(jsonPath("vinNumber").value("1111111111"))
+//                .andExpect(jsonPath("color").value("blue"))
+//                .andExpect(jsonPath("engine").value("2.5"))
+//                .andExpect(jsonPath("winterTyres").value(false));
+//    }
+
+
+    @Test
+    @Disabled
+    void changeCar() {
+    }
+
+    @Test
+    @Disabled
+    void deleteCar() {
+    }
+
+    public static String asJsonString(final CarInputDto obj) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            return mapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+//    public static String asJsonString(final Object obj) {
+//        try {
+//            return new ObjectMapper().writeValueAsString(obj);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
+}
