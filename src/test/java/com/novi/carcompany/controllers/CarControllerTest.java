@@ -12,7 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,6 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
@@ -83,14 +86,6 @@ class CarControllerTest {
         carInputDtoOne.color = "blue";
         carInputDtoOne.engine = "2.5";
         carInputDtoOne.winterTyres = false;
-        /////
-        carInputDtoTwo.licensePlate = "NL-02-NL";
-        carInputDtoTwo.brand = "Test";
-        carInputDtoTwo.model = "Test2";
-        carInputDtoTwo.vinNumber = "2222222222";
-        carInputDtoTwo.color = "red";
-        carInputDtoTwo.engine = "2.0";
-        carInputDtoTwo.winterTyres = true;
     }
 
 
@@ -162,35 +157,48 @@ class CarControllerTest {
                 .andExpect(jsonPath("$[0].winterTyres").value(false));
     }
 
-//    @Test
-//    void createCar() throws Exception {
-//        given(carService.createCar(carInputDtoOne)).willReturn(carDtoOne);
-//
-//        mockMvc.perform(post("/cars")
-//                        .contentType(APPLICATION_JSON)
-//                        .content(asJsonString(carInputDtoOne)))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("licensePlate").value("NL-01-NL"))
-//                .andExpect(jsonPath("brand").value("Test"))
-//                .andExpect(jsonPath("model").value("Test1"))
-//                .andExpect(jsonPath("vinNumber").value("1111111111"))
-//                .andExpect(jsonPath("color").value("blue"))
-//                .andExpect(jsonPath("engine").value("2.5"))
-//                .andExpect(jsonPath("winterTyres").value(false));
-//    }
-
-
     @Test
-    @Disabled
-    void changeCar() {
+    void createCar() throws Exception {
+        given(carService.createCar(any())).willReturn(carDtoOne);
+
+        mockMvc.perform(post("/cars")
+                        .contentType(APPLICATION_JSON)
+                        .content(asJsonInputDtoString(carInputDtoOne)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("licensePlate").value("NL-01-NL"))
+                .andExpect(jsonPath("brand").value("Test"))
+                .andExpect(jsonPath("model").value("Test1"))
+                .andExpect(jsonPath("vinNumber").value("1111111111"))
+                .andExpect(jsonPath("color").value("blue"))
+                .andExpect(jsonPath("engine").value("2.5"))
+                .andExpect(jsonPath("winterTyres").value(false));
     }
 
     @Test
-    @Disabled
-    void deleteCar() {
+    void changeCar() throws Exception {
+        given(carService.changeCar("NL-01-NL", carDtoOne)).willReturn(carDtoOne);
+
+        mockMvc.perform(put("/cars/NL-01-NL")
+                        .contentType(APPLICATION_JSON)
+                        .content(asJsonDtoString(carDtoOne)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("licensePlate").value("NL-01-NL"))
+                .andExpect(jsonPath("brand").value("Test"))
+                .andExpect(jsonPath("model").value("Test1"))
+                .andExpect(jsonPath("vinNumber").value("1111111111"))
+                .andExpect(jsonPath("color").value("blue"))
+                .andExpect(jsonPath("engine").value("2.5"))
+                .andExpect(jsonPath("winterTyres").value(false));
     }
 
-    public static String asJsonString(final CarInputDto obj) {
+    @Test
+    void deleteCar() throws Exception {
+        mockMvc.perform(delete("/cars/NL-01-NL"))
+                .andExpect(status().isOk());
+    }
+
+
+    public static String asJsonInputDtoString(final CarInputDto obj) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
@@ -201,12 +209,16 @@ class CarControllerTest {
         }
     }
 
-//    public static String asJsonString(final Object obj) {
-//        try {
-//            return new ObjectMapper().writeValueAsString(obj);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
+    public static String asJsonDtoString(final CarDto obj) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            return mapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
