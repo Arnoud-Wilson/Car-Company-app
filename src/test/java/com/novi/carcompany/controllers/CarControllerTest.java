@@ -6,23 +6,15 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.CarInputDto;
-import com.novi.carcompany.models.Car;
 import com.novi.carcompany.services.CarService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,13 +22,10 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.web.servlet.function.RequestPredicates.contentType;
 
 
 @ExtendWith(SpringExtension.class)
@@ -50,18 +39,13 @@ class CarControllerTest {
     private CarService carService;
 
 
-    Car carOne;
-    Car carTwo;
     CarDto carDtoOne = new CarDto();
     CarDto carDtoTwo = new CarDto();
     CarInputDto carInputDtoOne = new CarInputDto();
-    CarInputDto carInputDtoTwo = new CarInputDto();
 
 
     @BeforeEach
     void setUp() {
-        carOne = new Car("NL-01-NL", "Test", "Test1", "VNV22212345678910", "blue", "2.5", false);
-        carTwo = new Car("NL-02-NL", "Test", "Test2", "VNV22212345678912", "red", "2.0", true);
 
         carDtoOne.licensePlate = "NL-01-NL";
         carDtoOne.brand = "Test";
@@ -198,7 +182,7 @@ class CarControllerTest {
     }
 
 
-    public static String asJsonInputDtoString(final CarInputDto obj) {
+    private String asJsonInputDtoString(final CarInputDto obj) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
@@ -209,7 +193,7 @@ class CarControllerTest {
         }
     }
 
-    public static String asJsonDtoString(final CarDto obj) {
+    private String asJsonDtoString(final CarDto obj) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
@@ -219,6 +203,4 @@ class CarControllerTest {
             throw new RuntimeException(e);
         }
     }
-
-
 }

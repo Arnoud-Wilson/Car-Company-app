@@ -1,6 +1,5 @@
 package com.novi.carcompany.controllers;
 
-
 import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.CarInputDto;
 import com.novi.carcompany.services.CarService;
@@ -13,7 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/cars")
@@ -78,7 +77,6 @@ public class CarController {
 
     @DeleteMapping("/{licensePlate}")
     public ResponseEntity<String> deleteCar(@PathVariable String licensePlate) {
-
         return ResponseEntity.ok(carService.deleteCar(licensePlate));
     }
 }

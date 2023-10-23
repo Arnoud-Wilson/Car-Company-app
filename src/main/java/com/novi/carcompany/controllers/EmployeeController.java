@@ -25,8 +25,8 @@ public class EmployeeController {
 
 
     @GetMapping
-    public ResponseEntity<List<EmployeeDto>> getEmployees() {
-        return ResponseEntity.ok(employeeService.getEmployees());
+    public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     @GetMapping("/{id}")
@@ -77,6 +77,6 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
         EmployeeDto dto = employeeService.deleteEmployee(id);
-        return ResponseEntity.accepted().body("We hebben werknemer " + dto.surName + " " + dto.lastName + " met id: " + dto.id + " uit de database verwijderd.");
+        return ResponseEntity.ok().body("We hebben werknemer " + dto.surName + " " + dto.lastName + " met id: " + dto.id + " uit de database verwijderd.");
     }
 }

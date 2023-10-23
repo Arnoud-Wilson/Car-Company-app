@@ -25,7 +25,7 @@ public class EmployeeService {
 
 
     ///// For fetching all employees in the database. /////
-    public List<EmployeeDto> getEmployees(){
+    public List<EmployeeDto> getAllEmployees(){
         List<Employee> fetchedEmployees = employeeRepository.findAll();
         List<EmployeeDto> employeeDto = new ArrayList<>();
 
