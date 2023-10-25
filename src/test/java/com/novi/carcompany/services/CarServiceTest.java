@@ -1,13 +1,18 @@
 package com.novi.carcompany.services;
 
 import com.novi.carcompany.dtos.CarDto;
+import com.novi.carcompany.dtos.CarInputDto;
+import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
+import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.repositories.CarRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,6 +22,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -31,9 +38,14 @@ class CarServiceTest {
     @InjectMocks
     CarService carService;
 
+    @Captor
+    ArgumentCaptor<Car> carArgumentCaptor;
+
 
     Car carOne = new Car();
     Car carTwo = new Car();
+
+    CarInputDto carInputDto = new CarInputDto();
 
 
     @BeforeEach
@@ -53,6 +65,14 @@ class CarServiceTest {
         carTwo.setColor("red");
         carTwo.setEngine("2.0");
         carTwo.setWinterTyres(true);
+        /////
+        carInputDto.licensePlate = "NL-01-NL";
+        carInputDto.brand = "Test";
+        carInputDto.model = "Test1";
+        carInputDto.vinNumber = "1111111111";
+        carInputDto.color = "blue";
+        carInputDto.engine = "2.5";
+        carInputDto.winterTyres = false;
     }
 
     @Test
@@ -170,7 +190,36 @@ class CarServiceTest {
     @Test
     @DisplayName("Should create new car")
     void createCar() {
-        given()
+        given(carRepository.findByLicensePlateIgnoreCase("NL-01-NL")).willReturn(Optional.of(carOne));
+
+        Car newCar = new Car();
+        DtoConverters.carInputDtoConverter(newCar, carInputDto);
+        given(carRepository.save(newCar)).willReturn(carOne);
+
+        carService.createCar(carInputDto);
+
+        verify(carRepository, times(1)).save(carArgumentCaptor.capture());
+
+        Car captured = carArgumentCaptor.getValue();
+
+        assertEquals(carInputDto.licensePlate, captured.getLicensePlate());
+        assertEquals(carInputDto.brand, captured.getBrand());
+        assertEquals(carInputDto.model, captured.getModel());
+        assertEquals(carInputDto.vinNumber, captured.getVinNumber());
+        assertEquals(carInputDto.color, captured.getColor());
+        assertEquals(carInputDto.engine, captured.getEngine());
+        assertEquals(carInputDto.winterTyres, captured.getWinterTyres());
+    }
+
+    @Test
+    @DisplayName("Should throw exception if license plate is already in database")
+    void createCarException() {
+        Car newCar = new Car();
+        DtoConverters.carInputDtoConverter(newCar, carInputDto);
+
+        given(carRepository.existsByLicensePlateIgnoreCase(newCar.getLicensePlate())).willReturn(true);
+
+        assertThrows(AlreadyExistsException.class, () -> carService.createCar(carInputDto));
     }
 
     @Test
