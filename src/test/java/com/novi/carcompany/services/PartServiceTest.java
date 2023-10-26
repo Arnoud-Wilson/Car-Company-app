@@ -149,9 +149,35 @@ class PartServiceTest {
         assertThrows(RecordNotFoundException.class, () -> partService.getPart("11111"));
     }
 
+    @Test
+    @DisplayName("Should get cars by part name")
+    void getPartsByName() {
+        given(partRepository.findByNameContainsIgnoreCase("Test one")).willReturn(List.of(partOne, partTwo));
+
+        List<Part> parts = partRepository.findByNameContainsIgnoreCase("Test one");
+        List<PartDto> partDtos = partService.getPartsByName("Test one");
+
+        assertEquals(parts.get(0).getPartNumber(), partDtos.get(0).partNumber);
+        assertEquals(parts.get(0).getName(), partDtos.get(0).name);
+        assertEquals(parts.get(0).getDescription(), partDtos.get(0).description);
+        assertEquals(parts.get(0).getLocation(), partDtos.get(0).location);
+        assertEquals(parts.get(0).getStock(), partDtos.get(0).stock);
+        assertEquals(parts.get(0).getPurchasePrice(), partDtos.get(0).purchasePrice);
+        assertEquals(parts.get(0).getSellingPrice(), partDtos.get(0).sellingPrice);
+        /////
+        assertEquals(parts.get(1).getPartNumber(), partDtos.get(1).partNumber);
+        assertEquals(parts.get(1).getName(), partDtos.get(1).name);
+        assertEquals(parts.get(1).getDescription(), partDtos.get(1).description);
+        assertEquals(parts.get(1).getLocation(), partDtos.get(1).location);
+        assertEquals(parts.get(1).getStock(), partDtos.get(1).stock);
+        assertEquals(parts.get(1).getPurchasePrice(), partDtos.get(1).purchasePrice);
+        assertEquals(parts.get(1).getSellingPrice(), partDtos.get(1).sellingPrice);
+    }
 
     @Test
-    void getPartsByName() {
+    @DisplayName("Should throw exception if part name is not in database")
+    void getPartsByNameException() {
+        assertThrows(RecordNotFoundException.class, () -> partService.getPartsByName("Test one"));
     }
 
     @Test
