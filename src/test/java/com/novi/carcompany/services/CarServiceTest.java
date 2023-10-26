@@ -3,6 +3,7 @@ package com.novi.carcompany.services;
 import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.CarInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
+import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.Car;
@@ -45,6 +46,8 @@ class CarServiceTest {
     Car carOne = new Car();
     Car carTwo = new Car();
 
+    CarDto carDtoOne = new CarDto();
+
     CarInputDto carInputDto = new CarInputDto();
 
 
@@ -73,6 +76,14 @@ class CarServiceTest {
         carInputDto.color = "blue";
         carInputDto.engine = "2.5";
         carInputDto.winterTyres = false;
+        /////
+        carDtoOne.licensePlate = "NL-01-NL";
+        carDtoOne.brand = "Test";
+        carDtoOne.model = "Test1";
+        carDtoOne.vinNumber = "1111111111";
+        carDtoOne.color = "blue";
+        carDtoOne.engine = "2.5";
+        carDtoOne.winterTyres = false;
     }
 
     @Test
@@ -223,10 +234,53 @@ class CarServiceTest {
     }
 
     @Test
+    @DisplayName("Should change car")
     void changeCar() {
+        given(carRepository.findByLicensePlateIgnoreCase("NL-01-NL")).willReturn(Optional.of(carOne));
+        given(carRepository.save(carOne)).willReturn(carOne);
+
+        carService.changeCar("NL-01-NL", carDtoOne);
+
+        verify(carRepository, times(1)).save(carArgumentCaptor.capture());
+
+        Car captured = carArgumentCaptor.getValue();
+
+        assertEquals(carDtoOne.licensePlate, captured.getLicensePlate());
+        assertEquals(carDtoOne.brand, captured.getBrand());
+        assertEquals(carDtoOne.model, captured.getModel());
+        assertEquals(carDtoOne.vinNumber, captured.getVinNumber());
+        assertEquals(carDtoOne.color, captured.getColor());
+        assertEquals(carDtoOne.engine, captured.getEngine());
+        assertEquals(carDtoOne.winterTyres, captured.getWinterTyres());
     }
 
     @Test
+    @DisplayName("Should throw exception if license plate is to be changed")
+    void changeCarExceptionChangeLicensePlate() {
+        given(carRepository.findByLicensePlateIgnoreCase("NL-02-NL")).willReturn(Optional.of(carTwo));
+
+            assertThrows(IllegalChangeException.class, () -> carService.changeCar("NL-02-NL", carDtoOne));
+    }
+
+    @Test
+    @DisplayName("Should throw exception if license plate is not in database")
+    void changeCarExceptionLicensePlateUnknown() {
+        assertThrows(RecordNotFoundException.class, () -> carService.changeCar("NL-01-NL", carDtoOne));
+    }
+
+    @Test
+    @DisplayName("Should delete car")
     void deleteCar() {
+        given(carRepository.existsByLicensePlateIgnoreCase("NL-01-NL")).willReturn(true);
+
+        carService.deleteCar("NL-01-NL");
+
+        verify(carRepository, times(1)).deleteCarByLicensePlateIgnoreCase("NL-01-NL");
+    }
+
+    @Test
+    @DisplayName("Should throw exception if license plate is not in database")
+    void deleteCarExceptionLicensePlateUnknown() {
+        assertThrows(RecordNotFoundException.class, () -> carService.deleteCar("NL-01-NL"));
     }
 }
