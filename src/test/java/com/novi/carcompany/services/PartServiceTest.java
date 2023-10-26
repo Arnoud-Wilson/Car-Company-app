@@ -3,7 +3,10 @@ package com.novi.carcompany.services;
 import com.novi.carcompany.dtos.PartChangeInputDto;
 import com.novi.carcompany.dtos.PartDto;
 import com.novi.carcompany.dtos.PartInputDto;
+import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
+import com.novi.carcompany.helpers.DtoConverters;
+import com.novi.carcompany.models.Car;
 import com.novi.carcompany.models.Part;
 import com.novi.carcompany.repositories.PartRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +24,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class PartServiceTest {
@@ -210,7 +215,38 @@ class PartServiceTest {
     }
 
     @Test
+    @DisplayName("Should create part")
     void createPart() {
+        given(partRepository.findByPartNumberIgnoreCase("11111")).willReturn(Optional.of(partOne));
+
+        Part newPart = new Part();
+        DtoConverters.partInputDtoConverter(newPart, partInputDto);
+        given(partRepository.save(newPart)).willReturn(partOne);
+
+        partService.createPart(partInputDto);
+
+        verify(partRepository, times(1)).save(partArgumentCaptor.capture());
+
+        Part captured = partArgumentCaptor.getValue();
+
+        assertEquals(partInputDto.partNumber, captured.getPartNumber());
+        assertEquals(partInputDto.name, captured.getName());
+        assertEquals(partInputDto.description, captured.getDescription());
+        assertEquals(partInputDto.location, captured.getLocation());
+        assertEquals(partInputDto.stock, captured.getStock());
+        assertEquals(partInputDto.purchasePrice, captured.getPurchasePrice());
+        assertEquals(partInputDto.sellingPrice, captured.getSellingPrice());
+    }
+
+    @Test
+    @DisplayName("Should throw exception if part number is already in database")
+    void createPartException() {
+        Part newPart = new Part();
+        DtoConverters.partInputDtoConverter(newPart, partInputDto);
+
+        given(partRepository.existsByPartNumberIgnoreCase(newPart.getPartNumber())).willReturn(true);
+
+        assertThrows(AlreadyExistsException.class, () -> partService.createPart(partInputDto));
     }
 
     @Test
