@@ -2,6 +2,8 @@ package com.novi.carcompany.models;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 
 @Entity
 @Table(name = "cars")
@@ -102,5 +104,18 @@ public class Car {
 
     public void setWinterTyres(Boolean winterTyres) {
         this.winterTyres = winterTyres;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Car car)) return false;
+        return Objects.equals(licensePlate, car.licensePlate) && Objects.equals(brand, car.brand) && Objects.equals(model, car.model) && Objects.equals(vinNumber, car.vinNumber) && Objects.equals(color, car.color) && Objects.equals(engine, car.engine) && Objects.equals(winterTyres, car.winterTyres);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(licensePlate, brand, model, vinNumber, color, engine, winterTyres);
     }
 }

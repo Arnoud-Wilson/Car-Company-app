@@ -1,6 +1,5 @@
 package com.novi.carcompany.controllers;
 
-
 import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.CarInputDto;
 import com.novi.carcompany.services.CarService;
@@ -13,7 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/cars")
@@ -42,7 +41,7 @@ public class CarController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<List<CarDto>> searchCar(@RequestParam(required = false) String brand, @RequestParam(required = false) Optional<String> model) {
+    public ResponseEntity<List<CarDto>> searchCar(@RequestParam(required = false) String brand, @RequestParam(required = false) String model) {
         return ResponseEntity.ok().body(carService.findCar(brand, model));
         //TODO: only working with both params..
     }
@@ -78,7 +77,6 @@ public class CarController {
 
     @DeleteMapping("/{licensePlate}")
     public ResponseEntity<String> deleteCar(@PathVariable String licensePlate) {
-
         return ResponseEntity.ok(carService.deleteCar(licensePlate));
     }
 }

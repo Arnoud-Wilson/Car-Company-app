@@ -84,7 +84,7 @@ public class CarService {
 
 
     /// For fetching cars by brand or brand and model from database. /////
-    public List<CarDto> findCar(String brand, Optional<String> model) {
+    public List<CarDto> findCar(String brand, String model) {
         List<CarDto> carDtoList = new ArrayList<>();
         List<Car> fetchedList = carRepository.findCarsByBrandContainingIgnoreCaseAndModelContainingIgnoreCase(brand, model);
 

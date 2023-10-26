@@ -1,6 +1,7 @@
 package com.novi.carcompany.dtos;
 
-import jakarta.validation.constraints.NotBlank;
+
+import java.util.Objects;
 
 public class CarDto {
 
@@ -12,5 +13,17 @@ public class CarDto {
     public String engine;
     public Boolean winterTyres;
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CarDto carDto)) return false;
+        return Objects.equals(licensePlate, carDto.licensePlate) && Objects.equals(brand, carDto.brand) && Objects.equals(model, carDto.model) && Objects.equals(vinNumber, carDto.vinNumber) && Objects.equals(color, carDto.color) && Objects.equals(engine, carDto.engine) && Objects.equals(winterTyres, carDto.winterTyres);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(licensePlate, brand, model, vinNumber, color, engine, winterTyres);
+    }
 }
 
