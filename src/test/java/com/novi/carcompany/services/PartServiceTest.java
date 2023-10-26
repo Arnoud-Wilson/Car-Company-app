@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -118,15 +119,36 @@ class PartServiceTest {
 
     @Test
     @DisplayName("Should throw exception when database has no parts")
-    void getCarsException() {
+    void getPartsException() {
         given(partRepository.findAll()).willReturn(List.of());
 
         assertThrows(RecordNotFoundException.class, () -> partService.getParts());
     }
 
     @Test
+    @DisplayName("Should get part by part number")
     void getPart() {
+        given(partRepository.findByPartNumberIgnoreCase("11111")).willReturn(Optional.of(partOne));
+        given(partRepository.existsByPartNumberIgnoreCase("11111")).willReturn(true);
+
+        Part part = partRepository.findByPartNumberIgnoreCase("11111").get();
+        PartDto partDto = partService.getPart("11111");
+
+        assertEquals(part.getPartNumber(), partDto.partNumber);
+        assertEquals(part.getName(), partDto.name);
+        assertEquals(part.getDescription(), partDto.description);
+        assertEquals(part.getLocation(), partDto.location);
+        assertEquals(part.getStock(), partDto.stock);
+        assertEquals(part.getPurchasePrice(), partDto.purchasePrice);
+        assertEquals(part.getSellingPrice(), partDto.sellingPrice);
     }
+
+    @Test
+    @DisplayName("Should throw exception if part number is not in database")
+    void getPartException() {
+        assertThrows(RecordNotFoundException.class, () -> partService.getPart("11111"));
+    }
+
 
     @Test
     void getPartsByName() {
