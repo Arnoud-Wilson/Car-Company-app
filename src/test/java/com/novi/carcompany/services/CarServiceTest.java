@@ -34,14 +34,13 @@ class CarServiceTest {
     //TODO: @AutoConfigureMockMvc(addFilters = false) (boven aan testclass)
 
     @Mock
-    CarRepository carRepository;
+    private CarRepository carRepository;
 
     @InjectMocks
-    CarService carService;
+    private CarService carService;
 
     @Captor
-    ArgumentCaptor<Car> carArgumentCaptor;
-
+    private ArgumentCaptor<Car> carArgumentCaptor;
 
     Car carOne = new Car();
     Car carTwo = new Car();
@@ -49,6 +48,7 @@ class CarServiceTest {
     CarDto carDtoOne = new CarDto();
 
     CarInputDto carInputDto = new CarInputDto();
+
 
 
     @BeforeEach

@@ -7,11 +7,9 @@ import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
-import com.novi.carcompany.models.Car;
 import com.novi.carcompany.models.Part;
 import com.novi.carcompany.repositories.PartRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,13 +34,13 @@ class PartServiceTest {
     //TODO: @AutoConfigureMockMvc(addFilters = false) (boven aan testclass)
 
     @Mock
-    PartRepository partRepository;
+    private PartRepository partRepository;
 
     @InjectMocks
-    PartService partService;
+    private PartService partService;
 
     @Captor
-    ArgumentCaptor<Part> partArgumentCaptor;
+    private ArgumentCaptor<Part> partArgumentCaptor;
 
 
     Part partOne = new Part();
@@ -212,7 +210,8 @@ class PartServiceTest {
     @Test
     @DisplayName("Should throw exception if there are no parts on stock")
     void getPartsOnStockNoStockException() {
-        given(partRepository.findAll()).willReturn(List.of());
+        given(partRepository.findAll()).willReturn(List.of(partOne));
+        partOne.setStock(0);
         assertThrows(RecordNotFoundException.class, () -> partService.getPartsOnStock());
     }
 
