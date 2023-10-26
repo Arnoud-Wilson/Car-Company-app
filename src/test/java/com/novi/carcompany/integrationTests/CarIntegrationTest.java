@@ -9,7 +9,6 @@ import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.CarInputDto;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.repositories.CarRepository;
-import com.novi.carcompany.services.CarService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
