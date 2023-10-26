@@ -287,6 +287,18 @@ class PartServiceTest {
     }
 
     @Test
+    @DisplayName("Should delete part")
     void deletePart() {
+        given(partRepository.existsByPartNumberIgnoreCase("11111")).willReturn(true);
+
+        partService.deletePart("11111");
+
+        verify(partRepository, times(1)).deletePartByPartNumberIgnoreCase("11111");
+    }
+
+    @Test
+    @DisplayName("Should throw exception if part number is not in database")
+    void deletePartExceptionPartNumberUnknown() {
+        assertThrows(RecordNotFoundException.class, () -> partService.deletePart("11111"));
     }
 }

@@ -179,7 +179,7 @@ public class PartService {
     public String deletePart(String partNumber) {
         if (partRepository.existsByPartNumberIgnoreCase(partNumber)) {
 
-            partRepository.deleteCarByPartNumberIgnoreCase(partNumber);
+            partRepository.deletePartByPartNumberIgnoreCase(partNumber);
 
             return "We hebben het onderdeel met nummer: " + partNumber.toUpperCase() + " succesvol verwijderd.";
         } else {
