@@ -4,12 +4,14 @@ import com.novi.carcompany.dtos.PartChangeInputDto;
 import com.novi.carcompany.dtos.PartDto;
 import com.novi.carcompany.dtos.PartInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
+import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.models.Part;
 import com.novi.carcompany.repositories.PartRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -250,7 +252,38 @@ class PartServiceTest {
     }
 
     @Test
+    @DisplayName("Should change part")
     void changePart() {
+        given(partRepository.findByPartNumberIgnoreCase("11111")).willReturn(Optional.of(partOne));
+        given(partRepository.save(partOne)).willReturn(partOne);
+
+        partService.changePart("11111", partChangeInputDto);
+
+        verify(partRepository, times(1)).save(partArgumentCaptor.capture());
+
+        Part captured = partArgumentCaptor.getValue();
+
+        assertEquals(partInputDto.partNumber, captured.getPartNumber());
+        assertEquals(partInputDto.name, captured.getName());
+        assertEquals(partInputDto.description, captured.getDescription());
+        assertEquals(partInputDto.location, captured.getLocation());
+        assertEquals(partInputDto.stock + partChangeInputDto.quantity, captured.getStock());
+        assertEquals(partInputDto.purchasePrice, captured.getPurchasePrice());
+        assertEquals(partInputDto.sellingPrice, captured.getSellingPrice());
+    }
+
+    @Test
+    @DisplayName("Should throw exception if part number is to be changed")
+    void changePartExceptionChangePartNumber() {
+        given(partRepository.findByPartNumberIgnoreCase("22222")).willReturn(Optional.of(partTwo));
+
+        assertThrows(IllegalChangeException.class, () -> partService.changePart("22222", partChangeInputDto));
+    }
+
+    @Test
+    @DisplayName("Should throw exception if part number is not in database")
+    void changePartExceptionPartNumberUnknown() {
+        assertThrows(RecordNotFoundException.class, () -> partService.changePart("11111", partChangeInputDto));
     }
 
     @Test
