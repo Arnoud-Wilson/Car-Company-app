@@ -1,11 +1,15 @@
 package com.novi.carcompany.services;
 
+import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.PartChangeInputDto;
 import com.novi.carcompany.dtos.PartDto;
 import com.novi.carcompany.dtos.PartInputDto;
+import com.novi.carcompany.exceptions.RecordNotFoundException;
+import com.novi.carcompany.models.Car;
 import com.novi.carcompany.models.Part;
 import com.novi.carcompany.repositories.PartRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -14,7 +18,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class PartServiceTest {
@@ -86,7 +93,35 @@ class PartServiceTest {
     }
 
     @Test
+    @DisplayName("Should get all parts")
     void getParts() {
+        given(partRepository.findAll()).willReturn(List.of(partOne, partTwo));
+
+        List<Part> parts = partRepository.findAll();
+        List<PartDto> partDtos = partService.getParts();
+        assertEquals(parts.get(0).getPartNumber(), partDtos.get(0).partNumber);
+        assertEquals(parts.get(0).getName(), partDtos.get(0).name);
+        assertEquals(parts.get(0).getDescription(), partDtos.get(0).description);
+        assertEquals(parts.get(0).getLocation(), partDtos.get(0).location);
+        assertEquals(parts.get(0).getStock(), partDtos.get(0).stock);
+        assertEquals(parts.get(0).getPurchasePrice(), partDtos.get(0).purchasePrice);
+        assertEquals(parts.get(0).getSellingPrice(), partDtos.get(0).sellingPrice);
+        /////
+        assertEquals(parts.get(1).getPartNumber(), partDtos.get(1).partNumber);
+        assertEquals(parts.get(1).getName(), partDtos.get(1).name);
+        assertEquals(parts.get(1).getDescription(), partDtos.get(1).description);
+        assertEquals(parts.get(1).getLocation(), partDtos.get(1).location);
+        assertEquals(parts.get(1).getStock(), partDtos.get(1).stock);
+        assertEquals(parts.get(1).getPurchasePrice(), partDtos.get(1).purchasePrice);
+        assertEquals(parts.get(1).getSellingPrice(), partDtos.get(1).sellingPrice);
+    }
+
+    @Test
+    @DisplayName("Should throw exception when database has no parts")
+    void getCarsException() {
+        given(partRepository.findAll()).willReturn(List.of());
+
+        assertThrows(RecordNotFoundException.class, () -> partService.getParts());
     }
 
     @Test
