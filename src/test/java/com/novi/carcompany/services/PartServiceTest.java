@@ -1,11 +1,9 @@
 package com.novi.carcompany.services;
 
-import com.novi.carcompany.dtos.CarDto;
 import com.novi.carcompany.dtos.PartChangeInputDto;
 import com.novi.carcompany.dtos.PartDto;
 import com.novi.carcompany.dtos.PartInputDto;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
-import com.novi.carcompany.models.Car;
 import com.novi.carcompany.models.Part;
 import com.novi.carcompany.repositories.PartRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -100,6 +98,7 @@ class PartServiceTest {
 
         List<Part> parts = partRepository.findAll();
         List<PartDto> partDtos = partService.getParts();
+
         assertEquals(parts.get(0).getPartNumber(), partDtos.get(0).partNumber);
         assertEquals(parts.get(0).getName(), partDtos.get(0).name);
         assertEquals(parts.get(0).getDescription(), partDtos.get(0).description);
@@ -152,10 +151,33 @@ class PartServiceTest {
     @Test
     @DisplayName("Should get cars by part name")
     void getPartsByName() {
-        given(partRepository.findByNameContainsIgnoreCase("Test one")).willReturn(List.of(partOne, partTwo));
+        given(partRepository.findByNameContainsIgnoreCase("Test one")).willReturn(List.of(partOne));
 
         List<Part> parts = partRepository.findByNameContainsIgnoreCase("Test one");
         List<PartDto> partDtos = partService.getPartsByName("Test one");
+
+        assertEquals(parts.get(0).getPartNumber(), partDtos.get(0).partNumber);
+        assertEquals(parts.get(0).getName(), partDtos.get(0).name);
+        assertEquals(parts.get(0).getDescription(), partDtos.get(0).description);
+        assertEquals(parts.get(0).getLocation(), partDtos.get(0).location);
+        assertEquals(parts.get(0).getStock(), partDtos.get(0).stock);
+        assertEquals(parts.get(0).getPurchasePrice(), partDtos.get(0).purchasePrice);
+        assertEquals(parts.get(0).getSellingPrice(), partDtos.get(0).sellingPrice);
+    }
+
+    @Test
+    @DisplayName("Should throw exception if part name is not in database")
+    void getPartsByNameException() {
+        assertThrows(RecordNotFoundException.class, () -> partService.getPartsByName("Test one"));
+    }
+
+    @Test
+    @DisplayName("Should get all parts on stock")
+    void getPartsOnStock() {
+        given(partRepository.findAll()).willReturn(List.of(partOne, partTwo));
+
+        List<Part> parts = partRepository.findAll();
+        List<PartDto> partDtos = partService.getPartsOnStock();
 
         assertEquals(parts.get(0).getPartNumber(), partDtos.get(0).partNumber);
         assertEquals(parts.get(0).getName(), partDtos.get(0).name);
@@ -175,13 +197,16 @@ class PartServiceTest {
     }
 
     @Test
-    @DisplayName("Should throw exception if part name is not in database")
-    void getPartsByNameException() {
-        assertThrows(RecordNotFoundException.class, () -> partService.getPartsByName("Test one"));
+    @DisplayName("Should throw exception if there are no parts in database")
+    void getPartsOnStockNoPartsException() {
+        assertThrows(RecordNotFoundException.class, () -> partService.getPartsOnStock());
     }
 
     @Test
-    void getPartsOnStock() {
+    @DisplayName("Should throw exception if there are no parts on stock")
+    void getPartsOnStockNoStockException() {
+        given(partRepository.findAll()).willReturn(List.of());
+        assertThrows(RecordNotFoundException.class, () -> partService.getPartsOnStock());
     }
 
     @Test
