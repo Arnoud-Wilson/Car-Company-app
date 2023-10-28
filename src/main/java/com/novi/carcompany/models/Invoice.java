@@ -19,7 +19,7 @@ public class Invoice {
     @Column(name = "paid", nullable = false)
     private Boolean paid;
     @Column(name = "labor hours")
-    private Double labor;
+    private Double laborHours;
     //TODO: add Part, Customer, Car (foreign key)
 
 
