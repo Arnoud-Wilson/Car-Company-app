@@ -31,7 +31,7 @@ public class Invoice {
         this.totaalPrice = totaalPrice;
         this.approved = approved;
         this.paid = paid;
-        this.labor = labor;
+        this.laborHours = laborHours;
     }
 
 
@@ -67,12 +67,12 @@ public class Invoice {
         this.paid = paid;
     }
 
-    public Double getLabor() {
-        return this.labor;
+    public Double getLaborHours() {
+        return this.laborHours;
     }
 
-    public void setLabor(String name) {
-        this.labor = labor;
+    public void setLaborHours(String name) {
+        this.laborHours = laborHours;
     }
 
 
@@ -80,11 +80,11 @@ public class Invoice {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Invoice invoice)) return false;
-        return Objects.equals(invoiceNumber, invoice.invoiceNumber) && Objects.equals(totaalPrice, invoice.totaalPrice) && Objects.equals(approved, invoice.approved) && Objects.equals(paid, invoice.paid) && Objects.equals(labor, invoice.labor);
+        return Objects.equals(invoiceNumber, invoice.invoiceNumber) && Objects.equals(totaalPrice, invoice.totaalPrice) && Objects.equals(approved, invoice.approved) && Objects.equals(paid, invoice.paid) && Objects.equals(laborHours, invoice.laborHours);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoiceNumber, totaalPrice, approved, paid, labor);
+        return Objects.hash(invoiceNumber, totaalPrice, approved, paid, laborHours);
     }
 }
