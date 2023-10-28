@@ -2,6 +2,8 @@ package com.novi.carcompany.models;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "invoices")
 public class Invoice {
@@ -16,20 +18,20 @@ public class Invoice {
     private Boolean approved;
     @Column(name = "paid", nullable = false)
     private Boolean paid;
-    @Column(name = "labor")
-    private String name;
+    @Column(name = "labor hours")
+    private Double labor;
     //TODO: add Part, Customer, Car (foreign key)
 
 
     public Invoice() {
     }
 
-    public Invoice(Long invoiceNumber, Double totaalPrice, Boolean approved, Boolean paid, String name) {
+    public Invoice(Long invoiceNumber, Double totaalPrice, Boolean approved, Boolean paid, Double labor) {
         this.invoiceNumber = invoiceNumber;
         this.totaalPrice = totaalPrice;
         this.approved = approved;
         this.paid = paid;
-        this.name = name;
+        this.labor = labor;
     }
 
 
@@ -65,11 +67,24 @@ public class Invoice {
         this.paid = paid;
     }
 
-    public String getName() {
-        return this.name;
+    public Double getLabor() {
+        return this.labor;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLabor(String name) {
+        this.labor = labor;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Invoice invoice)) return false;
+        return Objects.equals(invoiceNumber, invoice.invoiceNumber) && Objects.equals(totaalPrice, invoice.totaalPrice) && Objects.equals(approved, invoice.approved) && Objects.equals(paid, invoice.paid) && Objects.equals(labor, invoice.labor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(invoiceNumber, totaalPrice, approved, paid, labor);
     }
 }
