@@ -2,13 +2,10 @@ package com.novi.carcompany.services;
 
 import com.novi.carcompany.dtos.CustomerDto;
 import com.novi.carcompany.dtos.CustomerInputDto;
-import com.novi.carcompany.dtos.EmployeeDto;
-import com.novi.carcompany.dtos.EmployeeInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.Customer;
-import com.novi.carcompany.models.Employee;
 
 import com.novi.carcompany.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -90,6 +87,7 @@ public class CustomerService {
             }
             throw new RecordNotFoundException("We hebben geen klanten met naam: " + stringBuilder + " gevonden.");
         }
+        //TODO: fix search for only surname
     }
 
     ///// For fetching customers by corporate or private from the database. /////
