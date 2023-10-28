@@ -41,8 +41,13 @@ public class CustomerController {
     }
 
     @GetMapping("/corporate")
-    public List<CustomerDto> getAllCorporateOrPrivate(@RequestParam(required = true) Boolean corporate) {
-        return customerService.getAllCorporateOrPrivate(corporate);
+    public ResponseEntity<List<CustomerDto>> getAllCorporateOrPrivate(@RequestParam(required = true) Boolean corporate) {
+        return ResponseEntity.ok(customerService.getAllCorporateOrPrivate(corporate));
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity<List<String>> getAllEmailAddresses() {
+        return ResponseEntity.ok(customerService.getAllEmailAddresses());
     }
 
     @PostMapping
