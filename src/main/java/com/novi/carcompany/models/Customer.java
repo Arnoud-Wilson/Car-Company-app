@@ -2,6 +2,8 @@ package com.novi.carcompany.models;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "customers")
 public class Customer extends Person {
@@ -47,5 +49,18 @@ public class Customer extends Person {
 
     public void setCorporate(Boolean corporate) {
         this.corporate = corporate;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer customer)) return false;
+        return Objects.equals(id, customer.id) && Objects.equals(bankAccount, customer.bankAccount) && Objects.equals(corporate, customer.corporate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, bankAccount, corporate);
     }
 }
