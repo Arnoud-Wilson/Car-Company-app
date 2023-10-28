@@ -2,6 +2,7 @@ package com.novi.carcompany.helpers;
 
 import com.novi.carcompany.dtos.*;
 import com.novi.carcompany.models.Car;
+import com.novi.carcompany.models.Customer;
 import com.novi.carcompany.models.Employee;
 import com.novi.carcompany.models.Part;
 
@@ -62,5 +63,24 @@ public class DtoConverters {
         dto.phoneNumber = employee.getPhoneNumber();
         dto.id = employee.getId();
         dto.function = employee.getFunction();
+    }
+
+    public static void customerInputDtoConverter(Customer customer, CustomerInputDto dto) {
+        customer.setSurName(dto.surName);
+        customer.setLastName(dto.lastName);
+        customer.setAddress(dto.address);
+        customer.setPhoneNumber(dto.phoneNumber);
+        customer.setBankAccount(dto.bankAccount);
+        customer.setCorporate(dto.corporate);
+    }
+
+    public static void customerDtoConverter(Customer customer, CustomerDto dto) {
+        dto.id = customer.getId();
+        dto.surName = customer.getSurName();
+        dto.lastName = customer.getLastName();
+        dto.address = customer.getAddress();
+        dto.phoneNumber = customer.getPhoneNumber();
+        dto.bankAccount = customer.getBankAccount();
+        dto.corporate = customer.getCorporate();
     }
 }

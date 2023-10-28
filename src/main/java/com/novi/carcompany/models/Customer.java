@@ -1,5 +1,7 @@
 package com.novi.carcompany.models;
 
+import com.novi.carcompany.dtos.CustomerDto;
+import com.novi.carcompany.dtos.EmployeeDto;
 import jakarta.persistence.*;
 
 import java.util.Objects;

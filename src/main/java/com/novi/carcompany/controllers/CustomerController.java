@@ -45,11 +45,6 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getAllCorporateOrPrivate(corporate));
     }
 
-    @GetMapping("/email")
-    public ResponseEntity<List<String>> getAllEmailAddresses() {
-        return ResponseEntity.ok(customerService.getAllEmailAddresses());
-    }
-
     @PostMapping
     public ResponseEntity<Object> createCustomer(@Valid @RequestBody CustomerInputDto customer, BindingResult bindingResult) {
 
