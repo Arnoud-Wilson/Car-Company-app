@@ -18,7 +18,7 @@ public class Invoice {
     private Boolean approved;
     @Column(name = "paid", nullable = false)
     private Boolean paid;
-    @Column(name = "labor hours")
+    @Column(name = "laborHours")
     private Double laborHours;
     //TODO: add Part, Customer, Car (foreign key)
 
@@ -26,7 +26,7 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(Long invoiceNumber, Double totaalPrice, Boolean approved, Boolean paid, Double labor) {
+    public Invoice(Long invoiceNumber, Double totaalPrice, Boolean approved, Boolean paid, Double laborHours) {
         this.invoiceNumber = invoiceNumber;
         this.totaalPrice = totaalPrice;
         this.approved = approved;
@@ -71,7 +71,7 @@ public class Invoice {
         return this.laborHours;
     }
 
-    public void setLaborHours(String name) {
+    public void setLaborHours(Double laborHours) {
         this.laborHours = laborHours;
     }
 

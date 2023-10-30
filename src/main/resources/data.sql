@@ -18,3 +18,7 @@ VALUES
     ('28250', 'klem', 'mooie klem', 'A1,02', 3, 4.50, 7.50),
     ('28350', 'klem', 'mooie klem', 'A1,02', 1, 3.50, 6.50),
     ('28150', 'bout', 'mooie bout', 'A1,05', 6, 0.75, 2.25);
+
+INSERT INTO invoices(invoice_number, total_price, approved, paid, labor_hours)
+VALUES
+    ('12345', '150', true, false, 1.5);

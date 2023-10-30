@@ -32,7 +32,7 @@ public class InvoiceService {
             for (Invoice invoice : fetchedInvoices) {
                 InvoiceDto dto = new InvoiceDto();
 
-                DtoConverters.carDtoConverter(invoice, dto);
+                DtoConverters.invoiceDtoConverter(invoice, dto);
 
                 invoiceDto.add(dto);
             }
