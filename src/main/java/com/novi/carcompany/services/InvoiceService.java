@@ -42,6 +42,21 @@ public class InvoiceService {
         }
     }
 
+    ///// For fetching invoice by invoice number from database. /////
+    public InvoiceDto getInvoiceByInvoiceNumber(Long invoiceNumber) {
+
+        if (invoiceRepository.existsInvoiceByInvoiceNumber(invoiceNumber)) {
+            InvoiceDto dto = new InvoiceDto();
+            Invoice fetchedInvoice = invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber).get();
+
+            DtoConverters.invoiceDtoConverter(fetchedInvoice, dto);
+
+            return dto;
+        } else {
+            throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + " in onze database.");
+        }
+    }
+
 
 
 

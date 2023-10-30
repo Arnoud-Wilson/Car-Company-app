@@ -4,6 +4,7 @@ import com.novi.carcompany.dtos.InvoiceDto;
 import com.novi.carcompany.services.InvoiceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,10 @@ public class InvoiceController {
     @GetMapping
     public ResponseEntity<List<InvoiceDto>> getAllInvoices() {
         return ResponseEntity.ok(invoiceService.getAllInvoices());
+    }
+
+    @GetMapping("/{invoiceNumber}") ResponseEntity<InvoiceDto> getInvoiceByInvoiceNumber(@PathVariable Long invoiceNumber) {
+        return ResponseEntity.ok(invoiceService.getInvoiceByInvoiceNumber(invoiceNumber));
     }
 
 
