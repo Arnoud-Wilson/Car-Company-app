@@ -3,6 +3,8 @@ package com.novi.carcompany.models;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "empoyees")
 public class Employee extends Person {
@@ -32,5 +34,18 @@ public class Employee extends Person {
 
     public void setFunction(String function) {
         this.function = function;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee employee)) return false;
+        return Objects.equals(id, employee.id) && Objects.equals(function, employee.function);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, function);
     }
 }

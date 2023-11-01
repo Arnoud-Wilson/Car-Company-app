@@ -1,10 +1,7 @@
 package com.novi.carcompany.helpers;
 
 import com.novi.carcompany.dtos.*;
-import com.novi.carcompany.models.Car;
-import com.novi.carcompany.models.Customer;
-import com.novi.carcompany.models.Employee;
-import com.novi.carcompany.models.Part;
+import com.novi.carcompany.models.*;
 
 public class DtoConverters {
 
@@ -82,5 +79,20 @@ public class DtoConverters {
         dto.phoneNumber = customer.getPhoneNumber();
         dto.bankAccount = customer.getBankAccount();
         dto.corporate = customer.getCorporate();
+    }
+
+    public static void invoiceInputDtoConverter(Invoice invoice, InvoiceInputDto dto) {
+        invoice.setTotaalPrice(dto.totalPrice);
+        invoice.setApproved(dto.approved);
+        invoice.setPaid(dto.paid);
+        invoice.setLaborHours(dto.laborHours);
+    }
+
+    public static void invoiceDtoConverter(Invoice invoice, InvoiceDto dto) {
+        dto.invoiceNumber = invoice.getInvoiceNumber();
+        dto.totalPrice = invoice.getTotaalPrice();
+        dto.approved = invoice.getApproved();
+        dto.paid = invoice.getPaid();
+        dto.laborHours = invoice.getLaborHours();
     }
 }
