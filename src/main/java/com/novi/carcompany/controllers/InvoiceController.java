@@ -76,6 +76,12 @@ public class InvoiceController {
         return ResponseEntity.created(uri).body(dto);
     }
 
+    @DeleteMapping("/{invoiceNumber}")
+        public ResponseEntity<String> deleteInvoice(@PathVariable Long invoiceNumber) {
+            InvoiceDto dto = invoiceService.deleteInvoice(invoiceNumber);
+            return ResponseEntity.ok().body("We hebben factuur met nummer: " + dto.invoiceNumber + " uit de database verwijderd.");
+        }
+
 
 
 

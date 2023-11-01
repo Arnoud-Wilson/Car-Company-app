@@ -1,6 +1,7 @@
 package com.novi.carcompany.services;
 
 import com.novi.carcompany.dtos.CarDto;
+import com.novi.carcompany.dtos.EmployeeDto;
 import com.novi.carcompany.dtos.InvoiceDto;
 import com.novi.carcompany.dtos.InvoiceInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
@@ -8,6 +9,7 @@ import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.Car;
+import com.novi.carcompany.models.Employee;
 import com.novi.carcompany.models.Invoice;
 import com.novi.carcompany.repositories.InvoiceRepository;
 import org.springframework.stereotype.Service;
@@ -134,6 +136,23 @@ public class InvoiceService {
     }
 
     ///// For deleting invoice from database. /////
+    public InvoiceDto deleteInvoice(Long invoiceNumber) {
+        Optional<Invoice> invoice = invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber);
+
+        if (invoice.isPresent()) {
+            Invoice invoice1 = invoice.get();
+            InvoiceDto dto = new InvoiceDto();
+
+            DtoConverters.invoiceDtoConverter(invoice1, dto);
+
+            invoiceRepository.deleteInvoiceByInvoiceNumber(invoiceNumber);
+
+            return dto;
+        } else {
+            throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + " in onze database.");
+        }
+    }
+
 
 
 
