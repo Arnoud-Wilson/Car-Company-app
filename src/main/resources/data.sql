@@ -21,4 +21,5 @@ VALUES
 
 INSERT INTO invoices(invoice_number, total_price, approved, paid, labor_hours)
 VALUES
-    ('12345', '150', true, false, 1.5);
+    ('12345', '150', true, false, 1.5),
+    ('22222', '200', true, true, 2.0);
