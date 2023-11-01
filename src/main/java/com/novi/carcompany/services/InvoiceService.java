@@ -1,15 +1,11 @@
 package com.novi.carcompany.services;
 
-import com.novi.carcompany.dtos.CarDto;
-import com.novi.carcompany.dtos.EmployeeDto;
 import com.novi.carcompany.dtos.InvoiceDto;
 import com.novi.carcompany.dtos.InvoiceInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
-import com.novi.carcompany.models.Car;
-import com.novi.carcompany.models.Employee;
 import com.novi.carcompany.models.Invoice;
 import com.novi.carcompany.repositories.InvoiceRepository;
 import org.springframework.stereotype.Service;

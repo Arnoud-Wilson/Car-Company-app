@@ -1,6 +1,5 @@
 package com.novi.carcompany.controllers;
 
-import com.novi.carcompany.dtos.EmployeeDto;
 import com.novi.carcompany.dtos.InvoiceDto;
 import com.novi.carcompany.dtos.InvoiceInputDto;
 import com.novi.carcompany.services.InvoiceService;
@@ -17,15 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceController {
-
-    //get all invoices
-    //get invoice by id
-    //get invoices by customer
-    //get invoices by car
-    //get all unpaid invoices
-    //post invoice
-    //put invoice
-    //delete invoice
 
     private final InvoiceService invoiceService;
 
@@ -93,5 +83,6 @@ public class InvoiceController {
 
 
     //TODO: make get invoice by customer and by car if relations are done!
+    //TODO: change dtos when relations are done
 
 }
