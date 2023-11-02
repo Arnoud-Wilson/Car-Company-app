@@ -2,6 +2,7 @@ package com.novi.carcompany.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -10,21 +11,24 @@ public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "invoiceNumber", nullable = false, updatable = false)
+    @Column(updatable = false)
     private Long invoiceNumber;
-    @Column(name = "totalPrice", nullable = false)
+    @Column(nullable = false)
     private Double totaalPrice;
-    @Column(name = "approved", nullable = false)
+    @Column(nullable = false)
     private Boolean approved;
-    @Column(name = "paid", nullable = false)
+    @Column(nullable = false)
     private Boolean paid;
-    @Column(name = "laborHours")
     private Double laborHours;
 
     @OneToOne
     private Car car;
-
-    //TODO: add Part, Customer, Car (foreign key)
+    @OneToMany
+    private List<Part> parts;
+    @OneToOne
+    private Employee employee;
+    @ManyToOne
+    private Customer customer;
 
 
     public Invoice() {
@@ -79,6 +83,37 @@ public class Invoice {
         this.laborHours = laborHours;
     }
 
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public List<Part> getParts() {
+        return parts;
+    }
+
+    public void setParts(List<Part> parts) {
+        this.parts = parts;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     @Override
     public boolean equals(Object o) {

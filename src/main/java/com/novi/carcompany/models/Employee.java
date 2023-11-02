@@ -11,9 +11,8 @@ public class Employee extends Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
+    @Column(updatable = false)
     private Long id;
-    @Column(name = "function")
     private String function;
 
     public Employee() {

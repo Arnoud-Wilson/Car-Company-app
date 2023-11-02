@@ -10,19 +10,16 @@ import java.util.Objects;
 public class Part {
 
     @Id
-    @Column(name = "partNumber", nullable = false, updatable = false)
+    @Column(updatable = false)
     private String partNumber;
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
-    @Column(name = "description")
     private String description;
-    @Column(name = "location")
     private String location;
-    @Column(name = "stock", nullable = false)
+    @Column(nullable = false)
     private int stock;
-    @Column(name = "purchasePrice", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private Double purchasePrice;
-    @Column(name = "sellingPrice")
     private Double sellingPrice;
 
 

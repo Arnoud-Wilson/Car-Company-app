@@ -13,18 +13,15 @@ public class Customer extends Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
+    @Column(updatable = false)
     private Long id;
-    @Column(name = "bankAccount")
     private String bankAccount;
-    @Column(name = "corporate")
     private Boolean corporate;
 
     @OneToMany(mappedBy = "customer")
     private List<Car> cars;
-
-
-    //TODO: add Car (foreign key)
+    @OneToMany(mappedBy = "customer")
+    private List<Invoice> invoices;
 
 
     public Customer() {
@@ -57,6 +54,21 @@ public class Customer extends Person {
         this.corporate = corporate;
     }
 
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
+    }
+
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
 
     @Override
     public boolean equals(Object o) {

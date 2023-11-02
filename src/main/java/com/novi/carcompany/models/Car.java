@@ -25,9 +25,6 @@ public class Car {
     private Customer customer;
 
 
-    //TODO: add customer? (foreign key)
-
-
     public Car() {
     }
 
@@ -107,6 +104,13 @@ public class Car {
         this.winterTyres = winterTyres;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     @Override
     public boolean equals(Object o) {
