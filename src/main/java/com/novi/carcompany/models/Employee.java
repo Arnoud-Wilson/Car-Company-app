@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "empoyees")
+@Table(name = "employees")
 public class Employee extends Person {
 
     @Id

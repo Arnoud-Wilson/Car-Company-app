@@ -47,10 +47,6 @@ public class Invoice {
         return invoiceNumber;
     }
 
-    public void setInvoiceNumber(Long invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
-
     public Double getTotalPrice() {
         return this.totalPrice;
     }
@@ -115,15 +111,16 @@ public class Invoice {
         this.parts = parts;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Invoice invoice)) return false;
-        return Objects.equals(invoiceNumber, invoice.invoiceNumber) && Objects.equals(totalPrice, invoice.totalPrice) && Objects.equals(approved, invoice.approved) && Objects.equals(paid, invoice.paid) && Objects.equals(laborHours, invoice.laborHours);
+        return Objects.equals(invoiceNumber, invoice.invoiceNumber) && Objects.equals(totalPrice, invoice.totalPrice) && Objects.equals(approved, invoice.approved) && Objects.equals(paid, invoice.paid) && Objects.equals(laborHours, invoice.laborHours) && Objects.equals(car, invoice.car) && Objects.equals(parts, invoice.parts) && Objects.equals(employee, invoice.employee) && Objects.equals(customer, invoice.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoiceNumber, totalPrice, approved, paid, laborHours);
+        return Objects.hash(invoiceNumber, totalPrice, approved, paid, laborHours, car, parts, employee, customer);
     }
 }

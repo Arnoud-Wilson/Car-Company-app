@@ -94,5 +94,10 @@ public class DtoConverters {
         dto.approved = invoice.getApproved();
         dto.paid = invoice.getPaid();
         dto.laborHours = invoice.getLaborHours();
+        if (invoice.getEmployee() != null) {
+            EmployeeDto employeeDto1 = new EmployeeDto();
+            DtoConverters.employeeDtoConverter(invoice.getEmployee(), employeeDto1);
+            dto.employeeDto = employeeDto1;
+        }
     }
 }

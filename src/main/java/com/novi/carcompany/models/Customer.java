@@ -70,15 +70,16 @@ public class Customer extends Person {
         this.invoices = invoices;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Customer customer)) return false;
-        return Objects.equals(id, customer.id) && Objects.equals(bankAccount, customer.bankAccount) && Objects.equals(corporate, customer.corporate);
+        return Objects.equals(id, customer.id) && Objects.equals(bankAccount, customer.bankAccount) && Objects.equals(corporate, customer.corporate) && Objects.equals(cars, customer.cars) && Objects.equals(invoices, customer.invoices);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bankAccount, corporate);
+        return Objects.hash(id, bankAccount, corporate, cars, invoices);
     }
 }

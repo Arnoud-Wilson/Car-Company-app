@@ -2,11 +2,14 @@ package com.novi.carcompany.services;
 
 import com.novi.carcompany.dtos.InvoiceDto;
 import com.novi.carcompany.dtos.InvoiceInputDto;
+import com.novi.carcompany.dtos.NumberInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
+import com.novi.carcompany.models.Employee;
 import com.novi.carcompany.models.Invoice;
+import com.novi.carcompany.repositories.EmployeeRepository;
 import com.novi.carcompany.repositories.InvoiceRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +21,12 @@ import java.util.Optional;
 public class InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
+    private final EmployeeRepository employeeRepository;
 
 
-    public InvoiceService(InvoiceRepository invoiceRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, EmployeeRepository employeeRepository) {
         this.invoiceRepository = invoiceRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     ///// For fetching all invoices in database. /////
@@ -107,6 +112,7 @@ public class InvoiceService {
                 if (invoice.totalPrice != null) {
                     invoice1.setTotalPrice(invoice.totalPrice);
                 }
+                //TODO numbers null check???????? is that good?
                 if (invoice.approved != null) {
                     invoice1.setApproved(invoice.approved);
                 }
@@ -130,6 +136,33 @@ public class InvoiceService {
             throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + " in onze database.");
         }
     }
+
+    ///// For assigning employee to invoice. /////
+    public InvoiceDto assignEmployeeToInvoice(Long invoiceNumber, NumberInputDto employeeId) {
+        Optional<Invoice> fetchedInvoice =  invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber);
+        Optional<Employee> fetchedEmployee = employeeRepository.findById(employeeId.id);
+
+        if (fetchedInvoice.isPresent()) {
+            if (fetchedEmployee.isPresent()) {
+                Invoice invoice = fetchedInvoice.get();
+                Employee employee = fetchedEmployee.get();
+                InvoiceDto dto = new InvoiceDto();
+
+                invoice.setEmployee(employee);
+                invoiceRepository.save(invoice);
+
+                Invoice modifiedInvoice = invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber).get();
+                DtoConverters.invoiceDtoConverter(modifiedInvoice, dto);
+
+                return dto;
+            } else {
+                throw new RecordNotFoundException("We hebben geen werknemer met id: " + employeeId.id + ".");
+            }
+        } else {
+            throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + ".");
+        }
+    }
+
 
     ///// For deleting invoice from database. /////
     public InvoiceDto deleteInvoice(Long invoiceNumber) {

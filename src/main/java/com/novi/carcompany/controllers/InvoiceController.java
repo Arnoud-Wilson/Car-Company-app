@@ -2,6 +2,7 @@ package com.novi.carcompany.controllers;
 
 import com.novi.carcompany.dtos.InvoiceDto;
 import com.novi.carcompany.dtos.InvoiceInputDto;
+import com.novi.carcompany.dtos.NumberInputDto;
 import com.novi.carcompany.services.InvoiceService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +66,27 @@ public class InvoiceController {
 
         return ResponseEntity.created(uri).body(dto);
     }
+
+    @PutMapping("/{invoiceNumber}/employee")
+    ResponseEntity<Object> assignEmployeeToInvoice(@PathVariable Long invoiceNumber, @Valid @RequestBody NumberInputDto employeeId, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                stringBuilder.append(fieldError.getField());
+                stringBuilder.append(": ");
+                stringBuilder.append(fieldError.getDefaultMessage());
+                stringBuilder.append("\n");
+            }
+            return ResponseEntity.badRequest().body(stringBuilder);
+        } else {
+
+            InvoiceDto dto = invoiceService.assignEmployeeToInvoice(invoiceNumber, employeeId);
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + dto.invoiceNumber).toUriString());
+
+            return ResponseEntity.created(uri).body(dto);
+        }
+    }
+
 
     @DeleteMapping("/{invoiceNumber}")
         public ResponseEntity<String> deleteInvoice(@PathVariable Long invoiceNumber) {

@@ -104,15 +104,17 @@ public class Part {
         this.invoice = invoice;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Part part)) return false;
-        return stock == part.stock && Objects.equals(partNumber, part.partNumber) && Objects.equals(name, part.name) && Objects.equals(description, part.description) && Objects.equals(location, part.location) && Objects.equals(purchasePrice, part.purchasePrice) && Objects.equals(sellingPrice, part.sellingPrice);
+        return stock == part.stock && Objects.equals(partNumber, part.partNumber) && Objects.equals(name, part.name) && Objects.equals(description, part.description) && Objects.equals(location, part.location) && Objects.equals(purchasePrice, part.purchasePrice) && Objects.equals(sellingPrice, part.sellingPrice) && Objects.equals(invoice, part.invoice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(partNumber, name, description, location, stock, purchasePrice, sellingPrice);
+        return Objects.hash(partNumber, name, description, location, stock, purchasePrice, sellingPrice, invoice);
     }
 }
+
