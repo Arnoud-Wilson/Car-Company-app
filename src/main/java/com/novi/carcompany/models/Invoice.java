@@ -14,7 +14,7 @@ public class Invoice {
     @Column(updatable = false)
     private Long invoiceNumber;
     @Column(nullable = false)
-    private Double totaalPrice;
+    private Double totalPrice;
     @Column(nullable = false)
     private Boolean approved;
     @Column(nullable = false)
@@ -23,7 +23,7 @@ public class Invoice {
 
     @OneToOne
     private Car car;
-    @OneToMany
+    @OneToMany(mappedBy = "invoice")
     private List<Part> parts;
     @OneToOne
     private Employee employee;
@@ -34,9 +34,9 @@ public class Invoice {
     public Invoice() {
     }
 
-    public Invoice(Long invoiceNumber, Double totaalPrice, Boolean approved, Boolean paid, Double laborHours) {
+    public Invoice(Long invoiceNumber, Double totalPrice, Boolean approved, Boolean paid, Double laborHours) {
         this.invoiceNumber = invoiceNumber;
-        this.totaalPrice = totaalPrice;
+        this.totalPrice = totalPrice;
         this.approved = approved;
         this.paid = paid;
         this.laborHours = laborHours;
@@ -51,12 +51,12 @@ public class Invoice {
         this.invoiceNumber = invoiceNumber;
     }
 
-    public Double getTotaalPrice() {
-        return this.totaalPrice;
+    public Double getTotalPrice() {
+        return this.totalPrice;
     }
 
-    public void setTotaalPrice(Double totaalPrice) {
-        this.totaalPrice = totaalPrice;
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public Boolean getApproved() {
@@ -91,14 +91,6 @@ public class Invoice {
         this.car = car;
     }
 
-    public List<Part> getParts() {
-        return parts;
-    }
-
-    public void setParts(List<Part> parts) {
-        this.parts = parts;
-    }
-
     public Employee getEmployee() {
         return employee;
     }
@@ -115,15 +107,23 @@ public class Invoice {
         this.customer = customer;
     }
 
+    public List<Part> getParts() {
+        return parts;
+    }
+
+    public void setParts(List<Part> parts) {
+        this.parts = parts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Invoice invoice)) return false;
-        return Objects.equals(invoiceNumber, invoice.invoiceNumber) && Objects.equals(totaalPrice, invoice.totaalPrice) && Objects.equals(approved, invoice.approved) && Objects.equals(paid, invoice.paid) && Objects.equals(laborHours, invoice.laborHours);
+        return Objects.equals(invoiceNumber, invoice.invoiceNumber) && Objects.equals(totalPrice, invoice.totalPrice) && Objects.equals(approved, invoice.approved) && Objects.equals(paid, invoice.paid) && Objects.equals(laborHours, invoice.laborHours);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoiceNumber, totaalPrice, approved, paid, laborHours);
+        return Objects.hash(invoiceNumber, totalPrice, approved, paid, laborHours);
     }
 }

@@ -82,7 +82,7 @@ public class DtoConverters {
     }
 
     public static void invoiceInputDtoConverter(Invoice invoice, InvoiceInputDto dto) {
-        invoice.setTotaalPrice(dto.totalPrice);
+        invoice.setTotalPrice(dto.totalPrice);
         invoice.setApproved(dto.approved);
         invoice.setPaid(dto.paid);
         invoice.setLaborHours(dto.laborHours);
@@ -90,7 +90,7 @@ public class DtoConverters {
 
     public static void invoiceDtoConverter(Invoice invoice, InvoiceDto dto) {
         dto.invoiceNumber = invoice.getInvoiceNumber();
-        dto.totalPrice = invoice.getTotaalPrice();
+        dto.totalPrice = invoice.getTotalPrice();
         dto.approved = invoice.getApproved();
         dto.paid = invoice.getPaid();
         dto.laborHours = invoice.getLaborHours();

@@ -105,7 +105,7 @@ public class InvoiceService {
             Invoice invoice1 = fetchedInvoice.get();
             if (invoiceNumber.equals(invoice1.getInvoiceNumber()) || invoice.invoiceNumber == null) {
                 if (invoice.totalPrice != null) {
-                    invoice1.setTotaalPrice(invoice.totalPrice);
+                    invoice1.setTotalPrice(invoice.totalPrice);
                 }
                 if (invoice.approved != null) {
                     invoice1.setApproved(invoice.approved);

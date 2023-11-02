@@ -22,6 +22,9 @@ public class Part {
     private Double purchasePrice;
     private Double sellingPrice;
 
+    @ManyToOne
+    private Invoice invoice;
+
 
     public Part() {
     }
@@ -93,6 +96,13 @@ public class Part {
         this.sellingPrice = sellingPrice;
     }
 
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
 
     @Override
     public boolean equals(Object o) {
