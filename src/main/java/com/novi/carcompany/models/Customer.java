@@ -2,6 +2,7 @@ package com.novi.carcompany.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +19,11 @@ public class Customer extends Person {
     private String bankAccount;
     @Column(name = "corporate")
     private Boolean corporate;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Car> cars;
+
+
     //TODO: add Car (foreign key)
 
 

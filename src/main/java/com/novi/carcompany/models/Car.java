@@ -10,20 +10,21 @@ import java.util.Objects;
 public class Car {
 
     @Id
-    @Column(name = "licensePlate", nullable = false, updatable = false)
+    @Column(updatable = false)
     private String licensePlate;
-    @Column(name = "brand", nullable = false)
+    @Column(nullable = false)
     private String brand;
-    @Column(name = "model", nullable = false)
+    @Column(nullable = false)
     private String model;
-    @Column(name = "vinNumber")
     private String vinNumber;
-    @Column(name = "color")
     private String color;
-    @Column(name = "engine")
     private String engine;
-    @Column(name = "winterTyres")
     private Boolean winterTyres;
+
+    @ManyToOne
+    private Customer customer;
+
+
     //TODO: add customer? (foreign key)
 
 

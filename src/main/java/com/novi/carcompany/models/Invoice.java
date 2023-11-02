@@ -20,6 +20,10 @@ public class Invoice {
     private Boolean paid;
     @Column(name = "laborHours")
     private Double laborHours;
+
+    @OneToOne
+    private Car car;
+
     //TODO: add Part, Customer, Car (foreign key)
 
 
