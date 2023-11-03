@@ -3,6 +3,7 @@ package com.novi.carcompany.controllers;
 import com.novi.carcompany.dtos.InvoiceDto;
 import com.novi.carcompany.dtos.InvoiceInputDto;
 import com.novi.carcompany.dtos.NumberInputDto;
+import com.novi.carcompany.dtos.StringInputDto;
 import com.novi.carcompany.services.InvoiceService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -81,12 +82,31 @@ public class InvoiceController {
         } else {
 
             InvoiceDto dto = invoiceService.assignEmployeeToInvoice(invoiceNumber, employeeId);
-            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + dto.invoiceNumber).toUriString());
+            URI uri = URI.create("http://localhost:8080/invoices/" + invoiceNumber);
 
             return ResponseEntity.created(uri).body(dto);
         }
     }
 
+    @PutMapping("/{invoiceNumber}/car")
+    ResponseEntity<Object> assignCarToInvoice(@PathVariable Long invoiceNumber, @Valid @RequestBody StringInputDto licensePlate, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                stringBuilder.append(fieldError.getField());
+                stringBuilder.append(": ");
+                stringBuilder.append(fieldError.getDefaultMessage());
+                stringBuilder.append("\n");
+            }
+            return ResponseEntity.badRequest().body(stringBuilder);
+        } else {
+
+            InvoiceDto dto = invoiceService.assignCarToInvoice(invoiceNumber, licensePlate);
+            URI uri = URI.create("http://localhost:8080/invoices/" + licensePlate);
+
+            return ResponseEntity.created(uri).body(dto);
+        }
+    }
 
     @DeleteMapping("/{invoiceNumber}")
         public ResponseEntity<String> deleteInvoice(@PathVariable Long invoiceNumber) {

@@ -9,17 +9,18 @@ public class InvoiceDto {
     public Boolean approved;
     public Boolean paid;
     public Double laborHours;
-    public EmployeeDto employeeDto;
+    public EmployeeDto employee;
+    public CarDto car;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof InvoiceDto that)) return false;
-        return Objects.equals(invoiceNumber, that.invoiceNumber) && Objects.equals(totalPrice, that.totalPrice) && Objects.equals(approved, that.approved) && Objects.equals(paid, that.paid) && Objects.equals(laborHours, that.laborHours) && Objects.equals(employeeDto, that.employeeDto);
+        return Objects.equals(invoiceNumber, that.invoiceNumber) && Objects.equals(totalPrice, that.totalPrice) && Objects.equals(approved, that.approved) && Objects.equals(paid, that.paid) && Objects.equals(laborHours, that.laborHours) && Objects.equals(employee, that.employee);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoiceNumber, totalPrice, approved, paid, laborHours, employeeDto);
+        return Objects.hash(invoiceNumber, totalPrice, approved, paid, laborHours, employee);
     }
 }

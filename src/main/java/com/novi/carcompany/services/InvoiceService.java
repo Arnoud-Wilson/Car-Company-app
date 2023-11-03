@@ -1,14 +1,14 @@
 package com.novi.carcompany.services;
 
-import com.novi.carcompany.dtos.InvoiceDto;
-import com.novi.carcompany.dtos.InvoiceInputDto;
-import com.novi.carcompany.dtos.NumberInputDto;
+import com.novi.carcompany.dtos.*;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
+import com.novi.carcompany.models.Car;
 import com.novi.carcompany.models.Employee;
 import com.novi.carcompany.models.Invoice;
+import com.novi.carcompany.repositories.CarRepository;
 import com.novi.carcompany.repositories.EmployeeRepository;
 import com.novi.carcompany.repositories.InvoiceRepository;
 import org.springframework.stereotype.Service;
@@ -22,11 +22,13 @@ public class InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
     private final EmployeeRepository employeeRepository;
+    private final CarRepository carRepository;
 
 
-    public InvoiceService(InvoiceRepository invoiceRepository, EmployeeRepository employeeRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, EmployeeRepository employeeRepository, CarRepository carRepository) {
         this.invoiceRepository = invoiceRepository;
         this.employeeRepository = employeeRepository;
+        this.carRepository = carRepository;
     }
 
     ///// For fetching all invoices in database. /////
@@ -162,6 +164,34 @@ public class InvoiceService {
             throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + ".");
         }
     }
+
+    ///// For assigning car to invoice. /////
+    public InvoiceDto assignCarToInvoice(Long invoiceNumber, StringInputDto licensePlate) {
+        Optional<Invoice> fetchedInvoice =  invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber);
+        Optional<Car> fetchedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate.id);
+
+        if (fetchedInvoice.isPresent()) {
+            if (fetchedCar.isPresent()) {
+                Invoice invoice = fetchedInvoice.get();
+                Car car = fetchedCar.get();
+                InvoiceDto dto = new InvoiceDto();
+
+                invoice.setCar(car);
+                invoiceRepository.save(invoice);
+
+                Invoice modifiedInvoice = invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber).get();
+                DtoConverters.invoiceDtoConverter(modifiedInvoice, dto);
+
+                return dto;
+            } else {
+                throw new RecordNotFoundException("We hebben geen auto met kenteken: " + licensePlate.id + ".");
+            }
+        } else {
+            throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + ".");
+        }
+    }
+
+
 
 
     ///// For deleting invoice from database. /////
