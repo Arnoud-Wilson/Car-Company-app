@@ -158,18 +158,4 @@ public class InvoiceController {
             InvoiceDto dto = invoiceService.deleteInvoice(invoiceNumber);
             return ResponseEntity.ok().body("We hebben factuur met nummer: " + dto.invoiceNumber + " uit de database verwijderd.");
         }
-
-
-
-
-
-
-
-
-
-
-
-    //TODO: make get invoice by customer and by car if relations are done!
-    //TODO: change dtos when relations are done
-
 }

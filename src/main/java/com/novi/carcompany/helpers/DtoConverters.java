@@ -31,7 +31,6 @@ public class DtoConverters {
             DtoConverters.customerDtoConverter(car.getCustomer(), dto1);
             dto.customer = dto1;
         }
-
     }
 
     public static void partInputDtoConverter(Part part, PartInputDto dto) {

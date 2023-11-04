@@ -1,9 +1,6 @@
 package com.novi.carcompany.dtos;
 
 
-import com.novi.carcompany.models.Customer;
-
-import java.util.List;
 import java.util.Objects;
 
 public class CarDto {

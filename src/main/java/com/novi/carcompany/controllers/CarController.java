@@ -96,8 +96,6 @@ public class CarController {
     public ResponseEntity<String> deleteCar(@PathVariable String licensePlate) {
         return ResponseEntity.ok(carService.deleteCar(licensePlate));
     }
-
-    //TODO: get cars by customer id and assign customer to car.
 }
 
 

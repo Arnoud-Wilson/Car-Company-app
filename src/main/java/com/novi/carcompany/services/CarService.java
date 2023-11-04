@@ -8,8 +8,6 @@ import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.models.Customer;
-import com.novi.carcompany.models.Invoice;
-import com.novi.carcompany.models.Part;
 import com.novi.carcompany.repositories.CarRepository;
 import com.novi.carcompany.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -169,6 +167,7 @@ public class CarService {
             throw new RecordNotFoundException("We hebben geen auto met kenteken: " + licensePlate.toUpperCase() + " in onze database.");
         }
     }
+
 
     ///// For assigning cars to customer. /////
     public CustomerDto assignCarsToCustomer(Long customerId, StringInputDto licensePlate) {
