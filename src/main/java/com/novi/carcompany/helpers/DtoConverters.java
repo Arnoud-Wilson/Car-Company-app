@@ -26,6 +26,12 @@ public class DtoConverters {
         dto.color = car.getColor();
         dto.engine = car.getEngine();
         dto.winterTyres = car.getWinterTyres();
+        if (car.getCustomer() != null) {
+            CustomerDto dto1 = new CustomerDto();
+            DtoConverters.customerDtoConverter(car.getCustomer(), dto1);
+            dto.customer = dto1;
+        }
+
     }
 
     public static void partInputDtoConverter(Part part, PartInputDto dto) {
@@ -82,6 +88,14 @@ public class DtoConverters {
         dto.phoneNumber = customer.getPhoneNumber();
         dto.bankAccount = customer.getBankAccount();
         dto.corporate = customer.getCorporate();
+        if (customer.getCars() != null) {
+            List<Car> cars = customer.getCars();
+            List<String> licensePlates = new ArrayList<>();
+            for (Car car : cars) {
+                licensePlates.add(car.getLicensePlate());
+            }
+            dto.cars = licensePlates;
+        }
     }
 
     public static void invoiceInputDtoConverter(Invoice invoice, InvoiceInputDto dto) {

@@ -1,7 +1,6 @@
 package com.novi.carcompany.controllers;
 
-import com.novi.carcompany.dtos.CarDto;
-import com.novi.carcompany.dtos.CarInputDto;
+import com.novi.carcompany.dtos.*;
 import com.novi.carcompany.services.CarService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -74,11 +73,23 @@ public class CarController {
     }
 
     @PutMapping("/customer/{customerId}")
-    public ResponseEntity<CarDto> getCustomerCars(@PathVariable String customerId, @RequestBody CarDto car) {
+    ResponseEntity<Object> assignCarToCustomer(@PathVariable Long customerId, @Valid @RequestBody StringInputDto licensePlate, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                stringBuilder.append(fieldError.getField());
+                stringBuilder.append(": ");
+                stringBuilder.append(fieldError.getDefaultMessage());
+                stringBuilder.append("\n");
+            }
+            return ResponseEntity.badRequest().body(stringBuilder);
+        } else {
 
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+            CustomerDto dto = carService.assignCarsToCustomer(customerId, licensePlate);
+            URI uri = URI.create("http://localhost:8080/cars/" + customerId);
 
-        return ResponseEntity.created(uri).body(carService.changeCar(licensePlate, car));
+            return ResponseEntity.created(uri).body(dto);
+        }
     }
 
     @DeleteMapping("/{licensePlate}")
