@@ -15,6 +15,8 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long>  {
 
     List<Invoice> findInvoiceByPaidFalse();
 
+    List<Invoice> findInvoiceByCustomerId(Long customerId);
+
     @Transactional
     void deleteInvoiceByInvoiceNumber(Long invoiceNumber);
 

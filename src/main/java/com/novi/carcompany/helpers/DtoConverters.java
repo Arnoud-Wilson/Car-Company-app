@@ -3,6 +3,9 @@ package com.novi.carcompany.helpers;
 import com.novi.carcompany.dtos.*;
 import com.novi.carcompany.models.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DtoConverters {
 
     public static void carInputDtoConverter(Car car, CarInputDto dto) {
@@ -23,6 +26,11 @@ public class DtoConverters {
         dto.color = car.getColor();
         dto.engine = car.getEngine();
         dto.winterTyres = car.getWinterTyres();
+        if (car.getCustomer() != null) {
+            CustomerDto dto1 = new CustomerDto();
+            DtoConverters.customerDtoConverter(car.getCustomer(), dto1);
+            dto.customer = dto1;
+        }
     }
 
     public static void partInputDtoConverter(Part part, PartInputDto dto) {
@@ -79,10 +87,18 @@ public class DtoConverters {
         dto.phoneNumber = customer.getPhoneNumber();
         dto.bankAccount = customer.getBankAccount();
         dto.corporate = customer.getCorporate();
+        if (customer.getCars() != null) {
+            List<Car> cars = customer.getCars();
+            List<String> licensePlates = new ArrayList<>();
+            for (Car car : cars) {
+                licensePlates.add(car.getLicensePlate());
+            }
+            dto.cars = licensePlates;
+        }
     }
 
     public static void invoiceInputDtoConverter(Invoice invoice, InvoiceInputDto dto) {
-        invoice.setTotaalPrice(dto.totalPrice);
+        invoice.setTotalPrice(dto.totalPrice);
         invoice.setApproved(dto.approved);
         invoice.setPaid(dto.paid);
         invoice.setLaborHours(dto.laborHours);
@@ -90,9 +106,33 @@ public class DtoConverters {
 
     public static void invoiceDtoConverter(Invoice invoice, InvoiceDto dto) {
         dto.invoiceNumber = invoice.getInvoiceNumber();
-        dto.totalPrice = invoice.getTotaalPrice();
+        dto.totalPrice = invoice.getTotalPrice();
         dto.approved = invoice.getApproved();
         dto.paid = invoice.getPaid();
         dto.laborHours = invoice.getLaborHours();
+        if (invoice.getEmployee() != null) {
+            EmployeeDto employeeDto1 = new EmployeeDto();
+            DtoConverters.employeeDtoConverter(invoice.getEmployee(), employeeDto1);
+            dto.employee = employeeDto1;
+        }
+        if (invoice.getCustomer() != null) {
+            CustomerDto customerDto1 = new CustomerDto();
+            DtoConverters.customerDtoConverter(invoice.getCustomer(), customerDto1);
+            dto.customer = customerDto1;
+        }
+        if (invoice.getCar() != null) {
+            CarDto carDto1 = new CarDto();
+            DtoConverters.carDtoConverter(invoice.getCar(), carDto1);
+            dto.car = carDto1;
+        }
+        if (invoice.getParts() != null) {
+            List<PartDto> partDtoList = new ArrayList<>();
+            for (Part part : invoice.getParts()) {
+                PartDto dto1 = new PartDto();
+                DtoConverters.partDtoConverter(part, dto1);
+                partDtoList.add(dto1);
+            }
+            dto.parts = partDtoList;
+        }
     }
 }

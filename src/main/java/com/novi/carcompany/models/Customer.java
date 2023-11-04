@@ -2,6 +2,7 @@ package com.novi.carcompany.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,13 +13,15 @@ public class Customer extends Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
+    @Column(updatable = false)
     private Long id;
-    @Column(name = "bankAccount")
     private String bankAccount;
-    @Column(name = "corporate")
     private Boolean corporate;
-    //TODO: add Car (foreign key)
+
+    @OneToMany(mappedBy = "customer")
+    private List<Car> cars;
+    @OneToMany(mappedBy = "customer")
+    private List<Invoice> invoices;
 
 
     public Customer() {
@@ -51,16 +54,32 @@ public class Customer extends Person {
         this.corporate = corporate;
     }
 
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
+    }
+
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Customer customer)) return false;
-        return Objects.equals(id, customer.id) && Objects.equals(bankAccount, customer.bankAccount) && Objects.equals(corporate, customer.corporate);
+        return Objects.equals(id, customer.id) && Objects.equals(bankAccount, customer.bankAccount) && Objects.equals(corporate, customer.corporate) && Objects.equals(cars, customer.cars) && Objects.equals(invoices, customer.invoices);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bankAccount, corporate);
+        return Objects.hash(id, bankAccount, corporate, cars, invoices);
     }
 }

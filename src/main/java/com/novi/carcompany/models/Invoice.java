@@ -2,6 +2,7 @@ package com.novi.carcompany.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -10,25 +11,37 @@ public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "invoiceNumber", nullable = false, updatable = false)
+    @Column(updatable = false)
     private Long invoiceNumber;
-    @Column(name = "totalPrice", nullable = false)
-    private Double totaalPrice;
-    @Column(name = "approved", nullable = false)
+    @Column(nullable = false)
+    private Double totalPrice;
+    @Column(nullable = false)
     private Boolean approved;
-    @Column(name = "paid", nullable = false)
+    @Column(nullable = false)
     private Boolean paid;
-    @Column(name = "laborHours")
     private Double laborHours;
-    //TODO: add Part, Customer, Car (foreign key)
+
+    @OneToOne
+    private Car car;
+    @OneToMany
+    @JoinTable(
+            name = "invoice_parts_list",
+            joinColumns = @JoinColumn(name = "invoice_number"),
+            inverseJoinColumns = @JoinColumn(name = "part_number")
+    )
+    private List<Part> parts;
+    @OneToOne
+    private Employee employee;
+    @ManyToOne
+    private Customer customer;
 
 
     public Invoice() {
     }
 
-    public Invoice(Long invoiceNumber, Double totaalPrice, Boolean approved, Boolean paid, Double laborHours) {
+    public Invoice(Long invoiceNumber, Double totalPrice, Boolean approved, Boolean paid, Double laborHours) {
         this.invoiceNumber = invoiceNumber;
-        this.totaalPrice = totaalPrice;
+        this.totalPrice = totalPrice;
         this.approved = approved;
         this.paid = paid;
         this.laborHours = laborHours;
@@ -39,16 +52,12 @@ public class Invoice {
         return invoiceNumber;
     }
 
-    public void setInvoiceNumber(Long invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
+    public Double getTotalPrice() {
+        return this.totalPrice;
     }
 
-    public Double getTotaalPrice() {
-        return this.totaalPrice;
-    }
-
-    public void setTotaalPrice(Double totaalPrice) {
-        this.totaalPrice = totaalPrice;
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public Boolean getApproved() {
@@ -75,16 +84,48 @@ public class Invoice {
         this.laborHours = laborHours;
     }
 
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public List<Part> getParts() {
+        return parts;
+    }
+
+    public void setParts(List<Part> parts) {
+        this.parts = parts;
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Invoice invoice)) return false;
-        return Objects.equals(invoiceNumber, invoice.invoiceNumber) && Objects.equals(totaalPrice, invoice.totaalPrice) && Objects.equals(approved, invoice.approved) && Objects.equals(paid, invoice.paid) && Objects.equals(laborHours, invoice.laborHours);
+        return Objects.equals(invoiceNumber, invoice.invoiceNumber) && Objects.equals(totalPrice, invoice.totalPrice) && Objects.equals(approved, invoice.approved) && Objects.equals(paid, invoice.paid) && Objects.equals(laborHours, invoice.laborHours) && Objects.equals(car, invoice.car) && Objects.equals(parts, invoice.parts) && Objects.equals(employee, invoice.employee) && Objects.equals(customer, invoice.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoiceNumber, totaalPrice, approved, paid, laborHours);
+        return Objects.hash(invoiceNumber, totalPrice, approved, paid, laborHours, car, parts, employee, customer);
     }
 }

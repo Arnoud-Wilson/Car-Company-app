@@ -1,14 +1,15 @@
 package com.novi.carcompany.services;
 
 
-import com.novi.carcompany.dtos.CarDto;
-import com.novi.carcompany.dtos.CarInputDto;
+import com.novi.carcompany.dtos.*;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.Car;
+import com.novi.carcompany.models.Customer;
 import com.novi.carcompany.repositories.CarRepository;
+import com.novi.carcompany.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 
@@ -21,9 +22,11 @@ import java.util.Optional;
 public class CarService {
 
     private final CarRepository carRepository;
+    private final CustomerRepository customerRepository;
 
-    public CarService(CarRepository carRepository) {
+    public CarService(CarRepository carRepository, CustomerRepository customerRepository) {
         this.carRepository = carRepository;
+        this.customerRepository = customerRepository;
     }
 
 
@@ -162,6 +165,33 @@ public class CarService {
             }
         } else {
             throw new RecordNotFoundException("We hebben geen auto met kenteken: " + licensePlate.toUpperCase() + " in onze database.");
+        }
+    }
+
+
+    ///// For assigning cars to customer. /////
+    public CustomerDto assignCarsToCustomer(Long customerId, StringInputDto licensePlate) {
+        Optional<Customer> fetchedCustomer =  customerRepository.findById(customerId);
+        Optional<Car> fetchedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate.id);
+
+        if (fetchedCustomer.isPresent()) {
+            Customer customer = fetchedCustomer.get();
+            if (fetchedCar.isPresent()) {
+                Car car = fetchedCar.get();
+                CustomerDto dto = new CustomerDto();
+
+                car.setCustomer(customer);
+                carRepository.save(car);
+
+                Customer modifiedCustomer = customerRepository.findById(customerId).get();
+                DtoConverters.customerDtoConverter(modifiedCustomer, dto);
+
+                return dto;
+            } else {
+                throw new RecordNotFoundException("We hebben geen auto met kenteken: " + licensePlate.id + ".");
+            }
+        } else {
+            throw new RecordNotFoundException("We hebben geen klant met id: " + customerId + ".");
         }
     }
 

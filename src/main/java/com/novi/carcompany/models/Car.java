@@ -10,21 +10,19 @@ import java.util.Objects;
 public class Car {
 
     @Id
-    @Column(name = "licensePlate", nullable = false, updatable = false)
+    @Column(updatable = false)
     private String licensePlate;
-    @Column(name = "brand", nullable = false)
+    @Column(nullable = false)
     private String brand;
-    @Column(name = "model", nullable = false)
+    @Column(nullable = false)
     private String model;
-    @Column(name = "vinNumber")
     private String vinNumber;
-    @Column(name = "color")
     private String color;
-    @Column(name = "engine")
     private String engine;
-    @Column(name = "winterTyres")
     private Boolean winterTyres;
-    //TODO: add customer? (foreign key)
+
+    @ManyToOne
+    private Customer customer;
 
 
     public Car() {
@@ -106,16 +104,24 @@ public class Car {
         this.winterTyres = winterTyres;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Car car)) return false;
-        return Objects.equals(licensePlate, car.licensePlate) && Objects.equals(brand, car.brand) && Objects.equals(model, car.model) && Objects.equals(vinNumber, car.vinNumber) && Objects.equals(color, car.color) && Objects.equals(engine, car.engine) && Objects.equals(winterTyres, car.winterTyres);
+        return Objects.equals(licensePlate, car.licensePlate) && Objects.equals(brand, car.brand) && Objects.equals(model, car.model) && Objects.equals(vinNumber, car.vinNumber) && Objects.equals(color, car.color) && Objects.equals(engine, car.engine) && Objects.equals(winterTyres, car.winterTyres) && Objects.equals(customer, car.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(licensePlate, brand, model, vinNumber, color, engine, winterTyres);
+        return Objects.hash(licensePlate, brand, model, vinNumber, color, engine, winterTyres, customer);
     }
 }
