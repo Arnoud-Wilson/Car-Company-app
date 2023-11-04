@@ -12,6 +12,7 @@ public interface PartRepository extends JpaRepository<Part, String> {
 
     Boolean existsByPartNumberIgnoreCase(String partNumber);
     Optional<Part> findByPartNumberIgnoreCase(String partNumber);
+    List<Part>findPartsByPartNumberIgnoreCase(String partNumber);
     @Transactional
     void deletePartByPartNumberIgnoreCase(String partNumber);
 

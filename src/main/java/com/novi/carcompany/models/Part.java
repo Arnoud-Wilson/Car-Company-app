@@ -22,9 +22,6 @@ public class Part {
     private Double purchasePrice;
     private Double sellingPrice;
 
-    @ManyToOne
-    private Invoice invoice;
-
 
     public Part() {
     }
@@ -96,25 +93,17 @@ public class Part {
         this.sellingPrice = sellingPrice;
     }
 
-    public Invoice getInvoice() {
-        return invoice;
-    }
-
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
-    }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Part part)) return false;
-        return stock == part.stock && Objects.equals(partNumber, part.partNumber) && Objects.equals(name, part.name) && Objects.equals(description, part.description) && Objects.equals(location, part.location) && Objects.equals(purchasePrice, part.purchasePrice) && Objects.equals(sellingPrice, part.sellingPrice) && Objects.equals(invoice, part.invoice);
+        return stock == part.stock && Objects.equals(partNumber, part.partNumber) && Objects.equals(name, part.name) && Objects.equals(description, part.description) && Objects.equals(location, part.location) && Objects.equals(purchasePrice, part.purchasePrice) && Objects.equals(sellingPrice, part.sellingPrice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(partNumber, name, description, location, stock, purchasePrice, sellingPrice, invoice);
+        return Objects.hash(partNumber, name, description, location, stock, purchasePrice, sellingPrice);
     }
 }
 

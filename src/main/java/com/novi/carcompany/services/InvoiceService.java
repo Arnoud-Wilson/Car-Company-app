@@ -8,9 +8,11 @@ import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.Car;
 import com.novi.carcompany.models.Employee;
 import com.novi.carcompany.models.Invoice;
+import com.novi.carcompany.models.Part;
 import com.novi.carcompany.repositories.CarRepository;
 import com.novi.carcompany.repositories.EmployeeRepository;
 import com.novi.carcompany.repositories.InvoiceRepository;
+import com.novi.carcompany.repositories.PartRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,12 +25,14 @@ public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final EmployeeRepository employeeRepository;
     private final CarRepository carRepository;
+    private final PartRepository partRepository;
 
 
-    public InvoiceService(InvoiceRepository invoiceRepository, EmployeeRepository employeeRepository, CarRepository carRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository, EmployeeRepository employeeRepository, CarRepository carRepository, PartRepository partRepository) {
         this.invoiceRepository = invoiceRepository;
         this.employeeRepository = employeeRepository;
         this.carRepository = carRepository;
+        this.partRepository = partRepository;
     }
 
     ///// For fetching all invoices in database. /////
@@ -190,6 +194,36 @@ public class InvoiceService {
             throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + ".");
         }
     }
+
+    ///// For assigning parts to invoice. /////
+    public InvoiceDto assignPartToInvoice(Long invoiceNumber, StringInputDto partNumber) {
+        Optional<Invoice> fetchedInvoice =  invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber);
+        Optional<Part> fetchedPart = partRepository.findByPartNumberIgnoreCase(partNumber.id);
+
+        if (fetchedInvoice.isPresent()) {
+            Invoice invoice = fetchedInvoice.get();
+            if (fetchedPart.isPresent()) {
+                Part part = fetchedPart.get();
+                List<Part> partsInInvoiceList = invoice.getParts();
+                InvoiceDto dto = new InvoiceDto();
+
+                partsInInvoiceList.add(part);
+                invoice.setParts(partsInInvoiceList);
+                invoiceRepository.save(invoice);
+
+                Invoice modifiedInvoice = invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber).get();
+                DtoConverters.invoiceDtoConverter(modifiedInvoice, dto);
+
+                return dto;
+            } else {
+                throw new RecordNotFoundException("We hebben geen onderdeel met nummer: " + partNumber.id + ".");
+            }
+        } else {
+            throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + ".");
+        }
+    }
+
+
 
 
 

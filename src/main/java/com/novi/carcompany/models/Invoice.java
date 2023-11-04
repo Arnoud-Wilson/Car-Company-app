@@ -23,7 +23,7 @@ public class Invoice {
 
     @OneToOne
     private Car car;
-    @OneToMany(mappedBy = "invoice")
+    @OneToMany
     private List<Part> parts;
     @OneToOne
     private Employee employee;

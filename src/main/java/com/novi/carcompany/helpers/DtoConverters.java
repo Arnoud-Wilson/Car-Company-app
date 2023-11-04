@@ -3,6 +3,9 @@ package com.novi.carcompany.helpers;
 import com.novi.carcompany.dtos.*;
 import com.novi.carcompany.models.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DtoConverters {
 
     public static void carInputDtoConverter(Car car, CarInputDto dto) {
@@ -103,6 +106,15 @@ public class DtoConverters {
             CarDto carDto1 = new CarDto();
             DtoConverters.carDtoConverter(invoice.getCar(), carDto1);
             dto.car = carDto1;
+        }
+        if (invoice.getParts() != null) {
+            List<PartDto> partDtoList = new ArrayList<>();
+            for (Part part : invoice.getParts()) {
+                PartDto dto1 = new PartDto();
+                DtoConverters.partDtoConverter(part, dto1);
+                partDtoList.add(dto1);
+            }
+            dto.parts = partDtoList;
         }
     }
 }

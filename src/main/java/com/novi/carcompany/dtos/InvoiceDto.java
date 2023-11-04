@@ -1,5 +1,6 @@
 package com.novi.carcompany.dtos;
 
+import java.util.List;
 import java.util.Objects;
 
 public class InvoiceDto {
@@ -11,6 +12,7 @@ public class InvoiceDto {
     public Double laborHours;
     public EmployeeDto employee;
     public CarDto car;
+    public List<PartDto> parts;
 
     @Override
     public boolean equals(Object o) {

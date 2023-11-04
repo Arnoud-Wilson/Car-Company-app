@@ -102,7 +102,27 @@ public class InvoiceController {
         } else {
 
             InvoiceDto dto = invoiceService.assignCarToInvoice(invoiceNumber, licensePlate);
-            URI uri = URI.create("http://localhost:8080/invoices/" + licensePlate);
+            URI uri = URI.create("http://localhost:8080/invoices/" + invoiceNumber);
+
+            return ResponseEntity.created(uri).body(dto);
+        }
+    }
+
+    @PutMapping("/{invoiceNumber}/part")
+    ResponseEntity<Object> assignPartToInvoice(@PathVariable Long invoiceNumber, @Valid @RequestBody StringInputDto partNumber, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                stringBuilder.append(fieldError.getField());
+                stringBuilder.append(": ");
+                stringBuilder.append(fieldError.getDefaultMessage());
+                stringBuilder.append("\n");
+            }
+            return ResponseEntity.badRequest().body(stringBuilder);
+        } else {
+
+            InvoiceDto dto = invoiceService.assignPartToInvoice(invoiceNumber, partNumber);
+            URI uri = URI.create("http://localhost:8080/invoices/" + invoiceNumber);
 
             return ResponseEntity.created(uri).body(dto);
         }
