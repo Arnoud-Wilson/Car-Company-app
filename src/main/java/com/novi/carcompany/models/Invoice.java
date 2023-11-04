@@ -24,6 +24,11 @@ public class Invoice {
     @OneToOne
     private Car car;
     @OneToMany
+    @JoinTable(
+            name = "invoice_parts_list",
+            joinColumns = @JoinColumn(name = "invoice_number"),
+            inverseJoinColumns = @JoinColumn(name = "part_number")
+    )
     private List<Part> parts;
     @OneToOne
     private Employee employee;

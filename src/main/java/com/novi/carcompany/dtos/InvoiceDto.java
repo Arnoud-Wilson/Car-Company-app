@@ -13,6 +13,7 @@ public class InvoiceDto {
     public EmployeeDto employee;
     public CarDto car;
     public List<PartDto> parts;
+    public CustomerDto customer;
 
     @Override
     public boolean equals(Object o) {

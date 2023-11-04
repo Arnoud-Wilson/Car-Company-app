@@ -65,20 +65,28 @@ public class CarController {
         }
     }
 
-
     @PutMapping("/{licensePlate}")
     public ResponseEntity<CarDto> changeCar(@PathVariable String licensePlate, @RequestBody CarDto car) {
+//TODO validate request body
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+
+        return ResponseEntity.created(uri).body(carService.changeCar(licensePlate, car));
+    }
+
+    @PutMapping("/customer/{customerId}")
+    public ResponseEntity<CarDto> getCustomerCars(@PathVariable String customerId, @RequestBody CarDto car) {
 
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
 
         return ResponseEntity.created(uri).body(carService.changeCar(licensePlate, car));
     }
 
-
     @DeleteMapping("/{licensePlate}")
     public ResponseEntity<String> deleteCar(@PathVariable String licensePlate) {
         return ResponseEntity.ok(carService.deleteCar(licensePlate));
     }
+
+    //TODO: get cars by customer id and assign customer to car.
 }
 
 

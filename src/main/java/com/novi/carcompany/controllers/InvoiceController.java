@@ -41,6 +41,11 @@ public class InvoiceController {
         return ResponseEntity.ok(invoiceService.getAllUnpaidInvoices());
     }
 
+    @GetMapping("/customer/{customerId}")
+    ResponseEntity<List<InvoiceDto>> getCustomerInvoices(@PathVariable Long customerId) {
+        return ResponseEntity.ok(invoiceService.getCustomerInvoices(customerId));
+    }
+
     @PostMapping
     ResponseEntity<Object> createInvoice(@Valid @RequestBody InvoiceInputDto invoice, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
@@ -82,6 +87,26 @@ public class InvoiceController {
         } else {
 
             InvoiceDto dto = invoiceService.assignEmployeeToInvoice(invoiceNumber, employeeId);
+            URI uri = URI.create("http://localhost:8080/invoices/" + invoiceNumber);
+
+            return ResponseEntity.created(uri).body(dto);
+        }
+    }
+
+    @PutMapping("/{invoiceNumber}/customer")
+    ResponseEntity<Object> assignCustomerToInvoice(@PathVariable Long invoiceNumber, @Valid @RequestBody NumberInputDto customerId, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                stringBuilder.append(fieldError.getField());
+                stringBuilder.append(": ");
+                stringBuilder.append(fieldError.getDefaultMessage());
+                stringBuilder.append("\n");
+            }
+            return ResponseEntity.badRequest().body(stringBuilder);
+        } else {
+
+            InvoiceDto dto = invoiceService.assignCustomerToInvoice(invoiceNumber, customerId);
             URI uri = URI.create("http://localhost:8080/invoices/" + invoiceNumber);
 
             return ResponseEntity.created(uri).body(dto);

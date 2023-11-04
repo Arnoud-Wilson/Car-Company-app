@@ -102,6 +102,11 @@ public class DtoConverters {
             DtoConverters.employeeDtoConverter(invoice.getEmployee(), employeeDto1);
             dto.employee = employeeDto1;
         }
+        if (invoice.getCustomer() != null) {
+            CustomerDto customerDto1 = new CustomerDto();
+            DtoConverters.customerDtoConverter(invoice.getCustomer(), customerDto1);
+            dto.customer = customerDto1;
+        }
         if (invoice.getCar() != null) {
             CarDto carDto1 = new CarDto();
             DtoConverters.carDtoConverter(invoice.getCar(), carDto1);

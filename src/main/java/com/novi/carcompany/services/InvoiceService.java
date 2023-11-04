@@ -5,14 +5,8 @@ import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
-import com.novi.carcompany.models.Car;
-import com.novi.carcompany.models.Employee;
-import com.novi.carcompany.models.Invoice;
-import com.novi.carcompany.models.Part;
-import com.novi.carcompany.repositories.CarRepository;
-import com.novi.carcompany.repositories.EmployeeRepository;
-import com.novi.carcompany.repositories.InvoiceRepository;
-import com.novi.carcompany.repositories.PartRepository;
+import com.novi.carcompany.models.*;
+import com.novi.carcompany.repositories.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,13 +18,16 @@ public class InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
     private final EmployeeRepository employeeRepository;
+    private final CustomerRepository customerRepository;
     private final CarRepository carRepository;
     private final PartRepository partRepository;
 
 
-    public InvoiceService(InvoiceRepository invoiceRepository, EmployeeRepository employeeRepository, CarRepository carRepository, PartRepository partRepository) {
+
+    public InvoiceService(InvoiceRepository invoiceRepository, EmployeeRepository employeeRepository, CustomerRepository customerRepository, CarRepository carRepository, PartRepository partRepository) {
         this.invoiceRepository = invoiceRepository;
         this.employeeRepository = employeeRepository;
+        this.customerRepository = customerRepository;
         this.carRepository = carRepository;
         this.partRepository = partRepository;
     }
@@ -85,6 +82,24 @@ public class InvoiceService {
             return invoiceDtos;
         } else {
             throw new RecordNotFoundException("We hebben geen onbetaalde facturen.");
+        }
+    }
+
+    ///// For fetching invoices by customer from database. /////
+    public List<InvoiceDto> getCustomerInvoices(Long customerId) {
+        List<Invoice> invoices = invoiceRepository.findInvoiceByCustomerId(customerId);
+        List<InvoiceDto> invoiceDtos = new ArrayList<>();
+
+        if (!invoices.isEmpty()) {
+            for (Invoice invoice : invoices) {
+                InvoiceDto dto = new InvoiceDto();
+
+                DtoConverters.invoiceDtoConverter(invoice, dto);
+                invoiceDtos.add(dto);
+            }
+            return invoiceDtos;
+        } else {
+            throw new RecordNotFoundException("We hebben geen facturen voor klant met id: " + customerId + ".");
         }
     }
 
@@ -163,6 +178,32 @@ public class InvoiceService {
                 return dto;
             } else {
                 throw new RecordNotFoundException("We hebben geen werknemer met id: " + employeeId.id + ".");
+            }
+        } else {
+            throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + ".");
+        }
+    }
+
+    ///// For assigning customer to invoice. /////
+    public InvoiceDto assignCustomerToInvoice(Long invoiceNumber, NumberInputDto customerId) {
+        Optional<Invoice> fetchedInvoice =  invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber);
+        Optional<Customer> fetchedCustomer = customerRepository.findById(customerId.id);
+
+        if (fetchedInvoice.isPresent()) {
+            Invoice invoice = fetchedInvoice.get();
+            if (fetchedCustomer.isPresent()) {
+                Customer customer = fetchedCustomer.get();
+                InvoiceDto dto = new InvoiceDto();
+
+                invoice.setCustomer(customer);
+                invoiceRepository.save(invoice);
+
+                Invoice modifiedInvoice = invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber).get();
+                DtoConverters.invoiceDtoConverter(modifiedInvoice, dto);
+
+                return dto;
+            } else {
+                throw new RecordNotFoundException("We hebben geen klant met id: " + customerId.id + ".");
             }
         } else {
             throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + ".");
