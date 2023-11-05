@@ -1,11 +1,11 @@
 package com.novi.carcompany.controllers;
 
 import com.novi.carcompany.dtos.*;
+import com.novi.carcompany.helpers.BindingResults;
 import com.novi.carcompany.services.CarService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -49,14 +49,7 @@ public class CarController {
     public ResponseEntity<Object> createCar(@Valid @RequestBody CarInputDto car, BindingResult bindingResult) {
 
         if (bindingResult.hasFieldErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getField());
-                stringBuilder.append(": ");
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append("\n");
-            }
-            return ResponseEntity.badRequest().body(stringBuilder);
+            return  BindingResults.showBindingResult(bindingResult);
         } else {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + car.licensePlate.toUpperCase()).toUriString());
 
@@ -75,14 +68,7 @@ public class CarController {
     @PutMapping("/customer/{customerId}")
     ResponseEntity<Object> assignCarToCustomer(@PathVariable Long customerId, @Valid @RequestBody StringInputDto licensePlate, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getField());
-                stringBuilder.append(": ");
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append("\n");
-            }
-            return ResponseEntity.badRequest().body(stringBuilder);
+            return  BindingResults.showBindingResult(bindingResult);
         } else {
 
             CustomerDto dto = carService.assignCarsToCustomer(customerId, licensePlate);
