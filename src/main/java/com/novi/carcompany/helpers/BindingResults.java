@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+
 public class BindingResults {
 
     public static ResponseEntity<Object> showBindingResult(BindingResult bindingResult) {
