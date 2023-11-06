@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class CustomerService {
 
@@ -24,7 +25,7 @@ public class CustomerService {
     }
 
 
-    ///// For fetching all customers in the database. /////
+    ///// For fetching all customers. /////
     public List<CustomerDto> getAllCustomers(){
         List<Customer> fetchedCustomers = customerRepository.findAll();
         List<CustomerDto> customerDto = new ArrayList<>();
@@ -44,10 +45,9 @@ public class CustomerService {
         }
     }
 
-    ///// For fetching customers by id from the database. /////
+    ///// For fetching customers by id. /////
     public CustomerDto getCustomerById(Long id) {
         Optional<Customer> customer = customerRepository.findById(id);
-
 
         if (customer.isPresent()) {
             CustomerDto dto = new CustomerDto();
@@ -60,7 +60,7 @@ public class CustomerService {
         }
     }
 
-    ///// For fetching customers by surname and/or lastname from the database. /////
+    ///// For fetching customers by surname and/or lastname. /////
     public List<CustomerDto> getCustomerByName(String surName, String lastName) {
         List<Customer> fetchedCustomerList = customerRepository.findCustomersBySurNameIgnoreCaseOrLastNameIgnoreCase(surName, lastName);
         List<CustomerDto> customerList = new ArrayList<>();
@@ -90,7 +90,7 @@ public class CustomerService {
         //TODO: fix search for only surname
     }
 
-    ///// For fetching customers by corporate or private from the database. /////
+    ///// For fetching customers by corporate or private. /////
     public List<CustomerDto> getAllCorporateOrPrivate(Boolean corporate) {
         List<Customer> fetchedCustomerList = customerRepository.findCustomersByCorporate(corporate);
         List<CustomerDto> customerDtoList = new ArrayList<>();
@@ -113,7 +113,7 @@ public class CustomerService {
         }
     }
 
-    ///// For adding a customer in the database. /////
+    ///// For adding new customer. /////
     public CustomerDto createCustomer(CustomerInputDto customer) {
         Optional<Customer> existingCustomer = customerRepository.findCustomersBySurNameIgnoreCaseAndLastNameIgnoreCase(customer.surName, customer.lastName);
 
@@ -135,7 +135,7 @@ public class CustomerService {
         }
     }
 
-    ///// For changing a customer in the database. /////
+    ///// For changing a customer. /////
     public CustomerDto changeCustomer (Long id, CustomerDto customer) {
         Optional<Customer> fetchedCustomer = customerRepository.findById(id);
         CustomerDto returnCustomer = new CustomerDto();
@@ -171,7 +171,7 @@ public class CustomerService {
         }
     }
 
-    ///// For deleting a customer from the database. /////
+    ///// For deleting a customer by id. /////
     public CustomerDto deleteCustomer(Long id) {
         Optional<Customer> customer = customerRepository.findById(id);
 

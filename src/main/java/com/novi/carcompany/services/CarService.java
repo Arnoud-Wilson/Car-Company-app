@@ -1,6 +1,5 @@
 package com.novi.carcompany.services;
 
-
 import com.novi.carcompany.dtos.*;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
@@ -11,7 +10,6 @@ import com.novi.carcompany.models.Customer;
 import com.novi.carcompany.repositories.CarRepository;
 import com.novi.carcompany.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,7 @@ public class CarService {
     }
 
 
-    ///// For fetching all cars currently in the database. /////
+    ///// For fetching all cars. /////
     public List<CarDto> getCars() {
         List<Car> fetchedCars = carRepository.findAll();
         List<CarDto> carDto = new ArrayList<>();
@@ -50,8 +48,7 @@ public class CarService {
         }
     }
 
-
-    ///// For fetching one car by licence plate from database. /////
+    ///// For fetching one car by licence plate. /////
     public CarDto getCar(String licensePlate) {
 
         if (carRepository.existsByLicensePlateIgnoreCase(licensePlate)) {
@@ -66,8 +63,7 @@ public class CarService {
         }
     }
 
-
-    ///// For fetching car by vin number from database. /////
+    ///// For fetching car by vin number. /////
     public List<CarDto> findCarByVinNumber(String vinNumber) {
         if (carRepository.existsCarsByVinNumberEqualsIgnoreCase(vinNumber)) {
             List<Car> vinNumberList = carRepository.findCarsByVinNumberIgnoreCase(vinNumber);
@@ -85,8 +81,7 @@ public class CarService {
         }
     }
 
-
-    /// For fetching cars by brand or brand and model from database. /////
+    /// For fetching cars by brand or brand and model. /////
     public List<CarDto> findCar(String brand, String model) {
         List<CarDto> carDtoList = new ArrayList<>();
         List<Car> fetchedList = carRepository.findCarsByBrandContainingIgnoreCaseAndModelContainingIgnoreCase(brand, model);
@@ -106,7 +101,7 @@ public class CarService {
     }
 
 
-    ///// For adding a car to the database. /////
+    ///// For adding new car. /////
     public CarDto createCar(CarInputDto car) {
         Car newCar = new Car();
         CarDto returnCar = new CarDto();
@@ -126,7 +121,7 @@ public class CarService {
     }
 
 
-    ///// For changing a car in the database. /////
+    ///// For changing a car. /////
     public CarDto changeCar(String licensePlate, CarDto car) {
         Optional<Car> fetchedCar = carRepository.findByLicensePlateIgnoreCase(licensePlate);
         CarDto returnCar = new CarDto();
@@ -168,7 +163,6 @@ public class CarService {
         }
     }
 
-
     ///// For assigning cars to customer. /////
     public CustomerDto assignCarsToCustomer(Long customerId, StringInputDto licensePlate) {
         Optional<Customer> fetchedCustomer =  customerRepository.findById(customerId);
@@ -195,8 +189,7 @@ public class CarService {
         }
     }
 
-
-    ///// For deleting a car from the database. /////
+    ///// For deleting a car by license plate. /////
     public String deleteCar(String licensePlate) {
         if (carRepository.existsByLicensePlateIgnoreCase(licensePlate)) {
 

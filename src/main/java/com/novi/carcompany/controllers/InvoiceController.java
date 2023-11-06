@@ -4,16 +4,17 @@ import com.novi.carcompany.dtos.InvoiceDto;
 import com.novi.carcompany.dtos.InvoiceInputDto;
 import com.novi.carcompany.dtos.NumberInputDto;
 import com.novi.carcompany.dtos.StringInputDto;
+import com.novi.carcompany.helpers.BindingResults;
 import com.novi.carcompany.services.InvoiceService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/invoices")
@@ -48,15 +49,9 @@ public class InvoiceController {
 
     @PostMapping
     ResponseEntity<Object> createInvoice(@Valid @RequestBody InvoiceInputDto invoice, BindingResult bindingResult) {
+
         if (bindingResult.hasFieldErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getField());
-                stringBuilder.append(": ");
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append("\n");
-            }
-            return ResponseEntity.badRequest().body(stringBuilder);
+            return  BindingResults.showBindingResult(bindingResult);
         } else {
             InvoiceDto invoiceDto = invoiceService.createInvoice(invoice);
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + invoiceDto.invoiceNumber).toUriString());
@@ -66,24 +61,22 @@ public class InvoiceController {
     }
 
     @PutMapping("/{invoiceNumber}")
-    ResponseEntity<InvoiceDto> changeInvoice(@PathVariable Long invoiceNumber, @RequestBody InvoiceDto invoice) {
-        InvoiceDto dto = invoiceService.changeInvoice(invoiceNumber, invoice);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+    ResponseEntity<Object> changeInvoice(@PathVariable Long invoiceNumber, @Valid @RequestBody InvoiceDto invoice, BindingResult bindingResult) {
 
-        return ResponseEntity.created(uri).body(dto);
+        if (bindingResult.hasFieldErrors()) {
+            return BindingResults.showBindingResult(bindingResult);
+        } else {
+            InvoiceDto dto = invoiceService.changeInvoice(invoiceNumber, invoice);
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+
+            return ResponseEntity.created(uri).body(dto);
+        }
     }
 
     @PutMapping("/{invoiceNumber}/employee")
     ResponseEntity<Object> assignEmployeeToInvoice(@PathVariable Long invoiceNumber, @Valid @RequestBody NumberInputDto employeeId, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getField());
-                stringBuilder.append(": ");
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append("\n");
-            }
-            return ResponseEntity.badRequest().body(stringBuilder);
+            return  BindingResults.showBindingResult(bindingResult);
         } else {
 
             InvoiceDto dto = invoiceService.assignEmployeeToInvoice(invoiceNumber, employeeId);
@@ -96,14 +89,7 @@ public class InvoiceController {
     @PutMapping("/{invoiceNumber}/customer")
     ResponseEntity<Object> assignCustomerToInvoice(@PathVariable Long invoiceNumber, @Valid @RequestBody NumberInputDto customerId, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getField());
-                stringBuilder.append(": ");
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append("\n");
-            }
-            return ResponseEntity.badRequest().body(stringBuilder);
+            return  BindingResults.showBindingResult(bindingResult);
         } else {
 
             InvoiceDto dto = invoiceService.assignCustomerToInvoice(invoiceNumber, customerId);
@@ -116,14 +102,7 @@ public class InvoiceController {
     @PutMapping("/{invoiceNumber}/car")
     ResponseEntity<Object> assignCarToInvoice(@PathVariable Long invoiceNumber, @Valid @RequestBody StringInputDto licensePlate, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getField());
-                stringBuilder.append(": ");
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append("\n");
-            }
-            return ResponseEntity.badRequest().body(stringBuilder);
+            return  BindingResults.showBindingResult(bindingResult);
         } else {
 
             InvoiceDto dto = invoiceService.assignCarToInvoice(invoiceNumber, licensePlate);
@@ -136,14 +115,7 @@ public class InvoiceController {
     @PutMapping("/{invoiceNumber}/part")
     ResponseEntity<Object> assignPartToInvoice(@PathVariable Long invoiceNumber, @Valid @RequestBody StringInputDto partNumber, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getField());
-                stringBuilder.append(": ");
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append("\n");
-            }
-            return ResponseEntity.badRequest().body(stringBuilder);
+            return  BindingResults.showBindingResult(bindingResult);
         } else {
 
             InvoiceDto dto = invoiceService.assignPartToInvoice(invoiceNumber, partNumber);

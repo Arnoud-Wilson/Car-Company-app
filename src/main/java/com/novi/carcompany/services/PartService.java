@@ -26,7 +26,7 @@ public class PartService {
     }
 
 
-    ///// For fetching all parts in the database. /////
+    ///// For fetching all parts. /////
     public List<PartDto> getParts(){
         List<Part> fetchedParts = partRepository.findAll();
         List<PartDto> partDto = new ArrayList<>();
@@ -46,8 +46,7 @@ public class PartService {
         }
     }
 
-
-    ///// For fetching part by part number from database. /////
+    ///// For fetching part by part number. /////
     public PartDto getPart(String partNumber) {
 
         if (partRepository.existsByPartNumberIgnoreCase(partNumber)) {
@@ -62,8 +61,7 @@ public class PartService {
         }
     }
 
-
-    /// For fetching parts by name from the database. /////
+    /// For fetching parts by name. /////
     public List<PartDto> getPartsByName(String name) {
         List<Part> fetchedParts = partRepository.findByNameContainsIgnoreCase(name);
         List<PartDto> dtoList = new ArrayList<>();
@@ -83,8 +81,7 @@ public class PartService {
         }
     }
 
-
-    ///// For fetching all parts currently in stock from the database. /////
+    ///// For fetching all parts currently on stock. /////
     public List<PartDto> getPartsOnStock() {
         List<Part> fetchedParts = partRepository.findAll();
         List<PartDto> dtoList = new ArrayList<>();
@@ -108,8 +105,7 @@ public class PartService {
         }
     }
 
-
-    ///// Fot adding a part to the database. /////
+    ///// For adding a new part. /////
     public PartDto createPart(PartInputDto part) {
         Part newPart = new Part();
         PartDto returnPart = new PartDto();
@@ -128,8 +124,7 @@ public class PartService {
         }
     }
 
-
-    ///// For changing a part in the database. /////
+    ///// For changing a part. /////
     public PartDto changePart(String partNumber, PartChangeInputDto part) {
         Optional<Part> fetchedPart = partRepository.findByPartNumberIgnoreCase(partNumber);
         PartDto returnPart = new PartDto();
@@ -174,8 +169,7 @@ public class PartService {
         }
     }
 
-
-    ///// For deleting a part from the database. /////
+    ///// For deleting a part by part number. /////
     public String deletePart(String partNumber) {
         if (partRepository.existsByPartNumberIgnoreCase(partNumber)) {
 

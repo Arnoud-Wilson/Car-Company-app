@@ -2,16 +2,17 @@ package com.novi.carcompany.controllers;
 
 import com.novi.carcompany.dtos.CustomerDto;
 import com.novi.carcompany.dtos.CustomerInputDto;
+import com.novi.carcompany.helpers.BindingResults;
 import com.novi.carcompany.services.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/customers")
@@ -49,14 +50,7 @@ public class CustomerController {
     public ResponseEntity<Object> createCustomer(@Valid @RequestBody CustomerInputDto customer, BindingResult bindingResult) {
 
         if (bindingResult.hasFieldErrors()) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                stringBuilder.append(fieldError.getField());
-                stringBuilder.append(": ");
-                stringBuilder.append(fieldError.getDefaultMessage());
-                stringBuilder.append("\n");
-            }
-            return ResponseEntity.badRequest().body(stringBuilder);
+            return  BindingResults.showBindingResult(bindingResult);
         } else {
             CustomerDto dto = customerService.createCustomer(customer);
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + dto.id).toUriString());
@@ -66,12 +60,16 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> changeCustomer(@PathVariable Long id, @RequestBody CustomerDto customer) {
+    public ResponseEntity<Object> changeCustomer(@PathVariable Long id, @Valid @RequestBody CustomerDto customer, BindingResult bindingResult) {
 
-        CustomerDto dto = customerService.changeCustomer(id, customer);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        if (bindingResult.hasFieldErrors()) {
+            return BindingResults.showBindingResult(bindingResult);
+        } else {
+            CustomerDto dto = customerService.changeCustomer(id, customer);
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
 
-        return ResponseEntity.created(uri).body(dto);
+            return ResponseEntity.created(uri).body(dto);
+        }
     }
 
     @DeleteMapping("/{id}")

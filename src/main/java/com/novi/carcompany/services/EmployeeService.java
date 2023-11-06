@@ -9,10 +9,10 @@ import com.novi.carcompany.models.Employee;
 import com.novi.carcompany.repositories.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class EmployeeService {
@@ -24,7 +24,7 @@ public class EmployeeService {
     }
 
 
-    ///// For fetching all employees in the database. /////
+    ///// For fetching all employees. /////
     public List<EmployeeDto> getAllEmployees(){
         List<Employee> fetchedEmployees = employeeRepository.findAll();
         List<EmployeeDto> employeeDto = new ArrayList<>();
@@ -44,10 +44,9 @@ public class EmployeeService {
         }
     }
 
-    ///// For fetching employee by id from the database. /////
+    ///// For fetching employee by id. /////
     public EmployeeDto getEmployeeById(Long id) {
         Optional<Employee> employee = employeeRepository.findById(id);
-
 
         if (employee.isPresent()) {
             EmployeeDto dto = new EmployeeDto();
@@ -60,7 +59,7 @@ public class EmployeeService {
         }
     }
 
-    ///// For fetching employee by surname and/or lastname from the database. /////
+    ///// For fetching employee by surname and/or lastname. /////
     public List<EmployeeDto> getEmployeeByName(String surName, String lastName) {
         List<Employee> fetchedEmployeeList = employeeRepository.findEmployeesBySurNameIgnoreCaseOrLastNameIgnoreCase(surName, lastName);
         List<EmployeeDto> employeeList = new ArrayList<>();
@@ -89,7 +88,7 @@ public class EmployeeService {
         }
     }
 
-    ///// For fetching employee by function from the database. /////
+    ///// For fetching employee by function. /////
     public List<EmployeeDto> getEmployeeByFunction(String function) {
         List<Employee> fetchedEmployeeList = employeeRepository.findEmployeesByFunctionContainingIgnoreCase(function);
         List<EmployeeDto> employeeDtoList = new ArrayList<>();
@@ -108,7 +107,7 @@ public class EmployeeService {
         }
     }
 
-    ///// For adding an employee in the database. /////
+    ///// For adding new employee. /////
     public EmployeeDto createEmployee(EmployeeInputDto employee) {
         Optional<Employee> existingEmployee = employeeRepository.findEmployeesBySurNameIgnoreCaseAndLastNameIgnoreCase(employee.surName, employee.lastName);
 
@@ -130,7 +129,7 @@ public class EmployeeService {
         }
     }
 
-    ///// For changing an employee in the database. /////
+    ///// For changing an employee. /////
     public EmployeeDto changeEmployee (Long id, EmployeeDto employee) {
         Optional<Employee> fetchedEmployee = employeeRepository.findById(id);
         EmployeeDto returnEmployee = new EmployeeDto();
@@ -163,7 +162,7 @@ public class EmployeeService {
         }
     }
 
-    ///// For deleting an employee from the database. /////
+    ///// For deleting an employee by id. /////
     public EmployeeDto deleteEmployee(Long id) {
         Optional<Employee> employee = employeeRepository.findById(id);
 

@@ -1,9 +1,9 @@
 package com.novi.carcompany.models;
 
-
 import jakarta.persistence.*;
 
 import java.util.Objects;
+
 
 @Entity
 @Table(name = "employees")
@@ -15,6 +15,7 @@ public class Employee extends Person {
     private Long id;
     private String function;
 
+
     public Employee() {
     }
 
@@ -22,6 +23,7 @@ public class Employee extends Person {
         super(surName, lastName, address, phoneNumber);
         this.function = function;
     }
+
 
     public Long getId() {
         return this.id;

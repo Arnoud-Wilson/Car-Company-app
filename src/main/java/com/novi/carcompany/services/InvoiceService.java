@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class InvoiceService {
 
@@ -21,7 +22,6 @@ public class InvoiceService {
     private final CustomerRepository customerRepository;
     private final CarRepository carRepository;
     private final PartRepository partRepository;
-
 
 
     public InvoiceService(InvoiceRepository invoiceRepository, EmployeeRepository employeeRepository, CustomerRepository customerRepository, CarRepository carRepository, PartRepository partRepository) {
@@ -33,7 +33,7 @@ public class InvoiceService {
     }
 
 
-    ///// For fetching all invoices in database. /////
+    ///// For fetching all invoices. /////
     public List<InvoiceDto> getAllInvoices() {
         List<Invoice> fetchedInvoices = invoiceRepository.findAll();
         List<InvoiceDto> invoiceDto = new ArrayList<>();
@@ -53,8 +53,7 @@ public class InvoiceService {
         }
     }
 
-
-    ///// For fetching invoice by invoice number from database. /////
+    ///// For fetching invoice by invoice number. /////
     public InvoiceDto getInvoiceByInvoiceNumber(Long invoiceNumber) {
 
         if (invoiceRepository.existsInvoiceByInvoiceNumber(invoiceNumber)) {
@@ -69,8 +68,7 @@ public class InvoiceService {
         }
     }
 
-
-    ///// For fetching unpaid invoices from database. /////
+    ///// For fetching unpaid invoices. /////
     public List<InvoiceDto> getAllUnpaidInvoices() {
         List<Invoice> unpaidInvoices = invoiceRepository.findInvoiceByPaidFalse();
         List<InvoiceDto> invoiceDtos = new ArrayList<>();
@@ -89,7 +87,7 @@ public class InvoiceService {
     }
 
 
-    ///// For fetching invoices by customer from database. /////
+    ///// For fetching invoices by customer. /////
     public List<InvoiceDto> getCustomerInvoices(Long customerId) {
         List<Invoice> invoices = invoiceRepository.findInvoiceByCustomerId(customerId);
         List<InvoiceDto> invoiceDtos = new ArrayList<>();
@@ -107,8 +105,7 @@ public class InvoiceService {
         }
     }
 
-
-    ///// For creating new invoice in database. /////
+    ///// For adding new invoice. /////
     public InvoiceDto createInvoice(InvoiceInputDto invoice) {
         Invoice newInvoice = new Invoice();
         InvoiceDto returnInvoice = new InvoiceDto();
@@ -127,8 +124,7 @@ public class InvoiceService {
         }
     }
 
-
-    ///// For changing invoice in database. /////
+    ///// For changing invoice. /////
     public InvoiceDto changeInvoice(Long invoiceNumber, InvoiceDto invoice) {
         Optional<Invoice> fetchedInvoice = invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber);
         InvoiceDto returnInvoice = new InvoiceDto();
@@ -139,7 +135,6 @@ public class InvoiceService {
                 if (invoice.totalPrice != null) {
                     invoice1.setTotalPrice(invoice.totalPrice);
                 }
-                //TODO numbers null check???????? is that good?
                 if (invoice.approved != null) {
                     invoice1.setApproved(invoice.approved);
                 }
@@ -163,7 +158,6 @@ public class InvoiceService {
             throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + " in onze database.");
         }
     }
-
 
     ///// For assigning employee to invoice. /////
     public InvoiceDto assignEmployeeToInvoice(Long invoiceNumber, NumberInputDto employeeId) {
@@ -191,7 +185,6 @@ public class InvoiceService {
         }
     }
 
-
     ///// For assigning customer to invoice. /////
     public InvoiceDto assignCustomerToInvoice(Long invoiceNumber, NumberInputDto customerId) {
         Optional<Invoice> fetchedInvoice =  invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber);
@@ -218,7 +211,6 @@ public class InvoiceService {
         }
     }
 
-
     ///// For assigning car to invoice. /////
     public InvoiceDto assignCarToInvoice(Long invoiceNumber, StringInputDto licensePlate) {
         Optional<Invoice> fetchedInvoice =  invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber);
@@ -244,7 +236,6 @@ public class InvoiceService {
             throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + ".");
         }
     }
-
 
     ///// For assigning parts to invoice. /////
     public InvoiceDto assignPartToInvoice(Long invoiceNumber, StringInputDto partNumber) {
@@ -274,8 +265,7 @@ public class InvoiceService {
         }
     }
 
-
-    ///// For deleting invoice from database. /////
+    ///// For deleting invoice by invoice number. /////
     public InvoiceDto deleteInvoice(Long invoiceNumber) {
         Optional<Invoice> invoice = invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber);
 
@@ -292,11 +282,4 @@ public class InvoiceService {
             throw new RecordNotFoundException("We hebben geen factuur met nummer: " + invoiceNumber + " in onze database.");
         }
     }
-
-
-
-
-
-
-
 }

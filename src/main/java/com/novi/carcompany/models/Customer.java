@@ -5,11 +5,10 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+
 @Entity
 @Table(name = "customers")
 public class Customer extends Person {
-
-    //TODO: set inheritance? annotation?
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
