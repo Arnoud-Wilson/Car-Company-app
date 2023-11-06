@@ -1,6 +1,9 @@
 package com.novi.carcompany.dtos.security;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.novi.carcompany.models.security.Authority;
+
+import java.util.Set;
 
 
 public class UserDto {

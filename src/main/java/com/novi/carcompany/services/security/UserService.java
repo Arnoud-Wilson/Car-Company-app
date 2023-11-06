@@ -1,9 +1,17 @@
 package com.novi.carcompany.services.security;
 
+import com.novi.carcompany.dtos.security.UserDto;
+import com.novi.carcompany.exceptions.UsernameNotFoundException;
+import com.novi.carcompany.models.security.Authority;
+import com.novi.carcompany.models.security.User;
+import com.novi.carcompany.utilities.RandomStringGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 
 @Service

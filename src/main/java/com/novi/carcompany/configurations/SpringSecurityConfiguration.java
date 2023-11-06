@@ -1,5 +1,7 @@
 package com.novi.carcompany.configurations;
 
+import com.novi.carcompany.filters.JwtRequestFilter;
+import com.novi.carcompany.services.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

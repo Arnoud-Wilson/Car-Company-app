@@ -1,5 +1,7 @@
 package com.novi.carcompany.filters;
 
+import com.novi.carcompany.services.security.CustomUserDetailsService;
+import com.novi.carcompany.utilities.JwtUtility;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

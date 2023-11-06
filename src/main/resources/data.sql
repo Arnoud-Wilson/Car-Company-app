@@ -29,7 +29,7 @@ VALUES
     ('10002', '200', true, true, 2.0);
 
 
--- ///// Security /////
+-- ///// Security ///// --
 
 INSERT INTO users(username, password, enabled, apikey, email)
 VALUES
