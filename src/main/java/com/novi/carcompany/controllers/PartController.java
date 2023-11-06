@@ -59,11 +59,15 @@ public class PartController {
     }
 
     @PutMapping("/{partNumber}")
-    public ResponseEntity<PartDto> changePart(@PathVariable String partNumber, @RequestBody PartChangeInputDto part) {
+    public ResponseEntity<Object> changePart(@PathVariable String partNumber, @Valid @RequestBody PartChangeInputDto part, BindingResult bindingResult) {
 
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        if (bindingResult.hasFieldErrors()) {
+            return BindingResults.showBindingResult(bindingResult);
+        } else {
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
 
-        return ResponseEntity.created(uri).body(partService.changePart(partNumber, part));
+            return ResponseEntity.created(uri).body(partService.changePart(partNumber, part));
+        }
     }
 
     @DeleteMapping("/{partNumber}")

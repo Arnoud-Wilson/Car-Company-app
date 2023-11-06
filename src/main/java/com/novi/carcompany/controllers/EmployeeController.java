@@ -59,12 +59,16 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDto> changeEmployee(@PathVariable Long id, @RequestBody EmployeeDto employee) {
+    public ResponseEntity<Object> changeEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeDto employee, BindingResult bindingResult) {
 
-        EmployeeDto dto = employeeService.changeEmployee(id, employee);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        if (bindingResult.hasFieldErrors()) {
+            return BindingResults.showBindingResult(bindingResult);
+        } else {
+            EmployeeDto dto = employeeService.changeEmployee(id, employee);
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
 
-        return ResponseEntity.created(uri).body(dto);
+            return ResponseEntity.created(uri).body(dto);
+        }
     }
 
     @DeleteMapping("/{id}")

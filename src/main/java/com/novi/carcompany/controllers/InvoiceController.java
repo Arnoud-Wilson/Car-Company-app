@@ -48,6 +48,7 @@ public class InvoiceController {
 
     @PostMapping
     ResponseEntity<Object> createInvoice(@Valid @RequestBody InvoiceInputDto invoice, BindingResult bindingResult) {
+
         if (bindingResult.hasFieldErrors()) {
             return  BindingResults.showBindingResult(bindingResult);
         } else {
@@ -59,11 +60,16 @@ public class InvoiceController {
     }
 
     @PutMapping("/{invoiceNumber}")
-    ResponseEntity<InvoiceDto> changeInvoice(@PathVariable Long invoiceNumber, @RequestBody InvoiceDto invoice) {
-        InvoiceDto dto = invoiceService.changeInvoice(invoiceNumber, invoice);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+    ResponseEntity<Object> changeInvoice(@PathVariable Long invoiceNumber, @Valid @RequestBody InvoiceDto invoice, BindingResult bindingResult) {
 
-        return ResponseEntity.created(uri).body(dto);
+        if (bindingResult.hasFieldErrors()) {
+            return BindingResults.showBindingResult(bindingResult);
+        } else {
+            InvoiceDto dto = invoiceService.changeInvoice(invoiceNumber, invoice);
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+
+            return ResponseEntity.created(uri).body(dto);
+        }
     }
 
     @PutMapping("/{invoiceNumber}/employee")

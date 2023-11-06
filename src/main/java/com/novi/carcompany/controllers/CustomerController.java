@@ -59,12 +59,16 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> changeCustomer(@PathVariable Long id, @RequestBody CustomerDto customer) {
+    public ResponseEntity<Object> changeCustomer(@PathVariable Long id, @Valid @RequestBody CustomerDto customer, BindingResult bindingResult) {
 
-        CustomerDto dto = customerService.changeCustomer(id, customer);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        if (bindingResult.hasFieldErrors()) {
+            return BindingResults.showBindingResult(bindingResult);
+        } else {
+            CustomerDto dto = customerService.changeCustomer(id, customer);
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
 
-        return ResponseEntity.created(uri).body(dto);
+            return ResponseEntity.created(uri).body(dto);
+        }
     }
 
     @DeleteMapping("/{id}")

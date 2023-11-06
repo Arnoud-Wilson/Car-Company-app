@@ -58,11 +58,15 @@ public class CarController {
     }
 
     @PutMapping("/{licensePlate}")
-    public ResponseEntity<CarDto> changeCar(@PathVariable String licensePlate, @RequestBody CarDto car) {
-//TODO validate request body
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+    public ResponseEntity<Object> changeCar(@PathVariable String licensePlate, @Valid @RequestBody CarDto car, BindingResult bindingResult) {
 
-        return ResponseEntity.created(uri).body(carService.changeCar(licensePlate, car));
+        if (bindingResult.hasFieldErrors()) {
+            return BindingResults.showBindingResult(bindingResult);
+        } else {
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+
+            return ResponseEntity.created(uri).body(carService.changeCar(licensePlate, car));
+        }
     }
 
     @PutMapping("/customer/{customerId}")
