@@ -1,18 +1,16 @@
 package com.novi.carcompany.models;
 
-
 import jakarta.persistence.*;
+
 
 @MappedSuperclass
 public abstract class Person {
 
-    @Column(name = "surName", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private String surName;
-    @Column(name = "lastName", nullable = false)
+    @Column(nullable = false)
     private String lastName;
-    @Column(name = "address")
     private String address;
-    @Column(name = "phoneNumber")
     private String phoneNumber;
 
 
