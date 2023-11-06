@@ -1,13 +1,14 @@
 package com.novi.carcompany.services;
 
-import com.novi.carcompany.dtos.CarDto;
-import com.novi.carcompany.dtos.CarInputDto;
+import com.novi.carcompany.dtos.businessEntities.CarDto;
+import com.novi.carcompany.dtos.businessEntities.CarInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
-import com.novi.carcompany.models.Car;
+import com.novi.carcompany.models.businessEntities.Car;
 import com.novi.carcompany.repositories.CarRepository;
+import com.novi.carcompany.services.businessEntities.CarService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

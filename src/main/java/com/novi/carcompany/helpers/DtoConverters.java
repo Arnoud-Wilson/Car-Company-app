@@ -1,7 +1,7 @@
 package com.novi.carcompany.helpers;
 
-import com.novi.carcompany.dtos.*;
-import com.novi.carcompany.models.*;
+import com.novi.carcompany.dtos.businessEntities.*;
+import com.novi.carcompany.models.businessEntities.*;
 
 import java.util.ArrayList;
 import java.util.List;

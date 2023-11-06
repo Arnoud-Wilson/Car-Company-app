@@ -1,14 +1,15 @@
 package com.novi.carcompany.services;
 
-import com.novi.carcompany.dtos.PartChangeInputDto;
-import com.novi.carcompany.dtos.PartDto;
-import com.novi.carcompany.dtos.PartInputDto;
+import com.novi.carcompany.dtos.businessEntities.PartChangeInputDto;
+import com.novi.carcompany.dtos.businessEntities.PartDto;
+import com.novi.carcompany.dtos.businessEntities.PartInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
-import com.novi.carcompany.models.Part;
+import com.novi.carcompany.models.businessEntities.Part;
 import com.novi.carcompany.repositories.PartRepository;
+import com.novi.carcompany.services.businessEntities.PartService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package com.novi.carcompany.repositories;
 
-import com.novi.carcompany.models.Employee;
+import com.novi.carcompany.models.businessEntities.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
