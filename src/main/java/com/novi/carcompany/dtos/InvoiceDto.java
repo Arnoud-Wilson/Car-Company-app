@@ -3,6 +3,7 @@ package com.novi.carcompany.dtos;
 import java.util.List;
 import java.util.Objects;
 
+
 public class InvoiceDto {
 
     public Long invoiceNumber;
@@ -14,6 +15,7 @@ public class InvoiceDto {
     public CarDto car;
     public List<PartDto> parts;
     public CustomerDto customer;
+
 
     @Override
     public boolean equals(Object o) {

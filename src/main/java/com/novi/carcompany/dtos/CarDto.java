@@ -1,7 +1,7 @@
 package com.novi.carcompany.dtos;
 
-
 import java.util.Objects;
+
 
 public class CarDto {
 

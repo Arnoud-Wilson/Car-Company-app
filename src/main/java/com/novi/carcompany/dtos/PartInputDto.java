@@ -3,6 +3,7 @@ package com.novi.carcompany.dtos;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+
 public class PartInputDto {
 
     @NotBlank
@@ -16,5 +17,4 @@ public class PartInputDto {
     @NotNull
     public Double purchasePrice;
     public Double sellingPrice;
-
 }

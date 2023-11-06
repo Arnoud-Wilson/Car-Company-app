@@ -3,6 +3,7 @@ package com.novi.carcompany.dtos;
 import java.util.List;
 import java.util.Objects;
 
+
 public class CustomerDto extends PersonDto {
 
     public Long id;
