@@ -34,6 +34,13 @@ public class User {
     @Column
     private String email;
 
+    public User(String username, String password, boolean enabled, String apikey, String email) {
+    }
+
+    public User() {
+
+    }
+
 
     public String getUsername() { return username; }
     public void setUsername(String username) {

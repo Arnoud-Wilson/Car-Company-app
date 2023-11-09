@@ -52,7 +52,6 @@ public class UserService {
     }
 
     public String createUser(UserDto userDto) {
-        //TODO: can create two identical users...
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userDto.setApikey(randomString);
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));

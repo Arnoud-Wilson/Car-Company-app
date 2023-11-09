@@ -1,5 +1,6 @@
 package com.novi.carcompany.models.businessEntities;
 
+import com.novi.carcompany.models.security.User;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -19,11 +20,10 @@ public class Employee extends Person {
     public Employee() {
     }
 
-    public Employee(String surName, String lastName, String address, String phoneNumber, String function) {
-        super(surName, lastName, address, phoneNumber);
+    public Employee(Long id, String function) {
+        this.id = id;
         this.function = function;
     }
-
 
     public Long getId() {
         return this.id;

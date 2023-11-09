@@ -23,13 +23,16 @@ public class Customer extends Person {
     private List<Invoice> invoices;
 
 
+
     public Customer() {
     }
 
-    public Customer(String surName, String lastName, String address, String phoneNumber, String bankAccount, Boolean corporate) {
-        super(surName, lastName, address, phoneNumber);
+    public Customer(Long id, String bankAccount, Boolean corporate, List<Car> cars, List<Invoice> invoices) {
+        this.id = id;
         this.bankAccount = bankAccount;
         this.corporate = corporate;
+        this.cars = cars;
+        this.invoices = invoices;
     }
 
 

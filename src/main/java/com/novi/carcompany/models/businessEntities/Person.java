@@ -1,5 +1,6 @@
 package com.novi.carcompany.models.businessEntities;
 
+import com.novi.carcompany.models.security.User;
 import jakarta.persistence.*;
 
 
@@ -13,16 +14,6 @@ public abstract class Person {
     private String address;
     private String phoneNumber;
 
-
-    public Person() {
-    }
-
-    public Person(String surName, String lastName, String address, String phoneNumber) {
-        this.surName = surName;
-        this.lastName = lastName;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-    }
 
 
     public String getSurName() {
