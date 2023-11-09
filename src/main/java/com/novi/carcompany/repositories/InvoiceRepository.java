@@ -1,6 +1,6 @@
 package com.novi.carcompany.repositories;
 
-import com.novi.carcompany.models.Invoice;
+import com.novi.carcompany.models.businessEntities.Invoice;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
