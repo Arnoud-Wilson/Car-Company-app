@@ -1,6 +1,5 @@
 package com.novi.carcompany.models.businessEntities;
 
-import com.novi.carcompany.models.security.User;
 import jakarta.persistence.*;
 
 import java.util.Objects;

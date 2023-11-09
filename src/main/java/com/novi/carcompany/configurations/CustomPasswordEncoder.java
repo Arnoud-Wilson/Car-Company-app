@@ -12,5 +12,4 @@ public class CustomPasswordEncoder {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    //TODO: is this one actually used...?
 }
