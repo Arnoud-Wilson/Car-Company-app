@@ -1,13 +1,15 @@
 package com.novi.carcompany.services.businessEntities;
 
-import com.novi.carcompany.dtos.businessEntities.PartChangeInputDto;
-import com.novi.carcompany.dtos.businessEntities.PartDto;
-import com.novi.carcompany.dtos.businessEntities.PartInputDto;
+import com.novi.carcompany.dtos.businessEntities.*;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
+import com.novi.carcompany.models.businessEntities.Car;
+import com.novi.carcompany.models.businessEntities.FileDocument;
+import com.novi.carcompany.models.businessEntities.Invoice;
 import com.novi.carcompany.models.businessEntities.Part;
+import com.novi.carcompany.repositories.DocFileRepository;
 import com.novi.carcompany.repositories.PartRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,11 @@ import java.util.Optional;
 public class PartService {
 
     private final PartRepository partRepository;
+    private final DocFileRepository docFileRepository;
 
-    public PartService(PartRepository partRepository) {
+    public PartService(PartRepository partRepository, DocFileRepository docFileRepository) {
         this.partRepository = partRepository;
+        this.docFileRepository = docFileRepository;
     }
 
 
@@ -178,6 +182,32 @@ public class PartService {
             return "We hebben het onderdeel met nummer: " + partNumber.toUpperCase() + " succesvol verwijderd.";
         } else {
             throw new RecordNotFoundException("We hebben geen onderdeel met nummer: " + partNumber.toUpperCase() + " in onze database.");
+        }
+    }
+
+    ///// Assign picknote to part. /////
+    public PartDto assignPicknoteToPart(String partNumber, NumberInputDto picknote) {
+        Optional<Part> fetchedPart =  partRepository.findByPartNumberIgnoreCase(partNumber);
+        Optional<FileDocument> fetchedFile = docFileRepository.findById(picknote.id);
+
+        if (fetchedPart.isPresent()) {
+            Part part = fetchedPart.get();
+            if (fetchedFile.isPresent()) {
+                FileDocument picknote1 = fetchedFile.get();
+                PartDto dto = new PartDto();
+
+                part.setPicknote(picknote1);
+                partRepository.save(part);
+
+                Part modifiedPart = partRepository.findByPartNumberIgnoreCase(partNumber).get();
+                DtoConverters.partDtoConverter(modifiedPart, dto);
+
+                return dto;
+            } else {
+                throw new RecordNotFoundException("We hebben geen pakbon met id: " + picknote.id + ".");
+            }
+        } else {
+            throw new RecordNotFoundException("We hebben geen onderdeel met nummer: " + partNumber + ".");
         }
     }
 }

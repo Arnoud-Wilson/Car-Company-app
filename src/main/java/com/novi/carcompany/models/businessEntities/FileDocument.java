@@ -1,9 +1,6 @@
 package com.novi.carcompany.models.businessEntities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 
 @Entity
 public class FileDocument {
@@ -17,6 +14,10 @@ public class FileDocument {
     @Lob
     private byte[] docFile;
 
+
+    public Long getId() {
+        return id;
+    }
 
     public String getFileName() {
         return fileName;

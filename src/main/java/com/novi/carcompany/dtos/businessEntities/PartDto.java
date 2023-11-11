@@ -1,6 +1,8 @@
 package com.novi.carcompany.dtos.businessEntities;
 
 
+import com.novi.carcompany.models.businessEntities.FileDocument;
+
 import java.util.Objects;
 
 public class PartDto {
@@ -12,6 +14,7 @@ public class PartDto {
     public int stock;
     public Double purchasePrice;
     public Double sellingPrice;
+    public FileDocument picknote;
 
 
     @Override
