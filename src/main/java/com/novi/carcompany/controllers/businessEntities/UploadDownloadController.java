@@ -1,5 +1,8 @@
 package com.novi.carcompany.controllers.businessEntities;
 
+import com.novi.carcompany.dtos.businessEntities.FileUploadResponseDto;
+import com.novi.carcompany.models.businessEntities.FileDocument;
+import com.novi.carcompany.services.businessEntities.UploadDownloadService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,30 +18,31 @@ import java.util.*;
 @RestController
 public class UploadDownloadController {
 
-    private final DatabaseService databaseService;
+    private final UploadDownloadService uploadDownloadService;
 
-    public UploadDownloadController(DatabaseService databaseService) {
-        this.databaseService = databaseService;
+    public UploadDownloadController(UploadDownloadService uploadDownloadService) {
+        this.uploadDownloadService = uploadDownloadService;
     }
 
+
     @PostMapping("single/uploadDb")
-    public FileUploadResponse singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
+    public FileUploadResponseDto singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
 
 
         // next line makes url. example "http://localhost:8080/download/naam.jpg"
-        FileDocument fileDocument = databaseService.uploadFileDocument(file);
+        FileDocument fileDocument = uploadDownloadService.uploadFileDocument(file);
         String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFromDB/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
 
         String contentType = file.getContentType();
 
-        return new FileUploadResponse(fileDocument.getFileName(), url, contentType );
+        return new FileUploadResponseDto(fileDocument.getFileName(), url, contentType );
     }
 
     //    get for single download
     @GetMapping("/downloadFromDB/{fileName}")
     ResponseEntity<byte[]> downLoadSingleFile(@PathVariable String fileName, HttpServletRequest request) {
 
-        FileDocument document = databaseService.singleFileDownload(fileName, request);
+        FileDocument document = uploadDownloadService.singleFileDownload(fileName, request);
 
 
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + document.getFileName()).body(document.getDocFile());
@@ -46,25 +50,25 @@ public class UploadDownloadController {
 
     //    post for multiple uploads to database
     @PostMapping("/multiple/upload/db")
-    List<FileUploadResponse> multipleUpload(@RequestParam("files") MultipartFile [] files) {
+    List<FileUploadResponseDto> multipleUpload(@RequestParam("files") MultipartFile [] files) {
 
         if(files.length > 7) {
             throw new RuntimeException("to many files selected");
         }
 
-        return databaseService.createMultipleUpload(files);
+        return uploadDownloadService.createMultipleUpload(files);
 
     }
 
     @GetMapping("zipDownload/db")
     public void zipDownload(@RequestBody String[] files, HttpServletResponse response) throws IOException {
 
-        databaseService.getZipDownload(files, response);
+        uploadDownloadService.getZipDownload(files, response);
 
     }
 
     @GetMapping("/getAll/db")
     public Collection<FileDocument> getAllFromDB(){
-        return databaseService.getALlFromDB();
+        return uploadDownloadService.getALlFromDB();
     }
 }

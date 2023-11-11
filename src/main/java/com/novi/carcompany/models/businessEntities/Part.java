@@ -22,8 +22,6 @@ public class Part {
     @Column(nullable = false, updatable = false)
     private Double purchasePrice;
     private Double sellingPrice;
-    @Lob
-    private byte[] packingNote;
 
 
     public Part() {
@@ -96,27 +94,17 @@ public class Part {
         this.sellingPrice = sellingPrice;
     }
 
-    public byte[] getPackingNote() {
-        return packingNote;
-    }
-
-    public void setPackingNote(byte[] packingNote) {
-        this.packingNote = packingNote;
-    }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Part part)) return false;
-        return stock == part.stock && Objects.equals(partNumber, part.partNumber) && Objects.equals(name, part.name) && Objects.equals(description, part.description) && Objects.equals(location, part.location) && Objects.equals(purchasePrice, part.purchasePrice) && Objects.equals(sellingPrice, part.sellingPrice) && Arrays.equals(packingNote, part.packingNote);
+        return stock == part.stock && Objects.equals(partNumber, part.partNumber) && Objects.equals(name, part.name) && Objects.equals(description, part.description) && Objects.equals(location, part.location) && Objects.equals(purchasePrice, part.purchasePrice) && Objects.equals(sellingPrice, part.sellingPrice);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(partNumber, name, description, location, stock, purchasePrice, sellingPrice);
-        result = 31 * result + Arrays.hashCode(packingNote);
-        return result;
+        return Objects.hash(partNumber, name, description, location, stock, purchasePrice, sellingPrice);
     }
 }
 
