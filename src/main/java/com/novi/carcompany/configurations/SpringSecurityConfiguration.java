@@ -60,6 +60,8 @@ public class SpringSecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "parts").hasAnyAuthority("ADMIN", "USER")
                                 .requestMatchers(HttpMethod.GET, "parts/**").hasAnyAuthority("ADMIN", "USER")
                                 //
+                                .requestMatchers("/load/**").hasAnyAuthority("ADMIN", "USER")
+                                //
                                 .requestMatchers(HttpMethod.POST, "/customers").hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.PUT,"/customers/**").hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/customers/**").hasAuthority("ADMIN")

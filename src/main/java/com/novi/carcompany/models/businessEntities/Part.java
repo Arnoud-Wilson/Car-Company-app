@@ -2,6 +2,7 @@ package com.novi.carcompany.models.businessEntities;
 
 import jakarta.persistence.*;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 
@@ -21,6 +22,9 @@ public class Part {
     @Column(nullable = false, updatable = false)
     private Double purchasePrice;
     private Double sellingPrice;
+
+    @OneToOne
+    private FileDocument picknote;
 
 
     public Part() {
@@ -93,17 +97,24 @@ public class Part {
         this.sellingPrice = sellingPrice;
     }
 
+    public FileDocument getPicknote() {
+        return picknote;
+    }
+
+    public void setPicknote(FileDocument picknote) {
+        this.picknote = picknote;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Part part)) return false;
-        return stock == part.stock && Objects.equals(partNumber, part.partNumber) && Objects.equals(name, part.name) && Objects.equals(description, part.description) && Objects.equals(location, part.location) && Objects.equals(purchasePrice, part.purchasePrice) && Objects.equals(sellingPrice, part.sellingPrice);
+        return stock == part.stock && Objects.equals(partNumber, part.partNumber) && Objects.equals(name, part.name) && Objects.equals(description, part.description) && Objects.equals(location, part.location) && Objects.equals(purchasePrice, part.purchasePrice) && Objects.equals(sellingPrice, part.sellingPrice) && Objects.equals(picknote, part.picknote);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(partNumber, name, description, location, stock, purchasePrice, sellingPrice);
+        return Objects.hash(partNumber, name, description, location, stock, purchasePrice, sellingPrice, picknote);
     }
 }
 

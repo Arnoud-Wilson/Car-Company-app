@@ -1,5 +1,6 @@
 package com.novi.carcompany.controllers.businessEntities;
 
+import com.novi.carcompany.dtos.businessEntities.NumberInputDto;
 import com.novi.carcompany.dtos.businessEntities.PartChangeInputDto;
 import com.novi.carcompany.dtos.businessEntities.PartDto;
 import com.novi.carcompany.dtos.businessEntities.PartInputDto;
@@ -75,5 +76,16 @@ public class PartController {
     public ResponseEntity<String> deletePart(@PathVariable String partNumber) {
 
         return ResponseEntity.ok(partService.deletePart(partNumber));
+    }
+
+    @PutMapping("/{partNumber}/picknote")
+    public ResponseEntity<Object> assignPicknoteToPart(@PathVariable String partNumber,  @Valid @RequestBody NumberInputDto picknoteNumber, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return BindingResults.showBindingResult(bindingResult);
+        } else {
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+
+            return ResponseEntity.created(uri).body(partService.assignPicknoteToPart(partNumber, picknoteNumber));
+        }
     }
 }

@@ -52,6 +52,7 @@ public class DtoConverters {
         dto.stock = part.getStock();
         dto.purchasePrice = part.getPurchasePrice();
         dto.sellingPrice = part.getSellingPrice();
+        dto.picknote = part.getPicknote();
     }
 
     public static void employeeInputDtoConverter(Employee employee, EmployeeInputDto dto) {
