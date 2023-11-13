@@ -70,6 +70,9 @@ public class DtoConverters {
         dto.phoneNumber = employee.getPhoneNumber();
         dto.id = employee.getId();
         dto.function = employee.getFunction();
+        if (employee.getEmployee_user() != null) {
+            dto.userName = employee.getEmployee_user().getUsername();
+        }
     }
 
     public static void customerInputDtoConverter(Customer customer, CustomerInputDto dto) {

@@ -2,6 +2,7 @@ package com.novi.carcompany.controllers.businessEntities;
 
 import com.novi.carcompany.dtos.businessEntities.EmployeeDto;
 import com.novi.carcompany.dtos.businessEntities.EmployeeInputDto;
+import com.novi.carcompany.dtos.businessEntities.StringInputDto;
 import com.novi.carcompany.helpers.BindingResults;
 import com.novi.carcompany.services.businessEntities.EmployeeService;
 import jakarta.validation.Valid;
@@ -69,6 +70,16 @@ public class EmployeeController {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
 
             return ResponseEntity.created(uri).body(dto);
+        }
+    }
+
+    @PutMapping("/{id}/user")
+    public ResponseEntity<Object> assignUserToEmployee(@PathVariable Long id, @Valid @RequestBody StringInputDto userName, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return BindingResults.showBindingResult(bindingResult);
+        } else {
+            employeeService.assignUserToEmployee(id, userName);
+            return ResponseEntity.ok("We hebben User: " + userName.id + " aan personeelslid met id: " + id + " toegevoegd.");
         }
     }
 

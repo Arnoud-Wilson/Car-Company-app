@@ -2,11 +2,14 @@ package com.novi.carcompany.services.businessEntities;
 
 import com.novi.carcompany.dtos.businessEntities.EmployeeDto;
 import com.novi.carcompany.dtos.businessEntities.EmployeeInputDto;
+import com.novi.carcompany.dtos.businessEntities.StringInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.businessEntities.Employee;
+import com.novi.carcompany.models.security.User;
 import com.novi.carcompany.repositories.EmployeeRepository;
+import com.novi.carcompany.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,9 +21,11 @@ import java.util.Optional;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final UserRepository userRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, UserRepository userRepository) {
         this.employeeRepository = employeeRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -159,6 +164,23 @@ public class EmployeeService {
 
         } else {
             throw new RecordNotFoundException("We hebben geen werknemer met id: " + id + " gevonden.");
+        }
+    }
+
+    ///// For assigning user to employee. /////
+    public void assignUserToEmployee(Long employeeId, StringInputDto userName) {
+        if (employeeRepository.existsById(employeeId)) {
+            Employee employee = employeeRepository.findById(employeeId).get();
+            if (userRepository.existsById(userName.id)) {
+                User user = userRepository.findById(userName.id).get();
+
+                employee.setEmployee_user(user);
+                employeeRepository.save(employee);
+            } else {
+                throw new RecordNotFoundException("We hebben geen user met naam: " + userName.id + ".");
+            }
+        } else {
+            throw new RecordNotFoundException("We hebben geen personeelslid met id: " + employeeId + ".");
         }
     }
 

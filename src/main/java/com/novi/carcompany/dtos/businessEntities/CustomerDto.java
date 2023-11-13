@@ -15,13 +15,14 @@ public class CustomerDto extends PersonDto {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (!(o instanceof CustomerDto that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(bankAccount, that.bankAccount) && Objects.equals(corporate, that.corporate) && Objects.equals(cars, that.cars);
+        return Objects.equals(id, that.id) && Objects.equals(bankAccount, that.bankAccount) && Objects.equals(corporate, that.corporate) && Objects.equals(cars, that.cars) && Objects.equals(userName, that.userName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bankAccount, corporate, cars);
+        return Objects.hash(id, bankAccount, corporate, cars, userName);
     }
 }

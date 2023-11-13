@@ -193,8 +193,6 @@ public class CustomerService {
         }
     }
 
-
-
     ///// For deleting a customer by id. /////
     public CustomerDto deleteCustomer(Long id) {
         Optional<Customer> customer = customerRepository.findById(id);
