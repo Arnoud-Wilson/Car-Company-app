@@ -1,5 +1,6 @@
 package com.novi.carcompany.models.businessEntities;
 
+import com.novi.carcompany.models.security.User;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -16,11 +17,12 @@ public class Customer extends Person {
     private Long id;
     private String bankAccount;
     private Boolean corporate;
-
     @OneToMany(mappedBy = "customer")
     private List<Car> cars;
     @OneToMany(mappedBy = "customer")
     private List<Invoice> invoices;
+    @OneToOne
+    private User customer_user;
 
 
 
@@ -72,16 +74,24 @@ public class Customer extends Person {
         this.invoices = invoices;
     }
 
+    public User getCustomer_user() {
+        return customer_user;
+    }
+
+    public void setCustomer_user(User customer_user) {
+        this.customer_user = customer_user;
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Customer customer)) return false;
-        return Objects.equals(id, customer.id) && Objects.equals(bankAccount, customer.bankAccount) && Objects.equals(corporate, customer.corporate) && Objects.equals(cars, customer.cars) && Objects.equals(invoices, customer.invoices);
+        return Objects.equals(id, customer.id) && Objects.equals(bankAccount, customer.bankAccount) && Objects.equals(corporate, customer.corporate) && Objects.equals(cars, customer.cars) && Objects.equals(invoices, customer.invoices) && Objects.equals(customer_user, customer.customer_user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, bankAccount, corporate, cars, invoices);
+        return Objects.hash(id, bankAccount, corporate, cars, invoices, customer_user);
     }
 }
