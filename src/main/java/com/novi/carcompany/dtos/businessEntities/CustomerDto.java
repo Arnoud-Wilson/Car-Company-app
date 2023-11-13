@@ -10,6 +10,7 @@ public class CustomerDto extends PersonDto {
     public String bankAccount;
     public Boolean corporate;
     public List<String> cars;
+    public String userName;
 
 
     @Override

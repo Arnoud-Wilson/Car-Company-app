@@ -97,6 +97,9 @@ public class DtoConverters {
             }
             dto.cars = licensePlates;
         }
+        if (customer.getCustomer_user() != null) {
+            dto.userName = customer.getCustomer_user().getUsername();
+        }
     }
 
     public static void invoiceInputDtoConverter(Invoice invoice, InvoiceInputDto dto) {
