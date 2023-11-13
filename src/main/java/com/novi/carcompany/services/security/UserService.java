@@ -1,5 +1,6 @@
 package com.novi.carcompany.services.security;
 
+import com.novi.carcompany.dtos.businessEntities.NumberInputDto;
 import com.novi.carcompany.dtos.security.UserDto;
 import com.novi.carcompany.exceptions.UsernameNotFoundException;
 import com.novi.carcompany.models.security.Authority;

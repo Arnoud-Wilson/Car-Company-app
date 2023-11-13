@@ -2,12 +2,15 @@ package com.novi.carcompany.services.businessEntities;
 
 import com.novi.carcompany.dtos.businessEntities.CustomerDto;
 import com.novi.carcompany.dtos.businessEntities.CustomerInputDto;
+import com.novi.carcompany.dtos.businessEntities.StringInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.businessEntities.Customer;
 
+import com.novi.carcompany.models.security.User;
 import com.novi.carcompany.repositories.CustomerRepository;
+import com.novi.carcompany.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,9 +22,11 @@ import java.util.Optional;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, UserRepository userRepository) {
         this.customerRepository = customerRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -170,6 +175,25 @@ public class CustomerService {
             throw new RecordNotFoundException("We hebben geen klant met id: " + id + " gevonden.");
         }
     }
+
+    ///// For assigning user to customer. /////
+    public void assignUserToCustomer(Long customerId, StringInputDto userName) {
+        if (customerRepository.existsById(customerId)) {
+            Customer customer = customerRepository.findById(customerId).get();
+            if (userRepository.existsById(userName.id)) {
+                User user = userRepository.findById(userName.id).get();
+
+                customer.setCustomer_user(user);
+                customerRepository.save(customer);
+            } else {
+                throw new RecordNotFoundException("We hebben geen user met naam: " + userName.id + ".");
+            }
+        } else {
+            throw new RecordNotFoundException("We hebben geen klant met id: " + customerId + ".");
+        }
+    }
+
+
 
     ///// For deleting a customer by id. /////
     public CustomerDto deleteCustomer(Long id) {
