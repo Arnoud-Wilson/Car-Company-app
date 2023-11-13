@@ -24,6 +24,8 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
+    //TODO: relaties maken tussen user en customer/employee
+
 
     @Column(nullable = false)
     private boolean enabled = true;

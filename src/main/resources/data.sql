@@ -36,7 +36,6 @@ VALUES
     ('test admin', '$2a$12$quFO0Y69QFyUprNxzu5aY.IrwKelctwLSWvUTmpg.eO08u.6PIBJy', true, '7847493', 'test@testy.tst'),
     ('test user', '$2a$12$quFO0Y69QFyUprNxzu5aY.IrwKelctwLSWvUTmpg.eO08u.6PIBJy', false, '741582654', 'hoi@hallo.nl');
 
--- // password van test admin & test user = Geheim // --
 
 INSERT INTO authorities(username, authority)
 VALUES
