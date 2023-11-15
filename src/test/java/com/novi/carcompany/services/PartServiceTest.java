@@ -1,5 +1,6 @@
 package com.novi.carcompany.services;
 
+import com.novi.carcompany.dtos.businessEntities.NumberInputDto;
 import com.novi.carcompany.dtos.businessEntities.PartChangeInputDto;
 import com.novi.carcompany.dtos.businessEntities.PartDto;
 import com.novi.carcompany.dtos.businessEntities.PartInputDto;
@@ -7,7 +8,9 @@ import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
+import com.novi.carcompany.models.businessEntities.FileDocument;
 import com.novi.carcompany.models.businessEntities.Part;
+import com.novi.carcompany.repositories.DocFileRepository;
 import com.novi.carcompany.repositories.PartRepository;
 import com.novi.carcompany.services.businessEntities.PartService;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +40,9 @@ class PartServiceTest {
     @Mock
     private PartRepository partRepository;
 
+    @Mock
+    private DocFileRepository fileDocumentRepository;
+
     @InjectMocks
     private PartService partService;
 
@@ -51,7 +57,11 @@ class PartServiceTest {
 
     PartInputDto partInputDto = new PartInputDto();
 
+    NumberInputDto numberInputDto = new NumberInputDto();
+
     PartChangeInputDto partChangeInputDto = new PartChangeInputDto();
+
+    FileDocument pickNote = new FileDocument();
 
 
     @BeforeEach
@@ -95,6 +105,10 @@ class PartServiceTest {
         partChangeInputDto.quantity = 2;
         partChangeInputDto.purchasePrice = 10.25;
         partChangeInputDto.sellingPrice = 15.35;
+        /////
+        pickNote.setFileName("Test picknote");
+        /////
+        numberInputDto.id = 1L;
     }
 
     @Test
@@ -301,4 +315,37 @@ class PartServiceTest {
     void deletePartExceptionPartNumberUnknown() {
         assertThrows(RecordNotFoundException.class, () -> partService.deletePart("11111"));
     }
+
+    @Test
+    @DisplayName("Should assign picknote to part")
+    void assignPicknoteToPartTest() {
+        given(partRepository.findByPartNumberIgnoreCase("11111")).willReturn(Optional.of(partOne));
+        given(fileDocumentRepository.findById(1L)).willReturn(Optional.of(pickNote));
+
+        partService.assignPicknoteToPart("11111", numberInputDto);
+
+        verify(partRepository, times(1)).save(partArgumentCaptor.capture());
+
+        Part captured = partArgumentCaptor.getValue();
+
+        assertEquals(pickNote, captured.getPicknote());
+    }
+
+    @Test
+    @DisplayName("Should throw exception if part number is not in database")
+    void assignPicknoteToPartExceptionPartNumberUnknown() {
+        given(partRepository.findByPartNumberIgnoreCase("111")).willReturn(Optional.empty());
+
+        assertThrows(RecordNotFoundException.class, () -> partService.assignPicknoteToPart("111", numberInputDto));
+    }
+
+    @Test
+    @DisplayName("Should throw exception if picknote is not in database")
+    void assignPicknoteToPartExceptionPicknoteUnknown() {
+        given(partRepository.findByPartNumberIgnoreCase("11111")).willReturn(Optional.of(partOne));
+        given(fileDocumentRepository.findById(1L)).willReturn(Optional.empty());
+
+        assertThrows(RecordNotFoundException.class, () -> partService.assignPicknoteToPart("11111", numberInputDto));
+    }
+
 }
