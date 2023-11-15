@@ -9,7 +9,6 @@ import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.businessEntities.Car;
 import com.novi.carcompany.models.businessEntities.Customer;
-import com.novi.carcompany.models.businessEntities.Part;
 import com.novi.carcompany.repositories.CarRepository;
 import com.novi.carcompany.repositories.CustomerRepository;
 import com.novi.carcompany.services.businessEntities.CarService;
@@ -22,6 +21,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,10 +33,8 @@ import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
+@AutoConfigureMockMvc(addFilters = false)
 class CarServiceTest {
-
-    //TODO: @WithMockUser(username="testuser", roles="USER")  // check authorization, not authentication (onder @test)
-    //TODO: @AutoConfigureMockMvc(addFilters = false) (boven aan testclass)
 
     @Mock
     private CarRepository carRepository;
