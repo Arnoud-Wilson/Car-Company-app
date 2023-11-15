@@ -2,12 +2,16 @@ package com.novi.carcompany.services;
 
 import com.novi.carcompany.dtos.businessEntities.CarDto;
 import com.novi.carcompany.dtos.businessEntities.CarInputDto;
+import com.novi.carcompany.dtos.businessEntities.StringInputDto;
 import com.novi.carcompany.exceptions.AlreadyExistsException;
 import com.novi.carcompany.exceptions.IllegalChangeException;
 import com.novi.carcompany.exceptions.RecordNotFoundException;
 import com.novi.carcompany.helpers.DtoConverters;
 import com.novi.carcompany.models.businessEntities.Car;
+import com.novi.carcompany.models.businessEntities.Customer;
+import com.novi.carcompany.models.businessEntities.Part;
 import com.novi.carcompany.repositories.CarRepository;
+import com.novi.carcompany.repositories.CustomerRepository;
 import com.novi.carcompany.services.businessEntities.CarService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,6 +41,9 @@ class CarServiceTest {
     @Mock
     private CarRepository carRepository;
 
+    @Mock
+    private CustomerRepository customerRepository;
+
     @InjectMocks
     private CarService carService;
 
@@ -49,6 +56,10 @@ class CarServiceTest {
     CarDto carDtoOne = new CarDto();
 
     CarInputDto carInputDto = new CarInputDto();
+
+    StringInputDto stringInputDto = new StringInputDto();
+
+    Customer customerOne = new Customer();
 
 
 
@@ -85,6 +96,11 @@ class CarServiceTest {
         carDtoOne.color = "blue";
         carDtoOne.engine = "2.5";
         carDtoOne.winterTyres = false;
+        /////
+        customerOne.setBankAccount("NL01BANK01");
+        customerOne.setCorporate(true);
+        /////
+        stringInputDto.id = "NL-01-NL";
     }
 
     @Test
@@ -283,5 +299,37 @@ class CarServiceTest {
     @DisplayName("Should throw exception if license plate is not in database")
     void deleteCarExceptionLicensePlateUnknown() {
         assertThrows(RecordNotFoundException.class, () -> carService.deleteCar("NL-01-NL"));
+    }
+
+    @Test
+    @DisplayName("Should assign car to customer")
+    void assignCarToCustomerTest() {
+        given(carRepository.findByLicensePlateIgnoreCase("NL-01-NL")).willReturn(Optional.of(carOne));
+        given(customerRepository.findById(1L)).willReturn(Optional.of(customerOne));
+
+        carService.assignCarsToCustomer(1L, stringInputDto);
+
+        verify(carRepository, times(1)).save(carArgumentCaptor.capture());
+
+        Car captured = carArgumentCaptor.getValue();
+
+        assertEquals(stringInputDto.id, captured.getLicensePlate());
+    }
+
+    @Test
+    @DisplayName("Should throw exception if licenseplate is not in database")
+    void assignCarToCustomerExceptionLicenseplateUnknown() {
+        given(customerRepository.findById(1L)).willReturn(Optional.of(customerOne));
+        given(carRepository.findByLicensePlateIgnoreCase("NL-01-NL")).willReturn(Optional.empty());
+
+        assertThrows(RecordNotFoundException.class, () -> carService.assignCarsToCustomer(1L, stringInputDto));
+    }
+
+    @Test
+    @DisplayName("Should throw exception if customer is not in database")
+    void assignCarToCustomerExceptionCustomerUnknown() {
+        given(customerRepository.findById(1L)).willReturn(Optional.empty());
+
+        assertThrows(RecordNotFoundException.class, () -> carService.assignCarsToCustomer(1L, stringInputDto));
     }
 }

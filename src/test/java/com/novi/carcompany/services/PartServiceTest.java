@@ -347,5 +347,4 @@ class PartServiceTest {
 
         assertThrows(RecordNotFoundException.class, () -> partService.assignPicknoteToPart("11111", numberInputDto));
     }
-
 }
