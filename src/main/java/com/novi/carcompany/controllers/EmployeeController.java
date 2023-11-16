@@ -1,4 +1,4 @@
-package com.novi.carcompany.controllers.businessEntities;
+package com.novi.carcompany.controllers;
 
 import com.novi.carcompany.dtos.businessEntities.EmployeeDto;
 import com.novi.carcompany.dtos.businessEntities.EmployeeInputDto;

@@ -4,11 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.novi.carcompany.controllers.businessEntities.PartController;
+import com.novi.carcompany.controllers.PartController;
 import com.novi.carcompany.dtos.businessEntities.PartChangeInputDto;
 import com.novi.carcompany.dtos.businessEntities.PartDto;
 import com.novi.carcompany.dtos.businessEntities.PartInputDto;
+import com.novi.carcompany.filters.JwtRequestFilter;
 import com.novi.carcompany.services.businessEntities.PartService;
+import com.novi.carcompany.services.security.CustomUserDetailsService;
+import com.novi.carcompany.utilities.JwtUtility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +42,15 @@ class PartControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
+
+    @MockBean
+    private CustomUserDetailsService customUserDetailsService;
+
+    @MockBean
+    private JwtUtility jwtUtility;
 
     @MockBean
     private PartService partService;

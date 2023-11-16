@@ -1,4 +1,4 @@
-package com.novi.carcompany.integrationTests;
+package com.novi.carcompany;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;

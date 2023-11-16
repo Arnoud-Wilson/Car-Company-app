@@ -4,10 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.novi.carcompany.controllers.businessEntities.CarController;
+import com.novi.carcompany.controllers.CarController;
 import com.novi.carcompany.dtos.businessEntities.CarDto;
 import com.novi.carcompany.dtos.businessEntities.CarInputDto;
+import com.novi.carcompany.filters.JwtRequestFilter;
 import com.novi.carcompany.services.businessEntities.CarService;
+import com.novi.carcompany.services.security.CustomUserDetailsService;
+import com.novi.carcompany.utilities.JwtUtility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +40,15 @@ class CarControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
+
+    @MockBean
+    private CustomUserDetailsService customUserDetailsService;
+
+    @MockBean
+    private JwtUtility jwtUtility;
 
     @MockBean
     private CarService carService;
