@@ -89,6 +89,7 @@ public class PartIntegrationTest {
         partChangeInputDto.purchasePrice = 10.25;
         partChangeInputDto.sellingPrice = 15.35;
 
+        partRepository.deleteAll();
 
         partRepository.save(partOne);
         partRepository.save(partTwo);
@@ -101,7 +102,7 @@ public class PartIntegrationTest {
 
 
     @Test
-    void getCars() throws Exception {
+    void getParts() throws Exception {
         mockMvc.perform(get("/parts"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].partNumber").value("11111"))

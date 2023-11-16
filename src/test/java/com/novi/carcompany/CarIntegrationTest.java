@@ -80,6 +80,7 @@ public class CarIntegrationTest {
         carDtoOne.engine = "2.5";
         carDtoOne.winterTyres = false;
 
+        carRepository.deleteAll();
 
         carRepository.save(carOne);
         carRepository.save(carTwo);
