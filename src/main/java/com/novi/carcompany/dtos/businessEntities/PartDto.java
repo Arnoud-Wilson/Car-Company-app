@@ -1,9 +1,9 @@
 package com.novi.carcompany.dtos.businessEntities;
 
-
 import com.novi.carcompany.models.businessEntities.FileDocument;
 
 import java.util.Objects;
+
 
 public class PartDto {
 
