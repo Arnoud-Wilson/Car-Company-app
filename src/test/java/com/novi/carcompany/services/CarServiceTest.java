@@ -141,7 +141,7 @@ class CarServiceTest {
         given(carRepository.existsByLicensePlateIgnoreCase("NL-01-NL")).willReturn(true);
 
         Car car = carRepository.findByLicensePlateIgnoreCase("NL-01-NL").get();
-        CarDto carDto = carService.getCar("NL-01-NL");
+        CarDto carDto = carService.getOne("NL-01-NL");
 
         assertEquals(car.getLicensePlate(), carDto.licensePlate);
         assertEquals(car.getBrand(), carDto.brand);
@@ -155,7 +155,7 @@ class CarServiceTest {
     @Test
     @DisplayName("Should throw exception if license plate is not in database")
     void getCarException() {
-        assertThrows(RecordNotFoundException.class, () -> carService.getCar("NL-01-NL"));
+        assertThrows(RecordNotFoundException.class, () -> carService.getOne("NL-01-NL"));
     }
 
     @Test
@@ -222,7 +222,7 @@ class CarServiceTest {
         DtoConverters.carInputDtoConverter(newCar, carInputDto);
         given(carRepository.save(newCar)).willReturn(carOne);
 
-        carService.createCar(carInputDto);
+        carService.createNew(carInputDto);
 
         verify(carRepository, times(1)).save(carArgumentCaptor.capture());
 
@@ -245,7 +245,7 @@ class CarServiceTest {
 
         given(carRepository.existsByLicensePlateIgnoreCase(newCar.getLicensePlate())).willReturn(true);
 
-        assertThrows(AlreadyExistsException.class, () -> carService.createCar(carInputDto));
+        assertThrows(AlreadyExistsException.class, () -> carService.createNew(carInputDto));
     }
 
     @Test
@@ -288,7 +288,7 @@ class CarServiceTest {
     void deleteCar() {
         given(carRepository.existsByLicensePlateIgnoreCase("NL-01-NL")).willReturn(true);
 
-        carService.deleteCar("NL-01-NL");
+        carService.deleteOne("NL-01-NL");
 
         verify(carRepository, times(1)).deleteCarByLicensePlateIgnoreCase("NL-01-NL");
     }
@@ -296,7 +296,7 @@ class CarServiceTest {
     @Test
     @DisplayName("Should throw exception if license plate is not in database")
     void deleteCarExceptionLicensePlateUnknown() {
-        assertThrows(RecordNotFoundException.class, () -> carService.deleteCar("NL-01-NL"));
+        assertThrows(RecordNotFoundException.class, () -> carService.deleteOne("NL-01-NL"));
     }
 
     @Test

@@ -116,7 +116,7 @@ class PartServiceTest {
         given(partRepository.findAll()).willReturn(List.of(partOne, partTwo));
 
         List<Part> parts = partRepository.findAll();
-        List<PartDto> partDtos = partService.getParts();
+        List<PartDto> partDtos = partService.getAll();
 
         assertEquals(parts.get(0).getPartNumber(), partDtos.get(0).partNumber);
         assertEquals(parts.get(0).getName(), partDtos.get(0).name);
@@ -140,7 +140,7 @@ class PartServiceTest {
     void getPartsException() {
         given(partRepository.findAll()).willReturn(List.of());
 
-        assertThrows(RecordNotFoundException.class, () -> partService.getParts());
+        assertThrows(RecordNotFoundException.class, () -> partService.getAll());
     }
 
     @Test
@@ -150,7 +150,7 @@ class PartServiceTest {
         given(partRepository.existsByPartNumberIgnoreCase("11111")).willReturn(true);
 
         Part part = partRepository.findByPartNumberIgnoreCase("11111").get();
-        PartDto partDto = partService.getPart("11111");
+        PartDto partDto = partService.getOne("11111");
 
         assertEquals(part.getPartNumber(), partDto.partNumber);
         assertEquals(part.getName(), partDto.name);
@@ -164,7 +164,7 @@ class PartServiceTest {
     @Test
     @DisplayName("Should throw exception if part number is not in database")
     void getPartException() {
-        assertThrows(RecordNotFoundException.class, () -> partService.getPart("11111"));
+        assertThrows(RecordNotFoundException.class, () -> partService.getOne("11111"));
     }
 
     @Test
@@ -238,7 +238,7 @@ class PartServiceTest {
         DtoConverters.partInputDtoConverter(newPart, partInputDto);
         given(partRepository.save(newPart)).willReturn(partOne);
 
-        partService.createPart(partInputDto);
+        partService.createNew(partInputDto);
 
         verify(partRepository, times(1)).save(partArgumentCaptor.capture());
 
@@ -261,7 +261,7 @@ class PartServiceTest {
 
         given(partRepository.existsByPartNumberIgnoreCase(newPart.getPartNumber())).willReturn(true);
 
-        assertThrows(AlreadyExistsException.class, () -> partService.createPart(partInputDto));
+        assertThrows(AlreadyExistsException.class, () -> partService.createNew(partInputDto));
     }
 
     @Test
@@ -304,7 +304,7 @@ class PartServiceTest {
     void deletePart() {
         given(partRepository.existsByPartNumberIgnoreCase("11111")).willReturn(true);
 
-        partService.deletePart("11111");
+        partService.deleteOne("11111");
 
         verify(partRepository, times(1)).deletePartByPartNumberIgnoreCase("11111");
     }
@@ -312,7 +312,7 @@ class PartServiceTest {
     @Test
     @DisplayName("Should throw exception if part number is not in database")
     void deletePartExceptionPartNumberUnknown() {
-        assertThrows(RecordNotFoundException.class, () -> partService.deletePart("11111"));
+        assertThrows(RecordNotFoundException.class, () -> partService.deleteOne("11111"));
     }
 
     @Test

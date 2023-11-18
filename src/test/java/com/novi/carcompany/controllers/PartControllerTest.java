@@ -101,7 +101,7 @@ class PartControllerTest {
     @Test
     @DisplayName("should return all parts")
     void getCars() throws Exception {
-        given(partService.getParts()).willReturn(List.of(partDtoOne, partDtoTwo));
+        given(partService.getAll()).willReturn(List.of(partDtoOne, partDtoTwo));
 
         mockMvc.perform(get("/parts"))
                 .andExpect(status().isOk())
@@ -125,7 +125,7 @@ class PartControllerTest {
     @Test
     @DisplayName("Should return part by part number")
     void getPart() throws Exception {
-        given(partService.getPart("11111")).willReturn(partDtoOne);
+        given(partService.getOne("11111")).willReturn(partDtoOne);
 
         mockMvc.perform(get("/parts/11111"))
                 .andExpect(status().isOk())
@@ -182,7 +182,7 @@ class PartControllerTest {
     @Test
     @DisplayName("Should create and return a new part")
     void createPart() throws Exception {
-        given(partService.createPart(any())).willReturn(partDtoOne);
+        given(partService.createNew(any())).willReturn(partDtoOne);
 
         mockMvc.perform(post("/parts")
                     .contentType(APPLICATION_JSON)

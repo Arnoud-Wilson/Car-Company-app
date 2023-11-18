@@ -86,7 +86,7 @@ class EmployeeControllerTest {
 
     @Test
     void getEmployees() throws Exception {
-        given(employeeService.getAllEmployees()).willReturn(List.of(employeeDtoOne, employeeDtoTwo));
+        given(employeeService.getAll()).willReturn(List.of(employeeDtoOne, employeeDtoTwo));
 
         mockMvc.perform(get("/employees"))
                 .andExpect(status().isOk())
@@ -106,7 +106,7 @@ class EmployeeControllerTest {
 
     @Test
     void getEmployeeById() throws Exception {
-        given(employeeService.getEmployeeById(1L)).willReturn(employeeDtoOne);
+        given(employeeService.getOne(1L)).willReturn(employeeDtoOne);
 
         mockMvc.perform(get("/employees/1"))
                 .andExpect(status().isOk())
@@ -148,7 +148,7 @@ class EmployeeControllerTest {
 
     @Test
     void createEmployee() throws Exception {
-        given(employeeService.createEmployee(any())).willReturn(employeeDtoOne);
+        given(employeeService.createNew(any())).willReturn(employeeDtoOne);
 
         mockMvc.perform(post("/employees")
                     .contentType(APPLICATION_JSON)
@@ -180,7 +180,7 @@ class EmployeeControllerTest {
 
     @Test
     void deleteEmployee() throws Exception {
-        given(employeeService.deleteEmployee(1L)).willReturn(employeeDtoOne);
+        given(employeeService.deleteOne(1L)).willReturn(employeeDtoOne);
 
         mockMvc.perform(delete("/employees/1"))
                 .andExpect(status().isOk());
