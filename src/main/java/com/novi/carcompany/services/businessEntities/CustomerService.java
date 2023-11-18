@@ -19,7 +19,7 @@ import java.util.Optional;
 
 
 @Service
-public class CustomerService {
+public class CustomerService implements ServiceLongIdInterface<CustomerDto, CustomerInputDto> {
 
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
@@ -31,7 +31,8 @@ public class CustomerService {
 
 
     ///// For fetching all customers. /////
-    public List<CustomerDto> getAllCustomers(){
+    @Override
+    public List<CustomerDto> getAll(){
         List<Customer> fetchedCustomers = customerRepository.findAll();
         List<CustomerDto> customerDto = new ArrayList<>();
 
@@ -51,7 +52,8 @@ public class CustomerService {
     }
 
     ///// For fetching customers by id. /////
-    public CustomerDto getCustomerById(Long id) {
+    @Override
+    public CustomerDto getOne(Long id) {
         Optional<Customer> customer = customerRepository.findById(id);
 
         if (customer.isPresent()) {
@@ -119,7 +121,7 @@ public class CustomerService {
     }
 
     ///// For adding new customer. /////
-    public CustomerDto createCustomer(CustomerInputDto customer) {
+    public CustomerDto createNew(CustomerInputDto customer) {
         Optional<Customer> existingCustomer = customerRepository.findCustomersBySurNameIgnoreCaseAndLastNameIgnoreCase(customer.surName, customer.lastName);
 
         if(existingCustomer.isPresent()) {
@@ -194,7 +196,8 @@ public class CustomerService {
     }
 
     ///// For deleting a customer by id. /////
-    public CustomerDto deleteCustomer(Long id) {
+    @Override
+    public CustomerDto deleteOne(Long id) {
         Optional<Customer> customer = customerRepository.findById(id);
 
         if (customer.isPresent()) {

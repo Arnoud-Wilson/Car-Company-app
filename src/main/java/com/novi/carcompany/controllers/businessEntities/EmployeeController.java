@@ -28,13 +28,13 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
-        return ResponseEntity.ok(employeeService.getAllEmployees());
+        return ResponseEntity.ok(employeeService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Long id) {
 
-            return ResponseEntity.ok(employeeService.getEmployeeById(id));
+            return ResponseEntity.ok(employeeService.getOne(id));
     }
 
     @GetMapping("/name")
@@ -53,7 +53,7 @@ public class EmployeeController {
         if (bindingResult.hasFieldErrors()) {
             return  BindingResults.showBindingResult(bindingResult);
         } else {
-            EmployeeDto dto = employeeService.createEmployee(employee);
+            EmployeeDto dto = employeeService.createNew(employee);
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + dto.id).toUriString());
 
             return ResponseEntity.created(uri).body(dto);
@@ -85,7 +85,7 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
-        EmployeeDto dto = employeeService.deleteEmployee(id);
+        EmployeeDto dto = employeeService.deleteOne(id);
         return ResponseEntity.ok().body("We hebben werknemer " + dto.surName + " " + dto.lastName + " met id: " + dto.id + " uit de database verwijderd.");
     }
 }

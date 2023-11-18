@@ -18,7 +18,7 @@ import java.util.Optional;
 
 
 @Service
-public class InvoiceService {
+public class InvoiceService implements ServiceLongIdInterface<InvoiceDto, InvoiceInputDto> {
 
     private final InvoiceRepository invoiceRepository;
     private final EmployeeRepository employeeRepository;
@@ -37,7 +37,8 @@ public class InvoiceService {
 
 
     ///// For fetching all invoices. /////
-    public List<InvoiceDto> getAllInvoices() {
+    @Override
+    public List<InvoiceDto> getAll() {
         List<Invoice> fetchedInvoices = invoiceRepository.findAll();
         List<InvoiceDto> invoiceDto = new ArrayList<>();
 
@@ -57,7 +58,8 @@ public class InvoiceService {
     }
 
     ///// For fetching invoice by invoice number. /////
-    public InvoiceDto getInvoiceByInvoiceNumber(Long invoiceNumber) {
+    @Override
+    public InvoiceDto getOne(Long invoiceNumber) {
 
         if (invoiceRepository.existsInvoiceByInvoiceNumber(invoiceNumber)) {
             InvoiceDto dto = new InvoiceDto();
@@ -109,7 +111,8 @@ public class InvoiceService {
     }
 
     ///// For adding new invoice. /////
-    public InvoiceDto createInvoice(InvoiceInputDto invoice) {
+    @Override
+    public InvoiceDto createNew(InvoiceInputDto invoice) {
         Invoice newInvoice = new Invoice();
         InvoiceDto returnInvoice = new InvoiceDto();
 
@@ -269,7 +272,8 @@ public class InvoiceService {
     }
 
     ///// For deleting invoice by invoice number. /////
-    public InvoiceDto deleteInvoice(Long invoiceNumber) {
+    @Override
+    public InvoiceDto deleteOne(Long invoiceNumber) {
         Optional<Invoice> invoice = invoiceRepository.findInvoiceByInvoiceNumber(invoiceNumber);
 
         if (invoice.isPresent()) {

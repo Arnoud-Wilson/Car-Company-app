@@ -18,7 +18,7 @@ import java.util.Optional;
 
 
 @Service
-public class EmployeeService {
+public class EmployeeService implements ServiceLongIdInterface<EmployeeDto, EmployeeInputDto> {
 
     private final EmployeeRepository employeeRepository;
     private final UserRepository userRepository;
@@ -30,7 +30,8 @@ public class EmployeeService {
 
 
     ///// For fetching all employees. /////
-    public List<EmployeeDto> getAllEmployees(){
+    @Override
+    public List<EmployeeDto> getAll(){
         List<Employee> fetchedEmployees = employeeRepository.findAll();
         List<EmployeeDto> employeeDto = new ArrayList<>();
 
@@ -50,7 +51,8 @@ public class EmployeeService {
     }
 
     ///// For fetching employee by id. /////
-    public EmployeeDto getEmployeeById(Long id) {
+    @Override
+    public EmployeeDto getOne(Long id) {
         Optional<Employee> employee = employeeRepository.findById(id);
 
         if (employee.isPresent()) {
@@ -113,7 +115,8 @@ public class EmployeeService {
     }
 
     ///// For adding new employee. /////
-    public EmployeeDto createEmployee(EmployeeInputDto employee) {
+    @Override
+    public EmployeeDto createNew(EmployeeInputDto employee) {
         Optional<Employee> existingEmployee = employeeRepository.findEmployeesBySurNameIgnoreCaseAndLastNameIgnoreCase(employee.surName, employee.lastName);
 
         if(existingEmployee.isPresent()) {
@@ -185,7 +188,8 @@ public class EmployeeService {
     }
 
     ///// For deleting an employee by id. /////
-    public EmployeeDto deleteEmployee(Long id) {
+    @Override
+    public EmployeeDto deleteOne(Long id) {
         Optional<Employee> employee = employeeRepository.findById(id);
 
         if (employee.isPresent()) {

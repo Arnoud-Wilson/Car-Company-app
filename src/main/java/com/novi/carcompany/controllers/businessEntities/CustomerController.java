@@ -29,13 +29,13 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
-        return ResponseEntity.ok(customerService.getAllCustomers());
+        return ResponseEntity.ok(customerService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDto> getCustomerById(@PathVariable Long id) {
 
-        return ResponseEntity.ok(customerService.getCustomerById(id));
+        return ResponseEntity.ok(customerService.getOne(id));
     }
 
     @GetMapping("/name")
@@ -54,7 +54,7 @@ public class CustomerController {
         if (bindingResult.hasFieldErrors()) {
             return  BindingResults.showBindingResult(bindingResult);
         } else {
-            CustomerDto dto = customerService.createCustomer(customer);
+            CustomerDto dto = customerService.createNew(customer);
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + dto.id).toUriString());
 
             return ResponseEntity.created(uri).body(dto);
@@ -86,7 +86,7 @@ public class CustomerController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCustomer(@PathVariable Long id) {
-        CustomerDto dto = customerService.deleteCustomer(id);
+        CustomerDto dto = customerService.deleteOne(id);
         return ResponseEntity.ok().body("We hebben klant " + dto.surName + " " + dto.lastName + " met id: " + dto.id + " uit de database verwijderd.");
     }
 }

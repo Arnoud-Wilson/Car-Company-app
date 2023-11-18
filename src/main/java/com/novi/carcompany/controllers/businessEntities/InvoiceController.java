@@ -29,12 +29,12 @@ public class InvoiceController {
 
     @GetMapping
     public ResponseEntity<List<InvoiceDto>> getAllInvoices() {
-        return ResponseEntity.ok(invoiceService.getAllInvoices());
+        return ResponseEntity.ok(invoiceService.getAll());
     }
 
     @GetMapping("/{invoiceNumber}")
     ResponseEntity<InvoiceDto> getInvoiceByInvoiceNumber(@PathVariable Long invoiceNumber) {
-        return ResponseEntity.ok(invoiceService.getInvoiceByInvoiceNumber(invoiceNumber));
+        return ResponseEntity.ok(invoiceService.getOne(invoiceNumber));
     }
 
     @GetMapping("/unpaid")
@@ -53,7 +53,7 @@ public class InvoiceController {
         if (bindingResult.hasFieldErrors()) {
             return  BindingResults.showBindingResult(bindingResult);
         } else {
-            InvoiceDto invoiceDto = invoiceService.createInvoice(invoice);
+            InvoiceDto invoiceDto = invoiceService.createNew(invoice);
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + invoiceDto.invoiceNumber).toUriString());
 
             return ResponseEntity.created(uri).body(invoiceDto);
@@ -127,7 +127,7 @@ public class InvoiceController {
 
     @DeleteMapping("/{invoiceNumber}")
         public ResponseEntity<String> deleteInvoice(@PathVariable Long invoiceNumber) {
-            InvoiceDto dto = invoiceService.deleteInvoice(invoiceNumber);
+            InvoiceDto dto = invoiceService.deleteOne(invoiceNumber);
             return ResponseEntity.ok().body("We hebben factuur met nummer: " + dto.invoiceNumber + " uit de database verwijderd.");
         }
 }
