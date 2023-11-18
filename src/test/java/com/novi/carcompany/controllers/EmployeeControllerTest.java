@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.novi.carcompany.controllers.EmployeeController;
+import com.novi.carcompany.controllers.businessEntities.EmployeeController;
 import com.novi.carcompany.dtos.businessEntities.EmployeeDto;
 import com.novi.carcompany.dtos.businessEntities.EmployeeInputDto;
 import com.novi.carcompany.filters.JwtRequestFilter;
@@ -75,7 +75,7 @@ class EmployeeControllerTest {
         employeeDtoTwo.address = "Teststraat 2";
         employeeDtoTwo.phoneNumber = "2222222222";
         employeeDtoTwo.function = "Tester";
-
+        /////
         employeeInputDtoOne.surName = "Test";
         employeeInputDtoOne.lastName = "One";
         employeeInputDtoOne.address = "Teststraat 1";

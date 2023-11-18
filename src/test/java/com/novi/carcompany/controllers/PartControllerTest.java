@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.novi.carcompany.controllers.PartController;
+import com.novi.carcompany.controllers.businessEntities.PartController;
 import com.novi.carcompany.dtos.businessEntities.PartChangeInputDto;
 import com.novi.carcompany.dtos.businessEntities.PartDto;
 import com.novi.carcompany.dtos.businessEntities.PartInputDto;
@@ -72,7 +72,7 @@ class PartControllerTest {
         partDtoOne.stock = 2;
         partDtoOne.purchasePrice = 10.25;
         partDtoOne.sellingPrice = 15.35;
-
+        /////
         partDtoTwo.partNumber = "22222";
         partDtoTwo.name = "Test two";
         partDtoTwo.description = "Test onderdeel";

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.novi.carcompany.controllers.CarController;
+import com.novi.carcompany.controllers.businessEntities.CarController;
 import com.novi.carcompany.dtos.businessEntities.CarDto;
 import com.novi.carcompany.dtos.businessEntities.CarInputDto;
 import com.novi.carcompany.filters.JwtRequestFilter;
@@ -77,7 +77,7 @@ class CarControllerTest {
         carDtoTwo.color = "red";
         carDtoTwo.engine = "2.0";
         carDtoTwo.winterTyres = true;
-
+        /////
         carInputDtoOne.licensePlate = "NL-01-NL";
         carInputDtoOne.brand = "Test";
         carInputDtoOne.model = "Test1";

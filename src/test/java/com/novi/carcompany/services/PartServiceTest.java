@@ -72,7 +72,7 @@ class PartServiceTest {
         partOne.setStock(2);
         partOne.setPurchasePrice(10.25);
         partOne.setSellingPrice(15.35);
-
+        /////
         partTwo.setPartNumber("22222");
         partTwo.setName("Test two");
         partTwo.setDescription("Test onderdeel");

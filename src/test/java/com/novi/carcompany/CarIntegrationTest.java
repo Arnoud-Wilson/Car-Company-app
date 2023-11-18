@@ -55,7 +55,7 @@ public class CarIntegrationTest {
         carOne.setColor("blue");
         carOne.setEngine("2.5");
         carOne.setWinterTyres(false);
-
+        /////
         carTwo.setLicensePlate("NL-02-NL");
         carTwo.setBrand("Test");
         carTwo.setModel("Test2");
@@ -212,6 +212,4 @@ public class CarIntegrationTest {
             throw new RuntimeException(e);
         }
     }
-
-
 }
