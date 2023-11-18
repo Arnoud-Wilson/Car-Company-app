@@ -91,7 +91,6 @@ public class InvoiceService implements ServiceLongIdInterface<InvoiceDto, Invoic
         }
     }
 
-
     ///// For fetching invoices by customer. /////
     public List<InvoiceDto> getCustomerInvoices(Long customerId) {
         List<Invoice> invoices = invoiceRepository.findInvoiceByCustomerId(customerId);

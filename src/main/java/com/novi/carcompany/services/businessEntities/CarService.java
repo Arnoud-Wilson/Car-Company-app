@@ -52,7 +52,6 @@ public class CarService implements ServiceStringIdInterface<CarDto, CarInputDto>
         }
     }
 
-
     ///// For fetching one car by licence plate. /////
     @Override
     public CarDto getOne(String licensePlate) {
@@ -105,7 +104,6 @@ public class CarService implements ServiceStringIdInterface<CarDto, CarInputDto>
             throw new RecordNotFoundException("We hebben geen auto's gevonden in onze database.");
         }
     }
-
 
     ///// For adding new car. /////
     @Override
