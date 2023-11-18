@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.novi.carcompany.dtos.businessEntities.*;
 import com.novi.carcompany.models.businessEntities.Customer;
-import com.novi.carcompany.models.security.User;
 import com.novi.carcompany.repositories.CustomerRepository;
 import com.novi.carcompany.repositories.UserRepository;
 import org.junit.jupiter.api.AfterEach;

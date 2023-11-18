@@ -19,7 +19,7 @@ import java.util.Optional;
 
 
 @Service
-public class PartService {
+public class PartService implements ServiceStringIdInterface<PartDto, PartInputDto>{
 
     private final PartRepository partRepository;
     private final DocFileRepository docFileRepository;
@@ -31,7 +31,8 @@ public class PartService {
 
 
     ///// For fetching all parts. /////
-    public List<PartDto> getParts(){
+    @Override
+    public List<PartDto> getAll(){
         List<Part> fetchedParts = partRepository.findAll();
         List<PartDto> partDto = new ArrayList<>();
 
@@ -51,7 +52,8 @@ public class PartService {
     }
 
     ///// For fetching part by part number. /////
-    public PartDto getPart(String partNumber) {
+    @Override
+    public PartDto getOne(String partNumber) {
 
         if (partRepository.existsByPartNumberIgnoreCase(partNumber)) {
             PartDto dto = new PartDto();
@@ -110,7 +112,8 @@ public class PartService {
     }
 
     ///// For adding a new part. /////
-    public PartDto createPart(PartInputDto part) {
+    @Override
+    public PartDto createNew(PartInputDto part) {
         Part newPart = new Part();
         PartDto returnPart = new PartDto();
 
@@ -174,7 +177,8 @@ public class PartService {
     }
 
     ///// For deleting a part by part number. /////
-    public String deletePart(String partNumber) {
+    @Override
+    public String deleteOne(String partNumber) {
         if (partRepository.existsByPartNumberIgnoreCase(partNumber)) {
 
             partRepository.deletePartByPartNumberIgnoreCase(partNumber);

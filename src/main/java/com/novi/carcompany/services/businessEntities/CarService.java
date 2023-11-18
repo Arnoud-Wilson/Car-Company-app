@@ -20,7 +20,7 @@ import java.util.Optional;
 
 
 @Service
-public class CarService {
+public class CarService implements ServiceStringIdInterface<CarDto, CarInputDto>  {
 
     private final CarRepository carRepository;
     private final CustomerRepository customerRepository;
@@ -32,7 +32,8 @@ public class CarService {
 
 
     ///// For fetching all cars. /////
-    public List<CarDto> getCars() {
+    @Override
+    public List<CarDto> getAll() {
         List<Car> fetchedCars = carRepository.findAll();
         List<CarDto> carDto = new ArrayList<>();
 
@@ -51,8 +52,10 @@ public class CarService {
         }
     }
 
+
     ///// For fetching one car by licence plate. /////
-    public CarDto getCar(String licensePlate) {
+    @Override
+    public CarDto getOne(String licensePlate) {
 
         if (carRepository.existsByLicensePlateIgnoreCase(licensePlate)) {
             CarDto dto = new CarDto();
@@ -105,7 +108,8 @@ public class CarService {
 
 
     ///// For adding new car. /////
-    public CarDto createCar(CarInputDto car) {
+    @Override
+    public CarDto createNew(CarInputDto car) {
         Car newCar = new Car();
         CarDto returnCar = new CarDto();
 
@@ -122,7 +126,6 @@ public class CarService {
             return returnCar;
         }
     }
-
 
     ///// For changing a car. /////
     public CarDto changeCar(String licensePlate, CarDto car) {
@@ -193,7 +196,8 @@ public class CarService {
     }
 
     ///// For deleting a car by license plate. /////
-    public String deleteCar(String licensePlate) {
+    @Override
+    public String deleteOne(String licensePlate) {
         if (carRepository.existsByLicensePlateIgnoreCase(licensePlate)) {
 
             carRepository.deleteCarByLicensePlateIgnoreCase(licensePlate);

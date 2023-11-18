@@ -30,12 +30,12 @@ public class PartController {
     @GetMapping
     public ResponseEntity<List<PartDto>> getCars() {
 
-        return ResponseEntity.ok(partService.getParts());
+        return ResponseEntity.ok(partService.getAll());
     }
 
     @GetMapping("/{partNumber}")
     public ResponseEntity<PartDto> getPart(@PathVariable String partNumber) {
-        return ResponseEntity.ok(partService.getPart(partNumber));
+        return ResponseEntity.ok(partService.getOne(partNumber));
     }
 
     @GetMapping("/findName")
@@ -56,7 +56,7 @@ public class PartController {
         } else {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + part.partNumber.toUpperCase()).toUriString());
 
-            return ResponseEntity.created(uri).body(partService.createPart(part));
+            return ResponseEntity.created(uri).body(partService.createNew(part));
         }
     }
 
@@ -75,7 +75,7 @@ public class PartController {
     @DeleteMapping("/{partNumber}")
     public ResponseEntity<String> deletePart(@PathVariable String partNumber) {
 
-        return ResponseEntity.ok(partService.deletePart(partNumber));
+        return ResponseEntity.ok(partService.deleteOne(partNumber));
     }
 
     @PutMapping("/{partNumber}/picknote")

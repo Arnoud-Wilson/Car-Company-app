@@ -90,7 +90,7 @@ class CarControllerTest {
 
     @Test
     void getCars() throws Exception {
-        given(carService.getCars()).willReturn(List.of(carDtoOne, carDtoTwo));
+        given(carService.getAll()).willReturn(List.of(carDtoOne, carDtoTwo));
 
         mockMvc.perform(get("/cars"))
                 .andExpect(status().isOk())

@@ -107,7 +107,7 @@ class CarServiceTest {
         given(carRepository.findAll()).willReturn(List.of(carOne, carTwo));
 
         List<Car> cars = carRepository.findAll();
-        List<CarDto> carDtos = carService.getCars();
+        List<CarDto> carDtos = carService.getAll();
 
         assertEquals(cars.get(0).getLicensePlate(), carDtos.get(0).licensePlate);
         assertEquals(cars.get(0).getBrand(), carDtos.get(0).brand);
@@ -131,7 +131,7 @@ class CarServiceTest {
     void getCarsException() {
         given(carRepository.findAll()).willReturn(List.of());
 
-        assertThrows(RecordNotFoundException.class, () -> carService.getCars());
+        assertThrows(RecordNotFoundException.class, () -> carService.getAll());
     }
 
     @Test

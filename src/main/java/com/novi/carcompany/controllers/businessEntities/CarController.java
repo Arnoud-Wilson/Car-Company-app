@@ -29,12 +29,12 @@ public class CarController {
 
     @GetMapping
     public ResponseEntity<List<CarDto>> getCars() {
-        return ResponseEntity.ok(carService.getCars());
+        return ResponseEntity.ok(carService.getAll());
     }
 
     @GetMapping("/{licensePlate}")
     public ResponseEntity<CarDto> getCar(@PathVariable String licensePlate) {
-        return ResponseEntity.ok(carService.getCar(licensePlate));
+        return ResponseEntity.ok(carService.getOne(licensePlate));
     }
 
     @GetMapping("/findVin")
@@ -56,7 +56,7 @@ public class CarController {
         } else {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + car.licensePlate.toUpperCase()).toUriString());
 
-            return ResponseEntity.created(uri).body(carService.createCar(car));
+            return ResponseEntity.created(uri).body(carService.createNew(car));
         }
     }
 
@@ -87,7 +87,7 @@ public class CarController {
 
     @DeleteMapping("/{licensePlate}")
     public ResponseEntity<String> deleteCar(@PathVariable String licensePlate) {
-        return ResponseEntity.ok(carService.deleteCar(licensePlate));
+        return ResponseEntity.ok(carService.deleteOne(licensePlate));
     }
 }
 
