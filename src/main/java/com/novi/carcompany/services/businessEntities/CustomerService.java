@@ -94,7 +94,6 @@ public class CustomerService implements ServiceLongIdInterface<CustomerDto, Cust
             }
             throw new RecordNotFoundException("We hebben geen klanten met naam: " + stringBuilder + " gevonden.");
         }
-        //TODO: fix search for only surname
     }
 
     ///// For fetching customers by corporate or private. /////

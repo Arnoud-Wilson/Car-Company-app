@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+
 @Service
 public class JwtUtility {
 
@@ -38,7 +39,7 @@ public class JwtUtility {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody(); //TODO: fix deprecated methods.
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {

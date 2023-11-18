@@ -113,7 +113,7 @@ class CarControllerTest {
 
     @Test
     void getCar() throws Exception {
-        given(carService.getCar("NL-01-NL")).willReturn(carDtoOne);
+        given(carService.getOne("NL-01-NL")).willReturn(carDtoOne);
 
         mockMvc.perform(get("/cars/NL-01-NL"))
                 .andExpect(status().isOk())
@@ -158,7 +158,7 @@ class CarControllerTest {
 
     @Test
     void createCar() throws Exception {
-        given(carService.createCar(any())).willReturn(carDtoOne);
+        given(carService.createNew(any())).willReturn(carDtoOne);
 
         mockMvc.perform(post("/cars")
                         .contentType(APPLICATION_JSON)

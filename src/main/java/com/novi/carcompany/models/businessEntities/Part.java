@@ -2,7 +2,6 @@ package com.novi.carcompany.models.businessEntities;
 
 import jakarta.persistence.*;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 

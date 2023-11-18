@@ -2,6 +2,7 @@ package com.novi.carcompany.models.businessEntities;
 
 import jakarta.persistence.*;
 
+
 @Entity
 public class FileDocument {
 

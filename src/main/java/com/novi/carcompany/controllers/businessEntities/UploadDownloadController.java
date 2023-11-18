@@ -10,11 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-//@CrossOrigin
+
 @RestController
 @RequestMapping("/load")
 public class UploadDownloadController {
@@ -30,7 +29,6 @@ public class UploadDownloadController {
     public FileUploadResponseDto singleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
 
 
-        // next line makes url. example "http://localhost:8080/download/naam.jpg"
         FileDocument fileDocument = uploadDownloadService.uploadFileDocument(file);
         String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("load//download/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
 
